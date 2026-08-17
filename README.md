@@ -4,10 +4,9 @@ A relational database management system for blood donation tracking, inventory s
 
 ## ER Diagram
 
-[![Blood Bank Management System ER Diagram](./er_diagram.svg)](./er_diagram.svg)
+[![Blood Bank Management System ER Diagram](./BLOODBANK.drawio.svg)](./BLOODBANK.drawio.svg)
 
 > **Note**: Click the diagram above to view the full-resolution vector image in a new tab.
-> You can also edit the source XML diagram [`BLOODBANK.drawio`](./BLOODBANK.drawio) directly in [draw.io](https://app.diagrams.net).
 
 ---
 
@@ -45,4 +44,4 @@ This will automatically:
 - Create the SQLite database (`blood_bank.db`).
 - Build all 11 tables with foreign key constraints.
 - Seed the database with comprehensive mock records.
-- Output all raw tables and operational JOIN reports in formatted ASCII grids.
+- Output all raw tables and operational JOIN reports.
