@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="100%" height="100%" style="background-color: #121212; font-family: system-ui, -apple-system, sans-serif;">
+  <style>
+    .entity { fill: #1e1e1e; stroke: #ffffff; stroke-width: 1.5; rx: 6; ry: 6; }
+    .relationship { fill: #1e1e1e; stroke: #ffffff; stroke-width: 1.5; }
+    .attribute { fill: #181818; stroke: #aaaaaa; stroke-width: 1; }
+    .text-main { fill: #ffffff; font-size: 13px; font-weight: 500; text-anchor: middle; dominant-baseline: middle; }
+    .text-sub { fill: #dddddd; font-size: 11px; text-anchor: middle; dominant-baseline: middle; }
+    .text-pk { font-weight: bold; text-decoration: underline; }
+    .line { stroke: #888888; stroke-width: 1.2; }
+    .cardinality { fill: #ffffff; font-size: 11px; font-weight: bold; }
+  </style>
+
+  <!-- Connection Lines -->
+  <!-- Donor to Donation -->
+  <line x1="850" y1="90" x2="680" y2="90" class="line" />
+  <line x1="680" y1="90" x2="520" y2="90" class="line" />
+  <text x="730" y="80" class="cardinality">1</text>
+  <text x="630" y="80" class="cardinality">N</text>
+
+  <!-- Donation to Blood_Unit -->
+  <line x1="450" y1="115" x2="450" y2="250" class="line" />
+  <text x="460" y="140" class="cardinality">1</text>
+  <text x="460" y="230" class="cardinality">N</text>
+
+  <!-- Blood_Unit to Storage -->
+  <line x1="400" y1="270" x2="220" y2="380" class="line" />
+  <text x="370" y="270" class="cardinality">N</text>
+  <text x="250" y="360" class="cardinality">1</text>
+
+  <!-- Blood_Unit to Screening_Test -->
+  <line x1="450" y1="290" x2="450" y2="430" class="line" />
+  <text x="460" y="320" class="cardinality">N</text>
+  <text x="460" y="400" class="cardinality">1</text>
+
+  <!-- Donation to Staff (collected) -->
+  <line x1="510" y1="100" x2="750" y2="250" class="line" />
+  <text x="540" y="120" class="cardinality">N</text>
+  <text x="730" y="230" class="cardinality">1</text>
+
+  <!-- Blood_Unit to Staff (managed) -->
+  <line x1="510" y1="270" x2="750" y2="260" class="line" />
+  <text x="540" y="275" class="cardinality">N</text>
+  <text x="730" y="270" class="cardinality">1</text>
+
+  <!-- Staff to Patient (collected_by) -->
+  <line x1="810" y1="270" x2="810" y2="410" class="line" />
+  <text x="820" y="300" class="cardinality">1</text>
+  <text x="820" y="380" class="cardinality">N</text>
+
+  <!-- Staff to Issue (processed) -->
+  <line x1="810" y1="270" x2="810" y2="560" class="line" />
+  <text x="820" y="300" class="cardinality">1</text>
+  <text x="820" y="530" class="cardinality">N</text>
+
+  <!-- Request to Issue (Fulfills) -->
+  <line x1="600" y1="700" x2="810" y2="590" class="line" />
+  <text x="620" y="690" class="cardinality">1</text>
+  <text x="780" y="610" class="cardinality">1</text>
+
+  <!-- Hospital to Request (Requested by) -->
+  <line x1="300" y1="700" x2="520" y2="700" class="line" />
+  <text x="330" y="690" class="cardinality">1</text>
+  <text x="490" y="690" class="cardinality">N</text>
+
+  <!-- Donor to Patient (Direct Link) -->
+  <line x1="910" y1="115" x2="910" y2="410" class="line" />
+  <text x="920" y="140" class="cardinality">N</text>
+  <text x="920" y="380" class="cardinality">N</text>
+
+  <!-- ENTITIES -->
+  <!-- Donor Entity -->
+  <rect x="850" y="65" width="120" height="50" class="entity" />
+  <text x="910" y="90" class="text-main">Donor</text>
+
+  <!-- Donation Entity -->
+  <rect x="390" y="65" width="120" height="50" class="entity" />
+  <text x="450" y="90" class="text-main">Donation</text>
+
+  <!-- Blood_Unit Entity -->
+  <rect x="390" y="245" width="120" height="50" class="entity" />
+  <text x="450" y="270" class="text-main">Blood_Unit</text>
+
+  <!-- Storage Entity -->
+  <rect x="140" y="385" width="120" height="50" class="entity" />
+  <text x="200" y="410" class="text-main">Storage</text>
+
+  <!-- Screening_Test Entity -->
+  <rect x="380" y="435" width="140" height="50" class="entity" />
+  <text x="450" y="460" class="text-main">Screening_Test</text>
+
+  <!-- Patient Entity -->
+  <rect x="850" y="415" width="120" height="50" class="entity" />
+  <text x="910" y="440" class="text-main">Patient</text>
+
+  <!-- Staff Entity -->
+  <rect x="750" y="245" width="120" height="50" class="entity" />
+  <text x="810" y="270" class="text-main">Staff</text>
+
+  <!-- Hospital Entity -->
+  <rect x="200" y="675" width="120" height="50" class="entity" />
+  <text x="260" y="700" class="text-main">Hospital</text>
+
+  <!-- Request Entity -->
+  <rect x="520" y="675" width="120" height="50" class="entity" />
+  <text x="580" y="700" class="text-main">Request</text>
+
+  <!-- Issue Entity -->
+  <rect x="750" y="565" width="120" height="50" class="entity" />
+  <text x="810" y="590" class="text-main">Issue</text>
+
+  <!-- RELATIONSHIPS (DIAMONDS) -->
+  <!-- makes -->
+  <polygon points="680,65 720,90 680,115 640,90" class="relationship" />
+  <text x="680" y="90" class="text-sub">makes</text>
+
+  <!-- Produces -->
+  <polygon points="450,150 490,175 450,200 410,175" class="relationship" />
+  <text x="450" y="175" class="text-sub">Produces</text>
+
+  <!-- stored_in -->
+  <polygon points="290,310 330,335 290,360 250,335" class="relationship" />
+  <text x="290" y="335" class="text-sub">stored_in</text>
+
+  <!-- collected -->
+  <polygon points="630,165 670,190 630,215 590,190" class="relationship" />
+  <text x="630" y="190" class="text-sub">collected</text>
+
+  <!-- managed -->
+  <polygon points="630,245 670,270 630,295 590,270" class="relationship" />
+  <text x="630" y="270" class="text-sub">managed</text>
+
+  <!-- issued_as -->
+  <polygon points="450,340 490,365 450,390 410,365" class="relationship" />
+  <text x="450" y="365" class="text-sub">issued_as</text>
+
+  <!-- collected_by -->
+  <polygon points="810,320 850,345 810,370 770,345" class="relationship" />
+  <text x="810" y="345" class="text-sub">collected_by</text>
+
+  <!-- processed -->
+  <polygon points="810,470 850,495 810,520 770,495" class="relationship" />
+  <text x="810" y="495" class="text-sub">processed</text>
+
+  <!-- Fulfills -->
+  <polygon points="690,620 730,645 690,670 650,645" class="relationship" />
+  <text x="690" y="645" class="text-sub">Fulfills</text>
+
+  <!-- Requested by -->
+  <polygon points="400,675 440,700 400,725 360,700" class="relationship" />
+  <text x="400" y="700" class="text-sub">Requested by</text>
+
+  <!-- ATTRIBUTES SAMPLES WITH UNDERLINED PKs -->
+  <!-- Donor PK & Attributes -->
+  <ellipse cx="910" cy="20" rx="45" ry="18" class="attribute" />
+  <text x="910" y="20" class="text-sub text-pk">Donor_ID</text>
+  <line x1="910" y1="38" x2="910" y2="65" class="line" />
+
+  <ellipse cx="1020" cy="50" rx="40" ry="18" class="attribute" />
+  <text x="1020" y="50" class="text-sub">Name</text>
+  <line x1="970" y1="75" x2="985" y2="60" class="line" />
+
+  <ellipse cx="1030" cy="95" rx="45" ry="18" class="attribute" />
+  <text x="1030" y="95" class="text-sub">Blood_Group</text>
+  <line x1="970" y1="90" x2="985" y2="95" class="line" />
+
+  <!-- Donation PK & Attributes -->
+  <ellipse cx="450" cy="20" rx="50" ry="18" class="attribute" />
+  <text x="450" y="20" class="text-sub text-pk">Donation_ID</text>
+  <line x1="450" y1="38" x2="450" y2="65" class="line" />
+
+  <!-- Blood_Unit PK & FK Attributes -->
+  <ellipse cx="260" cy="220" rx="55" ry="18" class="attribute" />
+  <text x="260" y="220" class="text-sub text-pk">Blood_Unit_ID</text>
+  <line x1="315" y1="225" x2="390" y2="250" class="line" />
+
+  <ellipse cx="270" cy="270" rx="55" ry="18" class="attribute" />
+  <text x="270" y="270" class="text-sub">Donation_ID (FK)</text>
+  <line x1="325" y1="270" x2="390" y2="270" class="line" />
+
+  <!-- Patient PK & Attributes -->
+  <ellipse cx="1020" cy="415" rx="45" ry="18" class="attribute" />
+  <text x="1020" y="415" class="text-sub text-pk">Patient_ID</text>
+  <line x1="970" y1="425" x2="975" y2="420" class="line" />
+
+  <!-- Hospital PK & Attributes -->
+  <ellipse cx="110" cy="675" rx="50" ry="18" class="attribute" />
+  <text x="110" y="675" class="text-sub text-pk">Hospital_ID</text>
+  <line x1="160" y1="675" x2="200" y2="675" class="line" />
+
+  <!-- Request PK & Attributes -->
+  <ellipse cx="580" cy="780" rx="50" ry="18" class="attribute" />
+  <text x="580" y="780" class="text-sub text-pk">Request_ID</text>
+  <line x1="580" y1="762" x2="580" y2="725" class="line" />
+
+</svg>
