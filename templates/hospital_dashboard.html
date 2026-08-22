@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Hospital Dashboard</h2>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <p style="margin: 0;">Welcome, <strong>{{ session.get('user_name') }}</strong>!</p>
+    
+    <!-- Hospital Switcher -->
+    <form method="POST" action="{{ url_for('hospital.switch_hospital') }}" style="display: flex; gap: 0.5rem; align-items: center;">
+        <label for="hospital_id" style="font-size: 0.9rem; font-weight: bold;">Switch Rep View:</label>
+        <select name="hospital_id" id="hospital_id" class="form-control" style="padding: 0.2rem 0.5rem; width: auto;" onchange="this.form.submit()">
+            {% for h in all_hospitals %}
+                <option value="{{ h.Hospital_ID }}" {% if h.Hospital_ID|string == session.get('user_id')|string %}selected{% endif %}>
+                    {{ h.Hospital_Name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
+
+<!-- FULFILLED ALERTS MODAL POP-UP -->
+{% if new_fulfilled_alerts %}
+<div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background-color: white; border-top: 10px solid var(--success-color); border-radius: 8px; padding: 2rem; max-width: 500px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🚨</div>
+        <h2 style="color: var(--success-color); margin-top: 0;">URGENT: Request Approved!</h2>
+        <p style="font-size: 1.1rem; color: #333; margin-bottom: 2rem;">
+            Your recent blood requests have just been <strong>Fulfilled</strong> by the blood bank and are marked for immediate delivery/pickup.
+        </p>
+        <button onclick="document.getElementById('fulfilledModal').style.display='none'" class="btn btn-primary" style="background-color: var(--success-color); border: none; padding: 0.8rem 2rem; font-size: 1.1rem;">
+            Acknowledge
+        </button>
+    </div>
+</div>
+{% endif %}
+
+<div class="dashboard-grid">
+    <!-- Request Form -->
+    <div class="card">
+        <h3>Submit Blood Request</h3>
+        <form method="POST" action="{{ url_for('hospital.request_blood') }}">
+            <div class="form-group">
+                <label for="blood_group">Blood Group Required:</label>
+                <select name="blood_group" id="blood_group" class="form-control" required onchange="checkMatch()">
+                    <option value="" disabled selected>Select Blood Group</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+            </div>
+
+            <!-- INSTANT MATCH PREVIEW UI -->
+            <div id="match-preview" class="match-preview-container">
+                <strong><span id="match-icon">⏳</span> Instant Match Preview:</strong>
+                <span id="match-text">Checking available inventory...</span>
+            </div>
+            
+            <div class="form-group" style="margin-top: 1rem;">
+                <label for="component_type">Component Type:</label>
+                <select name="component_type" id="component_type" class="form-control" required>
+                    <option value="Whole Blood">Whole Blood</option>
+                    <option value="Packed Red Cells">Packed Red Cells</option>
+                    <option value="Platelets">Platelets</option>
+                    <option value="Plasma">Plasma</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="qty_required">Quantity (Units):</label>
+                <input type="number" name="qty_required" id="qty_required" class="form-control" required min="1" value="1">
+            </div>
+
+            <div class="form-group">
+                <label for="priority">Priority Level:</label>
+                <select name="priority" id="priority" class="form-control" required>
+                    <option value="Routine">Routine</option>
+                    <option value="High">High</option>
+                    <option value="Emergency">Emergency</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Submit Request</button>
+        </form>
+    </div>
+
+    <!-- Request History -->
+    <div class="card">
+        <h3>Your Request History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Group</th>
+                    <th>Qty</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests %}
+                <tr>
+                    <td>{{ req.Request_Date }}</td>
+                    <td><strong>{{ req.Blood_Group }}</strong></td>
+                    <td>{{ req.Qty_Required }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if req.Status == 'Pending' %}badge-pending
+                            {% elif req.Status == 'Fulfilled' %}badge-available
+                            {% else %}badge-issued{% endif %}">
+                            {{ req.Status }}
+                        </span>
+                    </td>
+                    <td>
+                        <!-- Re-ask form -->
+                        <form method="POST" action="{{ url_for('hospital.request_blood') }}" style="display:inline;">
+                            <input type="hidden" name="blood_group" value="{{ req.Blood_Group }}">
+                            <input type="hidden" name="component_type" value="{{ req.Component_Type }}">
+                            <input type="hidden" name="qty_required" value="{{ req.Qty_Required }}">
+                            <input type="hidden" name="priority" value="{{ req.Priority }}">
+                            <button type="submit" class="btn btn-primary" style="padding: 0.2rem 0.5rem; font-size: 0.8rem; background-color: var(--secondary-color);">Re-Request</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5">You haven't made any requests yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function checkMatch() {
+        const bg = document.getElementById('blood_group').value;
+        const previewDiv = document.getElementById('match-preview');
+        const textSpan = document.getElementById('match-text');
+        const iconSpan = document.getElementById('match-icon');
+        
+        if (!bg) return;
+        
+        // Show the container
+        previewDiv.style.display = 'block';
+        textSpan.innerHTML = 'Searching Database...';
+        iconSpan.innerHTML = '🔄';
+        previewDiv.style.backgroundColor = '#f8fbff';
+        previewDiv.style.borderColor = '#bbdefb';
+
+        // Simulate a tiny delay for "effect" to show it's actually doing something, 
+        // then fetch real data from our backend!
+        setTimeout(() => {
+            fetch(`/hospital/api/check_match?blood_group=${encodeURIComponent(bg)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.count > 0) {
+                        iconSpan.innerHTML = '✅';
+                        textSpan.innerHTML = `<strong style="color: var(--success-color);">${data.count} Match(es) Found!</strong> Blood units are immediately available in our inventory.`;
+                        previewDiv.style.backgroundColor = '#e8f5e9';
+                        previewDiv.style.borderColor = '#c8e6c9';
+                    } else {
+                        iconSpan.innerHTML = '⚠️';
+                        textSpan.innerHTML = `<strong style="color: var(--warning-color);">No exact matches currently in inventory.</strong> Request will be placed in emergency queue.`;
+                        previewDiv.style.backgroundColor = '#fff3e0';
+                        previewDiv.style.borderColor = '#ffe0b2';
+                    }
+                })
+                .catch(err => {
+                    textSpan.innerHTML = 'Error checking inventory.';
+                });
+        }, 400); // 400ms delay feels "fast but real"
+    }
+</script>
+{% endblock %}

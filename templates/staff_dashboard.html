@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Staff Dashboard</h2>
+<p>Welcome to the administrative portal, {{ profile.Name }} ({{ profile.Role }}).</p>
+<p style="color:var(--light-text); font-size:0.9rem;">Contact: {{ profile.Email }} | {{ profile.Phone }}</p>
+
+<div class="dashboard-grid" style="margin-top: 2rem;">
+    
+    <!-- 1. Pending Requests -->
+    <div class="card" style="grid-column: span 2;">
+        <h3>Pending Hospital Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hospital</th>
+                    <th>Group</th>
+                    <th>Qty</th>
+                    <th>Component</th>
+                    <th>Priority</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests %}
+                <tr>
+                    <td>{{ req.Hospital_Name }}</td>
+                    <td><span class="badge badge-pending">{{ req.Blood_Group }}</span></td>
+                    <td>{{ req.Qty_Required }}</td>
+                    <td>{{ req.Component_Type }}</td>
+                    <td>
+                        <span style="color: {% if req.Priority == 'Emergency' %}var(--danger-color){% else %}var(--text-color){% endif %}; font-weight: bold;">
+                            {{ req.Priority }}
+                        </span>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('staff.fulfill_request') }}" style="margin:0;">
+                            <input type="hidden" name="request_id" value="{{ req.Request_ID }}">
+                            <input type="hidden" name="blood_group" value="{{ req.Blood_Group }}">
+                            <input type="hidden" name="qty" value="{{ req.Qty_Required }}">
+                            <button type="submit" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; background-color: var(--danger-color); border:none;">Fulfill</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6">No pending requests at this time.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Inventory Management -->
+    <div style="grid-column: span 2; display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem;">
+        
+        <!-- Inventory Summary -->
+        <div class="card">
+            <h3>Inventory Summary (Fresh Units)</h3>
+            <ul style="list-style-type: none; padding: 0; line-height: 2;">
+                {% for bg, count in inventory_summary.items() %}
+                <li style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 0.5rem 0;">
+                    <strong>{{ bg }}</strong>
+                    <span class="badge badge-available" style="font-size: 1rem;">{{ count }} units</span>
+                </li>
+                {% else %}
+                <li>No fresh blood available in inventory.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Detailed Inventory List -->
+        <div class="card">
+            <h3>Available Inventory (Detailed)</h3>
+            <table style="font-size: 0.9rem;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Group</th>
+                        <th>Component</th>
+                        <th>Expiry Date</th>
+                        <th>Condition</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for unit in inventory %}
+                    <tr>
+                        <td>#{{ unit.Blood_Unit_ID }}</td>
+                        <td><strong>{{ unit.Blood_Group }}</strong></td>
+                        <td>{{ unit.Component_Type }}</td>
+                        <td>{{ unit.Expiry_Date }}</td>
+                        <td>
+                            <span class="badge {% if unit.Condition == 'Fresh' %}badge-available{% else %}badge-issued{% endif %}" 
+                                  style="{% if unit.Condition == 'Expired' %}background-color: var(--danger-color); color: white;{% endif %}">
+                                {{ unit.Condition }}
+                            </span>
+                        </td>
+                        <td>
+                            <form method="POST" action="{{ url_for('staff.discard_unit') }}" style="margin:0;">
+                                <input type="hidden" name="unit_id" value="{{ unit.Blood_Unit_ID }}">
+                                <button type="submit" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; background-color: #757575; color: white; border:none;">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="6">Inventory is completely empty.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 3. Issued Logs -->
+    <div class="card">
+        <h3>Issued Log (Traceability)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Hospital Provided To</th>
+                    <th>Unit ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in issued_logs %}
+                <tr>
+                    <td>{{ log.Issue_Date }}</td>
+                    <td>{{ log.Hospital_Name }}</td>
+                    <td>#{{ log.Blood_Unit_ID }} ({{ log.Blood_Group }})</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="3">No units have been issued yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 4. Screening Tests -->
+    <div class="card">
+        <h3>Lab Screening Tests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Unit ID</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in screening_tests %}
+                <tr>
+                    <td>{{ test.Test_Date }}</td>
+                    <td>#{{ test.Blood_Unit_ID }}</td>
+                    <td>
+                        <span class="badge {% if test.Result == 'Negative' %}badge-available{% else %}badge-discarded{% endif %}">
+                            {{ test.Result }}
+                        </span>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="3">No screening tests recorded.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

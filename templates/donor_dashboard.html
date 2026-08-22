@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Donor Dashboard</h2>
+<p>Thank you for being a lifesaver, {{ session.get('user_name') }}!</p>
+
+<div class="dashboard-grid" style="margin-top: 2rem;">
+    <!-- Profile Card (Full ER Coverage) -->
+    <div class="card">
+        <h3>Your Medical Profile</h3>
+    <div class="card">
+        <h3>Your Medical Profile</h3>
+        <p style="font-size: 0.9rem; color: var(--light-text); margin-bottom: 1rem;">Update your details here.</p>
+        <form method="POST" action="{{ url_for('donor.update_profile') }}">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem;">
+                <div>
+                    <label style="font-weight: bold; font-size: 0.9rem;">Full Name:</label>
+                    <input type="text" name="name" value="{{ profile.Name }}" class="form-control" required>
+                </div>
+                <div>
+                    <label style="font-weight: bold; font-size: 0.9rem;">Blood Group:</label>
+                    <select name="blood_group" class="form-control" required>
+                        <option value="O+" {% if profile.Blood_Group == 'O+' %}selected{% endif %}>O+</option>
+                        <option value="O-" {% if profile.Blood_Group == 'O-' %}selected{% endif %}>O-</option>
+                        <option value="A+" {% if profile.Blood_Group == 'A+' %}selected{% endif %}>A+</option>
+                        <option value="A-" {% if profile.Blood_Group == 'A-' %}selected{% endif %}>A-</option>
+                        <option value="B+" {% if profile.Blood_Group == 'B+' %}selected{% endif %}>B+</option>
+                        <option value="B-" {% if profile.Blood_Group == 'B-' %}selected{% endif %}>B-</option>
+                        <option value="AB+" {% if profile.Blood_Group == 'AB+' %}selected{% endif %}>AB+</option>
+                        <option value="AB-" {% if profile.Blood_Group == 'AB-' %}selected{% endif %}>AB-</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-weight: bold; font-size: 0.9rem;">Gender:</label>
+                    <select name="gender" class="form-control">
+                        <option value="Male" {% if profile.Gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if profile.Gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if profile.Gender == 'Other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-weight: bold; font-size: 0.9rem;">Date of Birth:</label>
+                    <input type="date" name="dob" value="{{ profile.Date_of_Birth }}" class="form-control">
+                </div>
+                <div style="grid-column: span 2;">
+                    <label style="font-weight: bold; font-size: 0.9rem;">Phone Number:</label>
+                    <input type="text" name="phone" value="{{ profile.Phone }}" class="form-control" required>
+                </div>
+            </div>
+            
+            <p style="margin-bottom: 0.5rem;">
+                <strong>Status:</strong> 
+                <span class="badge {% if profile.Status == 'Active' %}badge-available{% else %}badge-pending{% endif %}">
+                    {{ profile.Status }}
+                </span>
+                <strong style="margin-left: 1rem;">Last Donation:</strong> {{ profile.Last_Donation_Date if profile.Last_Donation_Date else 'Never' }}
+            </p>
+
+            <button type="submit" class="btn" style="background-color: #607d8b; color: white; width: 100%;">Save Changes</button>
+        </form>
+        
+        <div style="margin-top: 1rem; padding: 1rem; background: #e8f5e9; border-radius: 4px; border: 1px solid #c8e6c9;">
+            <strong style="color: var(--success-color);">You are eligible to donate!</strong>
+        </div>
+    </div>
+    
+    <!-- Donate Blood Form -->
+    <div class="card">
+        <h3>Donate Blood</h3>
+        <p style="font-size: 0.9rem; color: var(--light-text); margin-bottom: 1rem;">Record a new donation today to help those in need.</p>
+        <form method="POST" action="{{ url_for('donor.donate') }}">
+            <div class="form-group">
+                <label for="blood_group_display">Blood Group:</label>
+                <input type="text" id="blood_group_display" class="form-control" value="{{ profile.Blood_Group }}" readonly style="background-color: #f5f5f5;">
+            </div>
+            
+            <div class="form-group" style="margin-top: 1rem;">
+                <label for="age">Age (must be 18+):</label>
+                <input type="number" name="age" id="age" class="form-control" min="18" required>
+            </div>
+            
+            <div class="form-group" style="margin-top: 1rem;">
+                <label for="last_donated">Last Donated Date:</label>
+                <input type="date" name="last_donated" id="last_donated" class="form-control" value="{{ profile.Last_Donation_Date if profile.Last_Donation_Date else '' }}" required>
+            </div>
+            
+            <div class="form-group" style="margin-top: 1rem;">
+                <label for="component_type">Component Type:</label>
+                <select name="component_type" id="component_type" class="form-control" required>
+                    <option value="Whole Blood">Whole Blood (56 days gap)</option>
+                    <option value="Platelets">Platelets (7 days gap)</option>
+                    <option value="Plasma">Plasma (28 days gap)</option>
+                    <option value="Double Red Cells">Double Red Cells (112 days gap)</option>
+                </select>
+            </div>
+            
+            <div class="form-group" style="margin-top: 1rem;">
+                <label for="qty">Quantity (ml):</label>
+                <input type="number" name="qty" id="qty" class="form-control" value="450" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Submit Donation</button>
+        </form>
+    </div>
+
+    <!-- Smart Match (Find Nearest Urgent Request) -->
+    <div class="card" style="grid-column: span 2; border: 1px solid var(--danger-color);">
+        <h3 style="color: var(--danger-color);">🚨 Urgent Requirements for {{ profile.Blood_Group }}</h3>
+        <p style="margin-bottom: 1rem; color: var(--light-text); font-size: 0.9rem;">
+            This list is dynamically ranked based on hospitals that currently have pending requests for your specific blood type.
+        </p>
+        
+        {% if urgent_needs %}
+            <table style="border: none;">
+                <thead>
+                    <tr style="background-color: #ffebee;">
+                        <th>Rank</th>
+                        <th>Hospital Name</th>
+                        <th>Address</th>
+                        <th>Units Needed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for need in urgent_needs %}
+                    <tr>
+                        <td><strong>#{{ loop.index }}</strong></td>
+                        <td>{{ need.Hospital_Name }} 
+                            {% if need.Urgency_Level == 3 %}<span class="badge badge-discarded">EMERGENCY</span>{% endif %}
+                        </td>
+                        <td>{{ need.Address }}</td>
+                        <td><strong style="font-size: 1.2rem; color: var(--danger-color);">{{ need.Total_Needed }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div style="padding: 2rem; text-align: center; background: #f5f5f5; border-radius: 4px;">
+                <span style="font-size: 2rem;">✅</span><br>
+                <strong>No current requirement!</strong><br>
+                <span style="color: var(--light-text);">There are currently no hospitals with pending requests for {{ profile.Blood_Group }}. All needs are met!</span>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Donation History -->
+    <div class="card" style="grid-column: span 2;">
+        <h3>Donation History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Quantity (ML)</th>
+                    <th>Hemoglobin</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for donation in donations %}
+                <tr>
+                    <td>{{ donation.Donation_Date }}</td>
+                    <td>{{ donation.Quantity_ML }}</td>
+                    <td>{{ donation.Hemoglobin_Level }}</td>
+                    <td>{{ donation.Donation_Type }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="4">No previous donations found on record.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
