@@ -1,37 +1,132 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="auth-card">
-    <h2>Login to BloodBank</h2>
-    <form method="POST" action="{{ url_for('auth.login') }}">
-        <div class="form-group">
-            <label for="role_type">I am a:</label>
-            <select name="role_type" id="role_type" class="form-control" required>
-                <option value="patient">Receiver (Patient in Need)</option>
-                <option value="donor">Donor</option>
-                <option value="hospital">Hospital Representative</option>
-                <option value="staff">Staff Member</option>
-            </select>
+<div class="auth-wrapper">
+    <!-- Left Hero Section with ECG Pulse Graphic -->
+    <div>
+        <div class="hero-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>Smart Blood Distribution & Management System</span>
         </div>
+
+        <h1 class="auth-hero-title">Connecting Lifesavers with Urgent Emergency Needs.</h1>
         
-        <div class="form-group">
-            <label for="username">Email, Phone, or License No:</label>
-            <input type="text" name="username" id="username" class="form-control" required placeholder="Enter your identifier">
+        <p style="color: var(--text-muted); font-size: 1.05rem; margin-bottom: 2rem; max-width: 520px; line-height: 1.6;">
+            Seamlessly monitor real-time blood bank inventory, dispatch hospital requisitions, track lab screening results, and coordinate life-saving donations.
+        </p>
+
+        <!-- Animated SVG Heartbeat Graph -->
+        <div style="background: white; padding: 1.25rem 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--card-border); box-shadow: var(--shadow-sm); max-width: 500px; margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Live System Rhythm</span>
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--success-color); display: flex; align-items: center; gap: 0.3rem;">
+                    <span style="width: 7px; height: 7px; background: var(--success-color); border-radius: 50%; display: inline-block;"></span>
+                    DBMS Active
+                </span>
+            </div>
+            <svg class="ecg-svg" viewBox="0 0 500 80" fill="none">
+                <path class="ecg-line" d="M0 40 L120 40 L135 15 L150 65 L165 5 L180 75 L195 40 L220 40 L230 30 L240 50 L250 40 L370 40 L385 15 L400 65 L415 5 L430 75 L445 40 L500 40" stroke="#e11d48" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
         </div>
 
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" class="form-control" required>
-            <small style="color:var(--light-text); display:block; margin-top:5px; line-height:1.4;">
-                <strong>Demo Logins:</strong><br>
-                Receiver: <code>555-0301</code> / <code>pat123</code><br>
-                Donor: <code>555-0201</code> / <code>donor123</code><br>
-                Hospital: <code>LIC-10001</code> / <code>hosp123</code><br>
-                Staff: <code>alice.smith@bloodbank.com</code> / <code>admin123</code>
-            </small>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; max-width: 500px;">
+            <div style="background: white; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--card-border); box-shadow: var(--shadow-sm);">
+                <div style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem;">⚡ Instant Match</div>
+                <div style="font-size: 0.83rem; color: var(--text-muted);">Real-time inventory lookup for emergency hospital requisitions</div>
+            </div>
+            <div style="background: white; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--card-border); box-shadow: var(--shadow-sm);">
+                <div style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem;">🛡️ Traceability</div>
+                <div style="font-size: 0.83rem; color: var(--text-muted);">Full chain-of-custody tracking from donation to lab screening</div>
+            </div>
         </div>
+    </div>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Login</button>
-    </form>
+    <!-- Right Login Card -->
+    <div class="auth-card">
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.35rem; text-align: center;">Welcome Back</h2>
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.75rem;">Select your role and enter credentials to access your portal</p>
+
+        <form method="POST" action="{{ url_for('auth.login') }}" id="loginForm">
+            <div class="form-group">
+                <label style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted);">Logging in as:</label>
+                <div class="role-pills-selector">
+                    <div class="role-pill-btn selected" onclick="selectRole('patient', this)">
+                        <span>🆘</span> Receiver
+                    </div>
+                    <div class="role-pill-btn" onclick="selectRole('donor', this)">
+                        <span>🩸</span> Donor
+                    </div>
+                    <div class="role-pill-btn" onclick="selectRole('hospital', this)">
+                        <span>🏥</span> Hospital
+                    </div>
+                    <div class="role-pill-btn" onclick="selectRole('staff', this)">
+                        <span>🛡️</span> Staff
+                    </div>
+                </div>
+                <select name="role_type" id="role_type" style="display: none;" required>
+                    <option value="patient" selected>Receiver</option>
+                    <option value="donor">Donor</option>
+                    <option value="hospital">Hospital</option>
+                    <option value="staff">Staff</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="username" id="usernameLabel">Phone Number:</label>
+                <input type="text" name="username" id="username" class="form-control" required placeholder="Enter your registered identifier">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" class="form-control" required placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.75rem; padding: 0.85rem;">
+                <span>Access Portal</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+        </form>
+
+        <!-- Quick 1-Click Demo Login Selector -->
+        <div class="demo-logins-box">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
+                <span>⚡</span> 1-Click Quick Demo Credentials
+            </div>
+            <div class="demo-btn-grid">
+                <div class="demo-chip" onclick="fillDemo('patient', '555-0301', 'pat123')">
+                    <strong>Receiver</strong><br><span style="color: var(--text-muted); font-size: 0.75rem;">555-0301</span>
+                </div>
+                <div class="demo-chip" onclick="fillDemo('donor', '555-0201', 'donor123')">
+                    <strong>Donor</strong><br><span style="color: var(--text-muted); font-size: 0.75rem;">555-0201</span>
+                </div>
+                <div class="demo-chip" onclick="fillDemo('hospital', 'LIC-10001', 'hosp123')">
+                    <strong>Hospital</strong><br><span style="color: var(--text-muted); font-size: 0.75rem;">LIC-10001</span>
+                </div>
+                <div class="demo-chip" onclick="fillDemo('staff', 'alice.smith@bloodbank.com', 'admin123')">
+                    <strong>Staff Admin</strong><br><span style="color: var(--text-muted); font-size: 0.75rem;">alice.smith...</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    function selectRole(role, element) {
+        document.getElementById('role_type').value = role;
+        document.querySelectorAll('.role-pill-btn').forEach(btn => btn.classList.remove('selected'));
+        if(element) element.classList.add('selected');
+        
+        const label = document.getElementById('usernameLabel');
+        if(role === 'hospital') label.innerText = "License Number:";
+        else if(role === 'staff') label.innerText = "Work Email:";
+        else label.innerText = "Phone Number:";
+    }
+
+    function fillDemo(role, username, password) {
+        const indexMap = { 'patient': 0, 'donor': 1, 'hospital': 2, 'staff': 3 };
+        selectRole(role, document.querySelectorAll('.role-pill-btn')[indexMap[role]]);
+        document.getElementById('username').value = username;
+        document.getElementById('password').value = password;
+    }
+</script>
 {% endblock %}

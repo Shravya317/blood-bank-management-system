@@ -3,27 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} - Blood Bank Management</title>
+    <title>{{ title }} - LifePulse Blood Management System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-brand">
-            <a href="/">BloodBank DBMS</a>
+            <a href="/">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+                <span>LifePulse</span>
+                <span class="brand-tag">DBMS PORTAL</span>
+            </a>
         </div>
         <div class="nav-links">
             {% if session.get('user_id') %}
-                <span class="nav-welcome">Welcome, {{ session.get('user_name') }} ({{ session.get('role')|title }})</span>
+                <div class="user-pill">
+                    <div class="avatar-circle">
+                        {{ session.get('user_name', 'U')[0]|upper }}
+                    </div>
+                    <span>{{ session.get('user_name') }}</span>
+                    <span style="color: #cbd5e1;">•</span>
+                    <span style="color: var(--primary-color); font-weight: 700;">{{ session.get('role')|title }}</span>
+                </div>
+
                 {% if session.get('role') == 'staff' %}
-                    <a href="{{ url_for('staff.dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('staff.dashboard') }}" class="btn btn-secondary btn-sm">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Dashboard
+                    </a>
                 {% elif session.get('role') == 'donor' %}
-                    <a href="{{ url_for('donor.dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('donor.dashboard') }}" class="btn btn-secondary btn-sm">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Dashboard
+                    </a>
                 {% elif session.get('role') == 'hospital' %}
-                    <a href="{{ url_for('hospital.dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('hospital.dashboard') }}" class="btn btn-secondary btn-sm">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Dashboard
+                    </a>
+                {% elif session.get('role') == 'patient' %}
+                    <a href="{{ url_for('patient.dashboard') }}" class="btn btn-secondary btn-sm">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Dashboard
+                    </a>
                 {% endif %}
-                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline">Logout</a>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline btn-sm">Logout</a>
             {% else %}
-                <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-sm">
+                    <span>Portal Login</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
             {% endif %}
         </div>
     </nav>
@@ -33,7 +68,18 @@
             {% if messages %}
                 <div class="flash-messages">
                     {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                        <div class="alert alert-{{ category }}">
+                            <span>
+                                {% if category == 'success' %}
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                {% elif category == 'danger' %}
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                {% else %}
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                {% endif %}
+                            </span>
+                            <span>{{ message }}</span>
+                        </div>
                     {% endfor %}
                 </div>
             {% endif %}
@@ -43,5 +89,12 @@
             {% block content %}{% endblock %}
         </main>
     </div>
+
+    <footer>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 0.6rem;">
+            <span style="width: 9px; height: 9px; background: var(--success-color); border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--success-color);"></span>
+            <span>LifePulse Blood Bank Management System &bull; Live MySQL Database Connected</span>
+        </div>
+    </footer>
 </body>
 </html>

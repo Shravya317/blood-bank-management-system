@@ -1,167 +1,266 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Staff Dashboard</h2>
-<p>Welcome to the administrative portal, {{ profile.Name }} ({{ profile.Role }}).</p>
-<p style="color:var(--light-text); font-size:0.9rem;">Contact: {{ profile.Email }} | {{ profile.Phone }}</p>
+<!-- Staff Command Center Hero -->
+<div class="floating-hero">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;">
+        <div>
+            <div class="hero-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Central Administrative Command Center</span>
+            </div>
+            <h2 style="color: white; font-size: 2.2rem; margin-top: 0.2rem;">Staff Portal &mdash; {{ profile.Name }}</h2>
+            <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.25rem;">
+                Role: <strong>{{ profile.Role }}</strong> &bull; Work Email: {{ profile.Email }} | Phone: {{ profile.Phone }}
+            </p>
+        </div>
 
-<div class="dashboard-grid" style="margin-top: 2rem;">
-    
-    <!-- 1. Pending Requests -->
-    <div class="card" style="grid-column: span 2;">
-        <h3>Pending Hospital Requests</h3>
+        <div style="display: flex; gap: 1rem;">
+            <div class="stat-pill">
+                <div>
+                    <div class="stat-value" style="color: #fef3c7;">{{ requests|length }}</div>
+                    <div class="stat-label">Pending Requisitions</div>
+                </div>
+            </div>
+            <div class="stat-pill">
+                <div>
+                    <div class="stat-value" style="color: #6ee7b7;">{{ inventory|length }}</div>
+                    <div class="stat-label">Fresh Units in Stock</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Visual Liquid Blood Stock Matrix -->
+<div class="glass-panel" style="margin-bottom: 2.2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h3 style="font-size: 1.4rem;">Real-Time Blood Stock Matrix</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Live inventory fill levels and threshold status across all blood groups.</p>
+        </div>
+        <span class="badge badge-available">
+            <span style="width: 8px; height: 8px; background: var(--success-color); border-radius: 50%; display: inline-block;"></span>
+            Live Storage Monitor
+        </span>
+    </div>
+
+    {% set blood_groups = ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'] %}
+    <div class="stock-matrix-grid">
+        {% for bg in blood_groups %}
+            {% set count = inventory_summary.get(bg, 0) %}
+            <div class="vial-card" style="{% if count == 0 %}border-color: var(--danger-border); background: #fff5f5;{% endif %}">
+                {% if count == 0 %}
+                    <span class="vial-badge vial-badge-critical">CRITICAL</span>
+                {% elif count <= 2 %}
+                    <span class="vial-badge vial-badge-low">LOW</span>
+                {% else %}
+                    <span class="vial-badge vial-badge-optimal">OPTIMAL</span>
+                {% endif %}
+                
+                <div class="blood-type-title" style="margin-top: 0.4rem;">{{ bg }}</div>
+                <div class="vial-graphic">
+                    <div class="vial-liquid" style="height: {{ [count * 16, 100]|min }}%; {% if count == 0 %}background: #cbd5e1;{% endif %}"></div>
+                </div>
+                <div style="font-weight: 800; font-size: 1.25rem; color: {% if count == 0 %}var(--danger-color){% else %}var(--text-main){% endif %};">
+                    {{ count }} <span style="font-size: 0.76rem; font-weight: 600; color: var(--text-muted);">units</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Pending Hospital Requisitions Queue -->
+<div class="glass-panel" style="margin-bottom: 2.2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h3 style="font-size: 1.4rem; color: var(--danger-color); display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Pending Hospital Requisitions Queue
+            </h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Review and fulfill emergency hospital blood unit requests in real-time.</p>
+        </div>
+        <span class="badge badge-pending">Action Required ({{ requests|length }})</span>
+    </div>
+
+    <div class="table-responsive">
         <table>
             <thead>
                 <tr>
-                    <th>Hospital</th>
+                    <th>Hospital Partner</th>
                     <th>Group</th>
-                    <th>Qty</th>
-                    <th>Component</th>
-                    <th>Priority</th>
-                    <th>Action</th>
+                    <th>Qty Required</th>
+                    <th>Component Type</th>
+                    <th>Priority Level</th>
+                    <th>Fulfillment Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for req in requests %}
                 <tr>
-                    <td>{{ req.Hospital_Name }}</td>
-                    <td><span class="badge badge-pending">{{ req.Blood_Group }}</span></td>
-                    <td>{{ req.Qty_Required }}</td>
+                    <td><strong>{{ req.Hospital_Name }}</strong></td>
+                    <td><span class="badge badge-pending" style="font-size: 0.85rem; padding: 0.25rem 0.65rem;">{{ req.Blood_Group }}</span></td>
+                    <td><strong style="font-size: 1.1rem; color: var(--text-main);">{{ req.Qty_Required }} units</strong></td>
                     <td>{{ req.Component_Type }}</td>
                     <td>
-                        <span style="color: {% if req.Priority == 'Emergency' %}var(--danger-color){% else %}var(--text-color){% endif %}; font-weight: bold;">
-                            {{ req.Priority }}
-                        </span>
+                        {% if req.Priority == 'Emergency' %}
+                            <span class="badge badge-discarded">EMERGENCY</span>
+                        {% elif req.Priority == 'High' %}
+                            <span class="badge badge-pending">HIGH</span>
+                        {% else %}
+                            <span class="badge badge-issued">ROUTINE</span>
+                        {% endif %}
                     </td>
                     <td>
                         <form method="POST" action="{{ url_for('staff.fulfill_request') }}" style="margin:0;">
                             <input type="hidden" name="request_id" value="{{ req.Request_ID }}">
                             <input type="hidden" name="blood_group" value="{{ req.Blood_Group }}">
                             <input type="hidden" name="qty" value="{{ req.Qty_Required }}">
-                            <button type="submit" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; background-color: var(--danger-color); border:none;">Fulfill</button>
+                            <button type="submit" class="btn btn-primary btn-sm" style="background: var(--danger-color); border: none; font-size: 0.8rem;">
+                                Fulfill Requisition &rarr;
+                            </button>
                         </form>
                     </td>
                 </tr>
                 {% else %}
-                <tr><td colspan="6">No pending requests at this time.</td></tr>
+                <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2.5rem;">No pending hospital requests at this time. All requisitions fulfilled!</td></tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+</div>
 
-    <!-- Inventory Management -->
-    <div style="grid-column: span 2; display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem;">
-        
-        <!-- Inventory Summary -->
-        <div class="card">
-            <h3>Inventory Summary (Fresh Units)</h3>
-            <ul style="list-style-type: none; padding: 0; line-height: 2;">
-                {% for bg, count in inventory_summary.items() %}
-                <li style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 0.5rem 0;">
-                    <strong>{{ bg }}</strong>
-                    <span class="badge badge-available" style="font-size: 1rem;">{{ count }} units</span>
-                </li>
-                {% else %}
-                <li>No fresh blood available in inventory.</li>
-                {% endfor %}
-            </ul>
-        </div>
+<!-- Tabbed Secondary Operations -->
+<div class="tabs-header">
+    <button class="tab-btn active" onclick="openTab('tab-inv-detail', this)">
+        <span>📦</span> Detailed Inventory ({{ inventory|length }})
+    </button>
+    <button class="tab-btn" onclick="openTab('tab-issued-logs', this)">
+        <span>🚚</span> Issued Traceability Logs ({{ issued_logs|length }})
+    </button>
+    <button class="tab-btn" onclick="openTab('tab-lab-tests', this)">
+        <span>🔬</span> Lab Screening Tests ({{ screening_tests|length }})
+    </button>
+</div>
 
-        <!-- Detailed Inventory List -->
-        <div class="card">
-            <h3>Available Inventory (Detailed)</h3>
-            <table style="font-size: 0.9rem;">
+<!-- Tab 1: Detailed Inventory -->
+<div id="tab-inv-detail" class="tab-content active">
+    <div class="glass-panel">
+        <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Available Blood Unit Inventory</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">Detailed list of stored units, component breakdown, expiration dates, and condition.</p>
+
+        <div class="table-responsive">
+            <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Group</th>
+                        <th>Unit ID</th>
+                        <th>Blood Group</th>
                         <th>Component</th>
                         <th>Expiry Date</th>
-                        <th>Condition</th>
+                        <th>Condition Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for unit in inventory %}
                     <tr>
-                        <td>#{{ unit.Blood_Unit_ID }}</td>
-                        <td><strong>{{ unit.Blood_Group }}</strong></td>
+                        <td><strong>#{{ unit.Blood_Unit_ID }}</strong></td>
+                        <td><strong style="color: var(--primary-color);">{{ unit.Blood_Group }}</strong></td>
                         <td>{{ unit.Component_Type }}</td>
                         <td>{{ unit.Expiry_Date }}</td>
                         <td>
-                            <span class="badge {% if unit.Condition == 'Fresh' %}badge-available{% else %}badge-issued{% endif %}" 
-                                  style="{% if unit.Condition == 'Expired' %}background-color: var(--danger-color); color: white;{% endif %}">
+                            <span class="badge {% if unit.Condition == 'Fresh' %}badge-available{% else %}badge-discarded{% endif %}">
                                 {{ unit.Condition }}
                             </span>
                         </td>
                         <td>
                             <form method="POST" action="{{ url_for('staff.discard_unit') }}" style="margin:0;">
                                 <input type="hidden" name="unit_id" value="{{ unit.Blood_Unit_ID }}">
-                                <button type="submit" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.7rem; background-color: #757575; color: white; border:none;">Remove</button>
+                                <button type="submit" class="btn btn-secondary btn-sm" style="font-size: 0.78rem;">Discard / Remove</button>
                             </form>
                         </td>
                     </tr>
                     {% else %}
-                    <tr><td colspan="6">Inventory is completely empty.</td></tr>
+                    <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">Inventory is currently empty.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-
-    <!-- 3. Issued Logs -->
-    <div class="card">
-        <h3>Issued Log (Traceability)</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Hospital Provided To</th>
-                    <th>Unit ID</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for log in issued_logs %}
-                <tr>
-                    <td>{{ log.Issue_Date }}</td>
-                    <td>{{ log.Hospital_Name }}</td>
-                    <td>#{{ log.Blood_Unit_ID }} ({{ log.Blood_Group }})</td>
-                </tr>
-                {% else %}
-                <tr><td colspan="3">No units have been issued yet.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <!-- 4. Screening Tests -->
-    <div class="card">
-        <h3>Lab Screening Tests</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Unit ID</th>
-                    <th>Result</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for test in screening_tests %}
-                <tr>
-                    <td>{{ test.Test_Date }}</td>
-                    <td>#{{ test.Blood_Unit_ID }}</td>
-                    <td>
-                        <span class="badge {% if test.Result == 'Negative' %}badge-available{% else %}badge-discarded{% endif %}">
-                            {{ test.Result }}
-                        </span>
-                    </td>
-                </tr>
-                {% else %}
-                <tr><td colspan="3">No screening tests recorded.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
 </div>
+
+<!-- Tab 2: Issued Logs -->
+<div id="tab-issued-logs" class="tab-content">
+    <div class="glass-panel">
+        <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Issued Traceability Logs</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">Chain of custody record of all dispatched blood units.</p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Issue Date</th>
+                        <th>Hospital Recipient</th>
+                        <th>Dispatched Unit Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in issued_logs %}
+                    <tr>
+                        <td>{{ log.Issue_Date }}</td>
+                        <td><strong>{{ log.Hospital_Name }}</strong></td>
+                        <td>#{{ log.Blood_Unit_ID }} ({{ log.Blood_Group }} &bull; {{ log.Component_Type }})</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="3" style="text-align: center; color: var(--text-muted); padding: 2rem;">No blood units have been issued yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Tab 3: Lab Screening Tests -->
+<div id="tab-lab-tests" class="tab-content">
+    <div class="glass-panel">
+        <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Lab Screening Tests</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">Safety screening results for infectious disease markers.</p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Date</th>
+                        <th>Blood Unit ID</th>
+                        <th>Screening Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for test in screening_tests %}
+                    <tr>
+                        <td>{{ test.Test_Date }}</td>
+                        <td>#{{ test.Blood_Unit_ID }}</td>
+                        <td>
+                            <span class="badge {% if test.Result == 'Negative' %}badge-available{% else %}badge-discarded{% endif %}">
+                                {{ test.Result }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="3" style="text-align: center; color: var(--text-muted); padding: 2rem;">No screening test records found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(tabId, btnElement) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        btnElement.classList.add('active');
+    }
+</script>
 {% endblock %}

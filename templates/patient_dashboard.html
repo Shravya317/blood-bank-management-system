@@ -1,30 +1,88 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Receiver (Patient) Dashboard</h2>
-<p>Welcome, {{ session.get('user_name') }}.</p>
+<!-- Top Header Hero Banner -->
+<div class="floating-hero" style="margin-bottom: 2.2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+        <div>
+            <div class="hero-badge">
+                <span>🆘</span> Emergency Receiver Portal
+            </div>
+            <h2 style="color: white; font-size: 2.2rem; margin-top: 0.2rem;">Welcome, {{ profile.Name }}</h2>
+            <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.25rem;">Request emergency blood units dispatched directly to your attending hospital.</p>
+        </div>
+        <div style="background: rgba(225, 29, 72, 0.2); border: 1.5px solid rgba(251, 113, 133, 0.4); padding: 0.85rem 1.75rem; border-radius: var(--radius-md); text-align: center; backdrop-filter: blur(12px);">
+            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: #fca5a5; font-weight: 700;">Blood Group Required</div>
+            <div style="font-family: 'Outfit', sans-serif; font-size: 2.6rem; font-weight: 800; color: white; line-height: 1; margin-top: 0.2rem;">{{ profile.Blood_Group }}</div>
+        </div>
+    </div>
+</div>
 
 <!-- FULFILLED ALERTS -->
 {% if fulfilled_alerts %}
-<div style="background-color: #e8f5e9; border-left: 6px solid var(--success-color); padding: 1rem; margin-top: 1rem; margin-bottom: 2rem; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    <h3 style="color: var(--success-color); margin-top: 0;">🚨 STATUS UPDATE: Request Fulfilled!</h3>
-    <p>Good news! Your recent emergency requests have been fulfilled by the blood bank and issued to your hospital.</p>
+<div class="alert alert-success" style="margin-bottom: 2.2rem; padding: 1.35rem 1.6rem;">
+    <div style="font-size: 1.8rem;">🎉</div>
+    <div>
+        <h3 style="color: var(--success-color); font-size: 1.15rem; margin-bottom: 0.2rem;">STATUS UPDATE: Emergency Request Fulfilled!</h3>
+        <p style="margin: 0; font-size: 0.93rem;">Your emergency request has been approved by the central blood bank and dispatched to your hospital.</p>
+    </div>
 </div>
 {% endif %}
 
-<div class="dashboard-grid" style="margin-top: 2rem;">
-    <!-- Profile Card (Editable) -->
-    <div class="card">
-        <h3>Your Medical Profile</h3>
-        <p style="font-size: 0.9rem; color: var(--light-text); margin-bottom: 1rem;">Update your details here.</p>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; margin-bottom: 2.2rem;">
+    <!-- Emergency Request Form -->
+    <div class="glass-panel">
+        <h3 style="font-size: 1.4rem; color: var(--danger-color); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🚨</span> Send Emergency Request
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+            Submit an urgent request to the nearest hospital partner for immediate fulfillment.
+        </p>
+
+        <form method="POST" action="{{ url_for('patient.request_blood') }}">
+            <div class="form-group">
+                <label for="hospital_id">Select Attending Hospital:</label>
+                <select name="hospital_id" id="hospital_id" class="form-control" required>
+                    <option value="" disabled selected>Choose a hospital...</option>
+                    {% for h in hospitals %}
+                        <option value="{{ h.Hospital_ID }}">
+                            {{ h.Hospital_Name }} - {{ h.Address }} 
+                            {% if h.is_nearest %}(⭐ Nearest to you){% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <input type="hidden" name="blood_group" value="{{ profile.Blood_Group }}">
+
+            <div class="form-group">
+                <label for="qty_required">Quantity Required (Units):</label>
+                <input type="number" name="qty_required" id="qty_required" class="form-control" required min="1" value="1">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">
+                <span>Send Emergency Request</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+        </form>
+    </div>
+
+    <!-- Profile Management Card -->
+    <div class="glass-panel">
+        <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Patient Medical Profile</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+            Update your contact details and medical condition notes.
+        </p>
+
         <form method="POST" action="{{ url_for('patient.update_profile') }}">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem;">
-                <div>
-                    <label style="font-weight: bold; font-size: 0.9rem;">Full Name:</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;">
+                <div class="form-group">
+                    <label>Full Name:</label>
                     <input type="text" name="name" value="{{ profile.Name }}" class="form-control" required>
                 </div>
-                <div>
-                    <label style="font-weight: bold; font-size: 0.9rem;">Blood Group:</label>
+
+                <div class="form-group">
+                    <label>Blood Group:</label>
                     <select name="blood_group" class="form-control" required>
                         <option value="O+" {% if profile.Blood_Group == 'O+' %}selected{% endif %}>O+</option>
                         <option value="O-" {% if profile.Blood_Group == 'O-' %}selected{% endif %}>O-</option>
@@ -36,67 +94,51 @@
                         <option value="AB-" {% if profile.Blood_Group == 'AB-' %}selected{% endif %}>AB-</option>
                     </select>
                 </div>
-                <div>
-                    <label style="font-weight: bold; font-size: 0.9rem;">Gender:</label>
+
+                <div class="form-group">
+                    <label>Gender:</label>
                     <select name="gender" class="form-control">
                         <option value="Male" {% if profile.Gender == 'Male' %}selected{% endif %}>Male</option>
                         <option value="Female" {% if profile.Gender == 'Female' %}selected{% endif %}>Female</option>
                         <option value="Other" {% if profile.Gender == 'Other' %}selected{% endif %}>Other</option>
                     </select>
                 </div>
-                <div>
-                    <label style="font-weight: bold; font-size: 0.9rem;">Age:</label>
+
+                <div class="form-group">
+                    <label>Age:</label>
                     <input type="number" name="age" value="{{ profile.Age }}" class="form-control">
                 </div>
-                <div style="grid-column: span 2;">
-                    <label style="font-weight: bold; font-size: 0.9rem;">Phone Number:</label>
+
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>Phone Number:</label>
                     <input type="text" name="phone" value="{{ profile.Phone }}" class="form-control" required>
                 </div>
-                <div style="grid-column: span 2;">
-                    <label style="font-weight: bold; font-size: 0.9rem;">Medical Condition (Reason for need):</label>
-                    <input type="text" name="medical_condn" value="{{ profile.Medical_Condn }}" class="form-control">
+
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>Medical Condition / Notes:</label>
+                    <input type="text" name="medical_condn" value="{{ profile.Medical_Condn }}" class="form-control" placeholder="e.g. Emergency Surgery, Anemia">
                 </div>
             </div>
-            <button type="submit" class="btn" style="background-color: #607d8b; color: white; width: 100%;">Save Changes</button>
+
+            <button type="submit" class="btn btn-secondary" style="width: 100%; margin-top: 0.6rem; padding: 0.8rem;">Save Profile Changes</button>
         </form>
     </div>
+</div>
 
-    <!-- Request Blood Form -->
-    <div class="card">
-        <h3>Emergency Blood Request</h3>
-        <p style="color:var(--light-text); font-size:0.9rem; margin-bottom:1rem;">Submit a request for blood. This will be instantly forwarded to the selected hospital.</p>
-        
-        <form method="POST" action="{{ url_for('patient.request_blood') }}">
-            <div class="form-group">
-                <label for="hospital_id">Select Hospital:</label>
-                <select name="hospital_id" id="hospital_id" class="form-control" required>
-                    <option value="" disabled selected>Choose a hospital...</option>
-                    {% for h in hospitals %}
-                        <option value="{{ h.Hospital_ID }}">
-                            {{ h.Hospital_Name }} - {{ h.Address }} 
-                            {% if h.is_nearest %}(⭐ Nearest to you){% endif %}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-            <input type="hidden" name="blood_group" value="{{ profile.Blood_Group }}">
-            <div class="form-group" style="margin-top: 1rem;">
-                <label for="qty_required">Quantity Required (Units):</label>
-                <input type="number" name="qty_required" id="qty_required" class="form-control" required min="1" value="1">
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Send Emergency Request</button>
-        </form>
-    </div>
+<!-- Past Requests Table -->
+<div class="glass-panel">
+    <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Your Emergency Requisition History</h3>
+    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+        Track real-time status of all submitted emergency blood requests.
+    </p>
 
-    <!-- Past Requests & Re-Ask -->
-    <div class="card" style="grid-column: span 2;">
-        <h3>Your Request History</h3>
+    <div class="table-responsive">
         <table>
             <thead>
                 <tr>
                     <th>Date</th>
                     <th>Hospital</th>
-                    <th>Qty</th>
+                    <th>Quantity Required</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -105,25 +147,24 @@
                 {% for req in past_requests %}
                 <tr>
                     <td>{{ req.Request_Date }}</td>
-                    <td>{{ req.Hospital_Name }}</td>
-                    <td>{{ req.Qty_Required }}</td>
+                    <td><strong>{{ req.Hospital_Name }}</strong></td>
+                    <td>{{ req.Qty_Required }} units</td>
                     <td>
                         <span class="badge {% if req.Status == 'Fulfilled' %}badge-available{% else %}badge-pending{% endif %}">
                             {{ req.Status }}
                         </span>
                     </td>
                     <td>
-                        <!-- Re-ask form -->
-                        <form method="POST" action="{{ url_for('patient.request_blood') }}" style="display:inline;">
+                        <form method="POST" action="{{ url_for('patient.request_blood') }}" style="margin: 0;">
                             <input type="hidden" name="hospital_id" value="{{ req.Hospital_ID }}">
                             <input type="hidden" name="blood_group" value="{{ req.Blood_Group }}">
                             <input type="hidden" name="qty_required" value="{{ req.Qty_Required }}">
-                            <button type="submit" class="btn btn-primary" style="padding: 0.2rem 0.5rem; font-size: 0.8rem; background-color: var(--secondary-color);">Re-Request</button>
+                            <button type="submit" class="btn btn-secondary btn-sm" style="font-size: 0.76rem;">Re-Request</button>
                         </form>
                     </td>
                 </tr>
                 {% else %}
-                <tr><td colspan="5">You have not made any requests yet.</td></tr>
+                <tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">No previous emergency requests submitted.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
