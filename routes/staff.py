@@ -156,3 +156,50 @@ def discard_unit():
     close_connection(conn, cursor)
     
     return redirect(url_for('staff.dashboard'))
+
+@staff_bp.route('/add_inventory', methods=['POST'])
+def add_inventory():
+    bg = request.form.get('blood_group')
+    component = request.form.get('component_type')
+    qty = int(request.form.get('qty', 1))
+    
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    # 1. Ensure external donor exists for this blood group
+    phone = f"EXT-{bg}"
+    cursor.execute("SELECT Donor_ID FROM Donor WHERE Phone = %s", (phone,))
+    donor = cursor.fetchone()
+    
+    if not donor:
+        cursor.execute("""
+            INSERT INTO Donor (Name, Blood_Group, Phone, Password) 
+            VALUES ('External Source', %s, %s, 'ext123')
+        """, (bg, phone))
+        donor_id = cursor.lastrowid
+    else:
+        donor_id = donor['Donor_ID']
+        
+    today = datetime.date.today().strftime('%Y-%m-%d')
+    expiry = (datetime.date.today() + datetime.timedelta(days=42)).strftime('%Y-%m-%d')
+    staff_id = session['user_id']
+    
+    for _ in range(qty):
+        # 2. Create Donation
+        cursor.execute("""
+            INSERT INTO Donation (Donation_Date, Quantity_ML, Donation_Type, Donor_ID)
+            VALUES (%s, 450, 'External Transfer', %s)
+        """, (today, donor_id))
+        donation_id = cursor.lastrowid
+        
+        # 3. Create Blood Unit
+        cursor.execute("""
+            INSERT INTO Blood_Unit (Component_Type, Expiry_Date, Collection_Type, Collection_Date, Storage_ID, Donation_ID, Staff_ID, Status)
+            VALUES (%s, %s, 'External Transfer', %s, 1, %s, %s, 'Available')
+        """, (component, expiry, today, donation_id, staff_id))
+        
+    conn.commit()
+    close_connection(conn, cursor)
+    
+    flash(f"Successfully added {qty} units of {bg} to the central inventory.", "success")
+    return redirect(url_for('staff.dashboard'))
