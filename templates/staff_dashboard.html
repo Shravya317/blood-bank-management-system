@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- Staff Command Center Hero -->
+
 <div class="floating-hero">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;">
         <div>
@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<!-- Visual Liquid Blood Stock Matrix -->
+
 <div class="glass-panel" style="margin-bottom: 2.2rem;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
         <div>
@@ -70,7 +70,7 @@
     </div>
 </div>
 
-<!-- Pending Hospital Requisitions Queue -->
+
 <div class="glass-panel" style="margin-bottom: 2.2rem;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 1rem;">
         <div>
@@ -130,7 +130,7 @@
     </div>
 </div>
 
-<!-- Tabbed Secondary Operations -->
+
 <div class="tabs-header">
     <button class="tab-btn active" onclick="openTab('tab-inv-detail', this)">
          Detailed Inventory ({{ inventory|length }})
@@ -143,7 +143,7 @@
     </button>
 </div>
 
-<!-- Tab 1: Detailed Inventory -->
+
 <div id="tab-inv-detail" class="tab-content active">
     <div class="glass-panel">
         <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Available Blood Unit Inventory</h3>
@@ -189,7 +189,7 @@
     </div>
 </div>
 
-<!-- Tab 2: Issued Logs -->
+
 <div id="tab-issued-logs" class="tab-content">
     <div class="glass-panel">
         <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Issued Traceability Logs</h3>
@@ -220,7 +220,7 @@
     </div>
 </div>
 
-<!-- Tab 3: Lab Screening Tests -->
+
 <div id="tab-lab-tests" class="tab-content">
     <div class="glass-panel">
         <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Lab Screening Tests</h3>

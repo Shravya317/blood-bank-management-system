@@ -40,10 +40,8 @@ def login():
             else:
                 cursor.execute("SELECT * FROM Donor WHERE Phone = %s", (email_or_phone,))
                 if cursor.fetchone():
-                    # Phone exists but wrong password
                     pass 
                 else:
-                    # New user! Auto-register
                     cursor.execute("INSERT INTO Donor (Name, Phone, Password, Blood_Group, Status) VALUES (%s, %s, %s, %s, %s)", 
                                    ("New Donor", email_or_phone, password, "O+", "Active"))
                     conn.commit()
@@ -77,10 +75,8 @@ def login():
             else:
                 cursor.execute("SELECT * FROM Patient WHERE Phone = %s", (email_or_phone,))
                 if cursor.fetchone():
-                    # Phone exists but wrong password
                     pass
                 else:
-                    # New user! Auto-register
                     cursor.execute("INSERT INTO Patient (Name, Phone, Password, Blood_Group) VALUES (%s, %s, %s, %s)", 
                                    ("New Receiver", email_or_phone, password, "O+"))
                     conn.commit()

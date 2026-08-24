@@ -18,18 +18,15 @@ def dashboard():
         
     cursor = conn.cursor(dictionary=True)
     
-    # 1. Get Patient Profile
     cursor.execute("SELECT * FROM Patient WHERE Patient_ID = %s", (session['user_id'],))
     profile = cursor.fetchone()
     
-    # 2. Get all hospitals for the dropdown
     cursor.execute("SELECT * FROM Hospital")
     hospitals = cursor.fetchall()
     
     if hospitals:
         hospitals[0]['is_nearest'] = True
         
-    # 3. Get Patient's past requests
     cursor.execute("""
         SELECT R.*, H.Hospital_Name 
         FROM Request R
@@ -39,11 +36,9 @@ def dashboard():
     """, (session['user_id'],))
     past_requests = cursor.fetchall()
     
-    # Check for fulfilled alerts that haven't been seen yet
     seen_alerts = session.get('seen_alerts_patient', [])
     fulfilled_alerts = [r for r in past_requests if r['Status'] == 'Fulfilled' and r['Request_ID'] not in seen_alerts]
     
-    # Mark them as seen for the next time
     if fulfilled_alerts:
         updated_seen = list(seen_alerts) + [r['Request_ID'] for r in fulfilled_alerts]
         session['seen_alerts_patient'] = updated_seen

@@ -18,11 +18,9 @@ def dashboard():
         
     cursor = conn.cursor(dictionary=True)
     
-    # Get all hospitals for the switching dropdown
     cursor.execute("SELECT Hospital_ID, Hospital_Name FROM Hospital")
     all_hospitals = cursor.fetchall()
     
-    # Get past requests made by this hospital, Approved (Fulfilled) on top
     query = """
     SELECT * FROM Request 
     WHERE Hospital_ID = %s AND Patient_ID IS NULL
@@ -31,21 +29,17 @@ def dashboard():
     cursor.execute(query, (session['user_id'],))
     requests = cursor.fetchall()
     
-    # Check for fulfilled alerts that haven't been seen yet
     seen_alerts = session.get('seen_alerts', [])
     new_fulfilled_alerts = [r for r in requests if r['Status'] == 'Fulfilled' and r['Request_ID'] not in seen_alerts]
     
-    # Mark them as seen for the next time
     if new_fulfilled_alerts:
         updated_seen = list(seen_alerts) + [r['Request_ID'] for r in new_fulfilled_alerts]
         session['seen_alerts'] = updated_seen
     
-        # Fetch Hospital Inventory
     cursor.execute("SELECT * FROM Hospital_Inventory WHERE Hospital_ID = %s", (session['user_id'],))
     inventory = cursor.fetchall()
     inv_dict = {item['Blood_Group']: item['Quantity'] for item in inventory}
 
-    # Get incoming Patient Requests
     cursor.execute("""
         SELECT R.*, P.Name as Patient_Name, P.Phone 
         FROM Request R
@@ -82,7 +76,6 @@ def switch_hospital():
         
     return redirect(url_for('hospital.dashboard'))
 
-# API endpoint for the instant match preview
 @hospital_bp.route('/api/check_match')
 def check_match():
     bg = request.args.get('blood_group')
@@ -92,8 +85,6 @@ def check_match():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     
-    # Simple match: check how many available units exist for this exact blood group
-    # Note: In real life, O- is universal, etc. For this DBMS project, we'll just do an exact match query for speed.
     query = """
     SELECT COUNT(*) as available_units 
     FROM Donor D 

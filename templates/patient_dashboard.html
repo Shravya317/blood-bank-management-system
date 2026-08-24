@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- Top Header Hero Banner -->
+
 <div class="floating-hero" style="margin-bottom: 2.2rem;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
         <div>
@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<!-- FULFILLED ALERTS MODAL POP-UP -->
+
 {% if fulfilled_alerts %}
 <div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out;">
     <div style="background: var(--card-bg); border-radius: var(--radius-lg); padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: var(--shadow-lg); border-top: 8px solid var(--success-color);">
@@ -36,7 +36,7 @@
 {% endif %}
 
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; margin-bottom: 2.2rem;">
-    <!-- Emergency Request Form -->
+    
     <div class="glass-panel">
         <h3 style="font-size: 1.4rem; color: var(--danger-color); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
              Send Emergency Request
@@ -73,7 +73,7 @@
         </form>
     </div>
 
-    <!-- Profile Management Card -->
+    
     <div class="glass-panel">
         <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Patient Medical Profile</h3>
         <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
@@ -131,7 +131,7 @@
     </div>
 </div>
 
-<!-- Past Requests Table -->
+
 <div class="glass-panel">
     <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Your Emergency Requisition History</h3>
     <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">

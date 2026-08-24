@@ -18,11 +18,9 @@ def dashboard():
         
     cursor = conn.cursor(dictionary=True)
     
-    # 1. Get profile (full ER coverage)
     cursor.execute("SELECT * FROM Staff WHERE Staff_ID = %s", (session['user_id'],))
     profile = cursor.fetchone()
 
-    # 2. Get Advanced Inventory with Expiry & Storage
     query_inv = """
     SELECT B.Blood_Unit_ID, B.Component_Type, B.Expiry_Date, B.Rh_Factor, 
            S.Location_Name, S.Temperature, S.Storage_Type,
@@ -37,7 +35,6 @@ def dashboard():
     cursor.execute(query_inv)
     inventory = cursor.fetchall()
     
-    # Compute Condition (Fresh/Expired) and build a summary
     today = datetime.date.today()
     inventory_summary = {}
     for unit in inventory:
@@ -48,7 +45,6 @@ def dashboard():
         if unit['Condition'] == 'Fresh':
             inventory_summary[bg] += 1
             
-    # 3. Get pending requests (Sorted by Priority)
     query_req = """
     SELECT * FROM Request R 
     JOIN Hospital H ON R.Hospital_ID = H.Hospital_ID 
@@ -62,7 +58,6 @@ def dashboard():
     cursor.execute(query_req)
     pending_requests = cursor.fetchall()
     
-    # 4. Get Issued Logs (tracking where blood went)
     query_issued = """
     SELECT I.Issue_Date, I.Qty_Issued, R.Blood_Group, R.Component_Type, H.Hospital_Name, B.Blood_Unit_ID
     FROM Issue I
@@ -74,7 +69,6 @@ def dashboard():
     cursor.execute(query_issued)
     issued_logs = cursor.fetchall()
     
-    # 5. Get Screening Tests
     query_tests = """
     SELECT ST.Test_ID, ST.Test_Type, ST.Test_Date, ST.Status, ST.Result, B.Blood_Unit_ID
     FROM Screening_Test ST
@@ -104,7 +98,6 @@ def fulfill_request():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     
-    # 1. Find available units matching blood group
     cursor.execute("""
         SELECT B.Blood_Unit_ID 
         FROM Blood_Unit B
@@ -123,7 +116,6 @@ def fulfill_request():
         today = datetime.date.today().strftime('%Y-%m-%d')
         staff_id = session['user_id']
         
-        # 2. Issue each unit
         for unit in available_units:
             unit_id = unit['Blood_Unit_ID']
             cursor.execute("UPDATE Blood_Unit SET Status = 'Issued' WHERE Blood_Unit_ID = %s", (unit_id,))
@@ -132,10 +124,8 @@ def fulfill_request():
                 VALUES (%s, 1, %s, %s, %s)
             """, (today, staff_id, req_id, unit_id))
             
-        # 3. Mark request as fulfilled
         cursor.execute("UPDATE Request SET Status = 'Fulfilled' WHERE Request_ID = %s", (req_id,))
         
-        # 4. Transfer stock to Hospital_Inventory
         cursor.execute("SELECT Hospital_ID FROM Request WHERE Request_ID = %s", (req_id,))
         h_data = cursor.fetchone()
         if h_data and h_data['Hospital_ID']:

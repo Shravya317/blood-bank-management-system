@@ -18,15 +18,12 @@ def dashboard():
         
     cursor = conn.cursor(dictionary=True)
     
-    # Get donor profile
     cursor.execute("SELECT * FROM Donor WHERE Donor_ID = %s", (session['user_id'],))
     profile = cursor.fetchone()
     
-    # Get past donations
     cursor.execute("SELECT * FROM Donation WHERE Donor_ID = %s ORDER BY Donation_Date DESC", (session['user_id'],))
     donations = cursor.fetchall()
     
-    # SMART MATCH: Find hospitals needing this exact blood type, ranked by highest need
     query = """
     SELECT H.Hospital_Name, H.Address, SUM(R.Qty_Required) as Total_Needed, 
            MAX(CASE WHEN R.Priority = 'Emergency' THEN 3 WHEN R.Priority = 'High' THEN 2 ELSE 1 END) as Urgency_Level
@@ -51,7 +48,6 @@ def update_profile():
     phone = request.form.get('phone')
     dob = request.form.get('dob')
     
-    # Handle empty dob
     if not dob:
         dob = None
     
@@ -98,27 +94,22 @@ def donate():
     cursor = conn.cursor(dictionary=True)
     
     try:
-        # Get donor's blood group
         cursor.execute("SELECT Blood_Group FROM Donor WHERE Donor_ID = %s", (session['user_id'],))
         donor = cursor.fetchone()
         
-        # Insert Donation
         cursor.execute("""
             INSERT INTO Donation (Donation_Date, Quantity_ML, Donation_Type, Donor_ID)
             VALUES (%s, %s, %s, %s)
         """, (today.strftime('%Y-%m-%d'), qty, component, session['user_id']))
         donation_id = cursor.lastrowid
         
-        # Get default storage (for demo purposes)
         cursor.execute("SELECT Storage_ID FROM Storage LIMIT 1")
         storage = cursor.fetchone()
         storage_id = storage['Storage_ID'] if storage else None
         
-        # Calculate expiry (rough estimates: Whole Blood 35 days, Platelets 5 days, Plasma 1 year)
         expiry_days = 35 if component == 'Whole Blood' else (5 if component == 'Platelets' else 365)
         expiry_date = (today + datetime.timedelta(days=expiry_days)).strftime('%Y-%m-%d')
         
-        # Insert Blood Unit(s) - 1 unit = 450ml
         qty_ml = int(qty)
         num_units = max(1, round(qty_ml / 450))
         
@@ -128,7 +119,6 @@ def donate():
                 VALUES (%s, %s, %s, '+', %s, %s, 'Available')
             """, (component, expiry_date, today.strftime('%Y-%m-%d'), storage_id, donation_id))
         
-        # Update Donor's last donation date
         cursor.execute("UPDATE Donor SET Last_Donation_Date = %s WHERE Donor_ID = %s", (today.strftime('%Y-%m-%d'), session['user_id']))
         
         conn.commit()
