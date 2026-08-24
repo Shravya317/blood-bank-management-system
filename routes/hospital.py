@@ -25,7 +25,7 @@ def dashboard():
     # Get past requests made by this hospital, Approved (Fulfilled) on top
     query = """
     SELECT * FROM Request 
-    WHERE Hospital_ID = %s 
+    WHERE Hospital_ID = %s AND Patient_ID IS NULL
     ORDER BY CASE WHEN Status = 'Fulfilled' THEN 1 ELSE 2 END ASC, Request_Date DESC
     """
     cursor.execute(query, (session['user_id'],))
@@ -40,13 +40,30 @@ def dashboard():
         updated_seen = list(seen_alerts) + [r['Request_ID'] for r in new_fulfilled_alerts]
         session['seen_alerts'] = updated_seen
     
+        # Fetch Hospital Inventory
+    cursor.execute("SELECT * FROM Hospital_Inventory WHERE Hospital_ID = %s", (session['user_id'],))
+    inventory = cursor.fetchall()
+    inv_dict = {item['Blood_Group']: item['Quantity'] for item in inventory}
+
+    # Get incoming Patient Requests
+    cursor.execute("""
+        SELECT R.*, P.Name as Patient_Name, P.Phone 
+        FROM Request R
+        JOIN Patient P ON R.Patient_ID = P.Patient_ID
+        WHERE R.Hospital_ID = %s AND R.Patient_ID IS NOT NULL
+        ORDER BY CASE WHEN R.Status = 'Pending' THEN 1 ELSE 2 END ASC, R.Request_Date DESC
+    """, (session['user_id'],))
+    patient_requests = cursor.fetchall()
+    
     close_connection(conn, cursor)
     
     return render_template('hospital_dashboard.html', 
                            title="Hospital Dashboard", 
                            requests=requests, 
                            all_hospitals=all_hospitals,
-                           new_fulfilled_alerts=new_fulfilled_alerts)
+                           new_fulfilled_alerts=new_fulfilled_alerts,
+                           inventory=inv_dict,
+                           patient_requests=patient_requests)
 
 @hospital_bp.route('/switch_hospital', methods=['POST'])
 def switch_hospital():
@@ -113,4 +130,28 @@ def request_blood():
     close_connection(conn, cursor)
     
     flash("Blood request submitted successfully!", "success")
+    return redirect(url_for('hospital.dashboard'))
+
+@hospital_bp.route('/fulfill_patient_request', methods=['POST'])
+def fulfill_patient_request():
+    req_id = request.form.get('request_id')
+    bg = request.form.get('blood_group')
+    qty = int(request.form.get('qty'))
+    h_id = session['user_id']
+    
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    cursor.execute("SELECT Quantity FROM Hospital_Inventory WHERE Hospital_ID = %s AND Blood_Group = %s", (h_id, bg))
+    inv = cursor.fetchone()
+    
+    if inv and inv['Quantity'] >= qty:
+        cursor.execute("UPDATE Hospital_Inventory SET Quantity = Quantity - %s WHERE Hospital_ID = %s AND Blood_Group = %s", (qty, h_id, bg))
+        cursor.execute("UPDATE Request SET Status = 'Fulfilled' WHERE Request_ID = %s", (req_id,))
+        conn.commit()
+        flash(f"Patient request fulfilled! {qty} units of {bg} deducted from your internal stock.", "success")
+    else:
+        flash(f"Insufficient internal stock! You need {qty} units of {bg}, please request more from the central blood bank first.", "danger")
+        
+    close_connection(conn, cursor)
     return redirect(url_for('hospital.dashboard'))

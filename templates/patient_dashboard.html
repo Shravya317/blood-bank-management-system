@@ -18,13 +18,19 @@
     </div>
 </div>
 
-<!-- FULFILLED ALERTS -->
+<!-- FULFILLED ALERTS MODAL POP-UP -->
 {% if fulfilled_alerts %}
-<div class="alert alert-success" style="margin-bottom: 2.2rem; padding: 1.35rem 1.6rem;">
-    <div style="font-size: 1.8rem;"></div>
-    <div>
-        <h3 style="color: var(--success-color); font-size: 1.15rem; margin-bottom: 0.2rem;">STATUS UPDATE: Emergency Request Fulfilled!</h3>
-        <p style="margin: 0; font-size: 0.93rem;">Your emergency request has been approved by the central blood bank and dispatched to your hospital.</p>
+<div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out;">
+    <div style="background: var(--card-bg); border-radius: var(--radius-lg); padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: var(--shadow-lg); border-top: 8px solid var(--success-color);">
+        <div style="font-size: 3.5rem; margin-bottom: 0.5rem;"></div>
+        <h2 style="color: var(--success-color); font-size: 1.8rem; margin-bottom: 0.75rem;">Blood Request Fulfilled!</h2>
+        <p style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 1.85rem; line-height: 1.5;">
+            Your emergency request has been <strong>Fulfilled</strong> by your hospital.<br><br>
+            <span style="font-size: 0.95rem; color: var(--text-muted);">Please proceed to the transfusion ward immediately or await further instructions from your attending physician.</span>
+        </p>
+        <button onclick="document.getElementById('fulfilledModal').style.display='none'" class="btn btn-primary" style="background: var(--success-color); border: none; padding: 0.85rem 2.25rem; font-size: 1rem; width: 100%;">
+            Acknowledge & Dismiss
+        </button>
     </div>
 </div>
 {% endif %}

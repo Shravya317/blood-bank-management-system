@@ -134,6 +134,18 @@ def fulfill_request():
             
         # 3. Mark request as fulfilled
         cursor.execute("UPDATE Request SET Status = 'Fulfilled' WHERE Request_ID = %s", (req_id,))
+        
+        # 4. Transfer stock to Hospital_Inventory
+        cursor.execute("SELECT Hospital_ID FROM Request WHERE Request_ID = %s", (req_id,))
+        h_data = cursor.fetchone()
+        if h_data and h_data['Hospital_ID']:
+            h_id = h_data['Hospital_ID']
+            cursor.execute("SELECT * FROM Hospital_Inventory WHERE Hospital_ID = %s AND Blood_Group = %s", (h_id, bg))
+            if cursor.fetchone():
+                cursor.execute("UPDATE Hospital_Inventory SET Quantity = Quantity + %s WHERE Hospital_ID = %s AND Blood_Group = %s", (qty, h_id, bg))
+            else:
+                cursor.execute("INSERT INTO Hospital_Inventory (Hospital_ID, Blood_Group, Quantity) VALUES (%s, %s, %s)", (h_id, bg, qty))
+
         conn.commit()
         flash(f"Request successfully fulfilled! {qty} units of {bg} issued.", "success")
         
