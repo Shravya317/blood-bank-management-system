@@ -146,15 +146,8 @@
 
 <div id="tab-inv-detail" class="tab-content active">
     <div class="glass-panel">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
-            <div>
-                <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Available Blood Unit Inventory</h3>
-                <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0;">Detailed list of stored units, component breakdown, expiration dates, and condition.</p>
-            </div>
-            <button onclick="document.getElementById('addUnitModal').style.display='flex'" class="btn btn-primary btn-sm" style="font-size: 0.85rem; padding: 0.65rem 1.25rem; background: var(--success-color); border: none;">
-                + Add Units Manually
-            </button>
-        </div>
+        <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Available Blood Unit Inventory</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">Detailed list of stored units, component breakdown, expiration dates, and condition.</p>
 
         <div class="table-responsive">
             <table>
@@ -181,10 +174,18 @@
                             </span>
                         </td>
                         <td>
-                            <form method="POST" action="{{ url_for('staff.discard_unit') }}" style="margin:0;">
-                                <input type="hidden" name="unit_id" value="{{ unit.Blood_Unit_ID }}">
-                                <button type="submit" class="btn btn-secondary btn-sm" style="font-size: 0.78rem;">Discard / Remove</button>
-                            </form>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <form method="POST" action="{{ url_for('staff.add_inventory') }}" style="margin:0;">
+                                    <input type="hidden" name="blood_group" value="{{ unit.Blood_Group }}">
+                                    <input type="hidden" name="component_type" value="{{ unit.Component_Type }}">
+                                    <input type="hidden" name="qty" value="1">
+                                    <button type="submit" class="btn btn-primary btn-sm" style="font-size: 0.78rem; background: var(--success-color); border: none;">+ Add</button>
+                                </form>
+                                <form method="POST" action="{{ url_for('staff.discard_unit') }}" style="margin:0;">
+                                    <input type="hidden" name="unit_id" value="{{ unit.Blood_Unit_ID }}">
+                                    <button type="submit" class="btn btn-secondary btn-sm" style="font-size: 0.78rem;">Discard / Remove</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     {% else %}

@@ -39,7 +39,9 @@ INSERT INTO Blood_Unit (Component_Type, Expiry_Date, Collection_Type, Collection
 ('Packed Red Cells', '2026-09-20', 'Voluntary', '2026-02-20', '-', 1, 2, 3, 'Available'),
 ('Whole Blood', '2026-10-01', 'Voluntary', '2026-07-01', '+', 1, 3, 3, 'Available'),
 ('Platelets', '2025-12-20', 'Voluntary', '2025-12-15', '-', 1, 4, 3, 'Discarded'), 
-('Whole Blood', '2026-11-01', 'Voluntary', '2026-08-01', '+', 1, 5, 3, 'Available');
+('Whole Blood', '2026-11-01', 'Voluntary', '2026-08-01', '+', 1, 5, 3, 'Available'),
+('Whole Blood', '2026-08-13', 'Voluntary', '2026-05-10', '-', 1, 2, 3, 'Available'),
+('Whole Blood', '2026-08-13', 'Voluntary', '2026-05-10', '+', 1, 3, 3, 'Available');
 
 -- 7. Insert Patient Data (Password: pat123)
 INSERT INTO Patient (Name, Age, Gender, Phone, Medical_Condn, Blood_Group, Staff_ID, Password) VALUES 
