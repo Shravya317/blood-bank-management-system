@@ -23,7 +23,7 @@ def init_database():
         
         cursor.execute("USE bloodbank_db")
         cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
-        tables = ['Issue', 'Request', 'Screening_Test', 'Blood_Unit', 'Storage', 'Donation', 'Hospital', 'Patient', 'Donor', 'Staff']
+        tables = ['Issue', 'Request', 'Screening_Test', 'Blood_Unit', 'Storage', 'Donation', 'Hospital_Inventory', 'Hospital', 'Patient', 'Donor', 'Staff']
         for table in tables:
             cursor.execute(f"DROP TABLE IF EXISTS {table}")
         cursor.execute("SET FOREIGN_KEY_CHECKS = 1")

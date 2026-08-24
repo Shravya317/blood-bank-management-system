@@ -68,3 +68,25 @@ INSERT INTO Request (Request_Date, Required_Date, Status, Component_Type, Qty_Re
 INSERT INTO Issue (Issue_Date, Qty_Issued, Issued_By, Request_ID, Blood_Unit_ID) VALUES 
 ('2026-08-15', 1, 1, 4, 2);
 UPDATE Blood_Unit SET Status = 'Issued' WHERE Blood_Unit_ID = 2;
+
+-- 11. Insert Hospital Inventory
+INSERT INTO Hospital_Inventory (Hospital_ID, Blood_Group, Quantity) VALUES 
+(1, 'A+', 5),
+(1, 'A-', 2),
+(1, 'B+', 0),
+(1, 'O+', 10),
+(1, 'O-', 3),
+(1, 'AB+', 2),
+
+(2, 'A+', 3),
+(2, 'A-', 0),
+(2, 'B+', 7),
+(2, 'O+', 15),
+(2, 'O-', 2),
+(2, 'AB-', 1),
+
+(3, 'A+', 0),
+(3, 'B+', 2),
+(3, 'O+', 8),
+(3, 'O-', 1),
+(3, 'AB+', 5);

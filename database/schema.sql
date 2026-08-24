@@ -122,3 +122,13 @@ CREATE TABLE Issue (
     FOREIGN KEY (Request_ID) REFERENCES Request(Request_ID),
     FOREIGN KEY (Blood_Unit_ID) REFERENCES Blood_Unit(Blood_Unit_ID)
 );
+
+-- 11. Hospital_Inventory Table
+CREATE TABLE Hospital_Inventory (
+    Inventory_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Hospital_ID INT NOT NULL,
+    Blood_Group VARCHAR(5) NOT NULL,
+    Quantity INT DEFAULT 0,
+    Last_Updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (Hospital_ID) REFERENCES Hospital(Hospital_ID)
+);
