@@ -22,7 +22,7 @@ def dashboard():
     profile = cursor.fetchone()
 
     query_inv = """
-    SELECT B.Blood_Unit_ID, B.Component_Type, B.Expiry_Date, B.Rh_Factor, 
+    SELECT B.Blood_Unit_ID, B.Component_Type, B.Expiry_Date, B.Rh_Factor, B.Collection_Type,
            S.Location_Name, S.Temperature, S.Storage_Type,
            D.Blood_Group
     FROM Blood_Unit B

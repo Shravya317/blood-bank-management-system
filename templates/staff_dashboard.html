@@ -155,7 +155,7 @@
                     <tr>
                         <th>Unit ID</th>
                         <th>Blood Group</th>
-                        <th>Component</th>
+                        <th>Component</th>\n                        <th>Collection Type</th>
                         <th>Expiry Date</th>
                         <th>Condition Status</th>
                         <th>Action</th>
@@ -166,7 +166,7 @@
                     <tr>
                         <td><strong>#{{ unit.Blood_Unit_ID }}</strong></td>
                         <td><strong style="color: var(--primary-color);">{{ unit.Blood_Group }}</strong></td>
-                        <td>{{ unit.Component_Type }}</td>
+                        <td>{{ unit.Component_Type }}</td>\n                        <td>{{ unit.Collection_Type }}</td>
                         <td>{{ unit.Expiry_Date }}</td>
                         <td>
                             <span class="badge {% if unit.Condition == 'Fresh' %}badge-available{% else %}badge-discarded{% endif %}">
@@ -238,7 +238,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Test Date</th>
+                        <th>Test Date</th>\n                        <th>Test Type</th>
                         <th>Blood Unit ID</th>
                         <th>Screening Result</th>
                     </tr>
@@ -246,7 +246,7 @@
                 <tbody>
                     {% for test in screening_tests %}
                     <tr>
-                        <td>{{ test.Test_Date }}</td>
+                        <td>{{ test.Test_Date }}</td>\n                        <td>{{ test.Test_Type }}</td>
                         <td>#{{ test.Blood_Unit_ID }}</td>
                         <td>
                             <span class="badge {% if test.Result == 'Negative' %}badge-available{% else %}badge-discarded{% endif %}">
