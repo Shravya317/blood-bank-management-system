@@ -37,6 +37,23 @@ def login():
                 session['role'] = 'donor'
                 close_connection(conn, cursor)
                 return redirect(url_for('donor.dashboard'))
+            else:
+                cursor.execute("SELECT * FROM Donor WHERE Phone = %s", (email_or_phone,))
+                if cursor.fetchone():
+                    # Phone exists but wrong password
+                    pass 
+                else:
+                    # New user! Auto-register
+                    cursor.execute("INSERT INTO Donor (Name, Phone, Password, Blood_Group, Status) VALUES (%s, %s, %s, %s, %s)", 
+                                   ("New Donor", email_or_phone, password, "O+", "Active"))
+                    conn.commit()
+                    session['user_id'] = cursor.lastrowid
+                    session['user_name'] = "New Donor"
+                    session['role'] = 'donor'
+                    session['is_new_user'] = True
+                    close_connection(conn, cursor)
+                    flash("Welcome! Your account has been created. Please update your Medical Profile.", "success")
+                    return redirect(url_for('donor.dashboard'))
                 
         elif role_type == 'hospital':
             cursor.execute("SELECT * FROM Hospital WHERE License_No = %s AND Password = %s", (email_or_phone, password))
@@ -57,6 +74,23 @@ def login():
                 session['role'] = 'patient'
                 close_connection(conn, cursor)
                 return redirect(url_for('patient.dashboard'))
+            else:
+                cursor.execute("SELECT * FROM Patient WHERE Phone = %s", (email_or_phone,))
+                if cursor.fetchone():
+                    # Phone exists but wrong password
+                    pass
+                else:
+                    # New user! Auto-register
+                    cursor.execute("INSERT INTO Patient (Name, Phone, Password, Blood_Group) VALUES (%s, %s, %s, %s)", 
+                                   ("New Receiver", email_or_phone, password, "O+"))
+                    conn.commit()
+                    session['user_id'] = cursor.lastrowid
+                    session['user_name'] = "New Receiver"
+                    session['role'] = 'patient'
+                    session['is_new_user'] = True
+                    close_connection(conn, cursor)
+                    flash("Welcome! Your account has been created. Please update your Medical Profile.", "success")
+                    return redirect(url_for('patient.dashboard'))
 
         close_connection(conn, cursor)
         flash("Invalid credentials or incorrect role selected.", "danger")
