@@ -49,7 +49,7 @@
     <div class="stock-matrix-grid">
         {% for bg in blood_groups %}
             {% set count = inventory_summary.get(bg, 0) %}
-            <div class="vial-card" style="{% if count == 0 %}border-color: var(--danger-border); background: #fff5f5;{% endif %}">
+            <div class="vial-card" style="{% if count == 0 %}border-color: var(--danger-border); background: rgba(225, 29, 72, 0.1);{% endif %}">
                 {% if count == 0 %}
                     <span class="vial-badge vial-badge-critical">CRITICAL</span>
                 {% elif count <= 2 %}

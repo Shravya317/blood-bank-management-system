@@ -17,7 +17,7 @@
             <label for="hospital_id" style="font-size: 0.78rem; color: #cbd5e1; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">
                 Switch Hospital View:
             </label>
-            <select name="hospital_id" id="hospital_id" class="form-control" style="background: white; font-weight: 700; padding: 0.5rem 0.85rem; font-size: 0.88rem;" onchange="this.form.submit()">
+            <select name="hospital_id" id="hospital_id" class="form-control" style="font-weight: 700; padding: 0.5rem 0.85rem; font-size: 0.88rem;" onchange="this.form.submit()">
                 {% for h in all_hospitals %}
                     <option value="{{ h.Hospital_ID }}" {% if h.Hospital_ID|string == session.get('user_id')|string %}selected{% endif %}>
                         {{ h.Hospital_Name }}
@@ -31,11 +31,12 @@
 <!-- FULFILLED ALERTS MODAL POP-UP -->
 {% if new_fulfilled_alerts %}
 <div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out;">
-    <div style="background: white; border-radius: var(--radius-lg); padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: var(--shadow-lg); border-top: 8px solid var(--success-color);">
+    <div style="background: var(--card-bg); border-radius: var(--radius-lg); padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: var(--shadow-lg); border-top: 8px solid var(--success-color);">
         <div style="font-size: 3.5rem; margin-bottom: 0.5rem;"></div>
         <h2 style="color: var(--success-color); font-size: 1.8rem; margin-bottom: 0.75rem;">Blood Requisition Approved!</h2>
         <p style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 1.85rem; line-height: 1.5;">
-            Your recent blood request has been <strong>Fulfilled</strong> by the staff and dispatched for immediate delivery to <strong>{{ session.get('user_name') }}</strong>.
+            Your recent blood request has been <strong>Fulfilled</strong> by the staff and dispatched for immediate delivery to <strong>{{ session.get('user_name') }}</strong>.<br><br>
+            <span style="font-size: 0.95rem; color: var(--text-muted);">Please prepare the receiving ward for the incoming shipment and ensure all necessary documentation is ready upon arrival.</span>
         </p>
         <button onclick="document.getElementById('fulfilledModal').style.display='none'" class="btn btn-primary" style="background: var(--success-color); border: none; padding: 0.85rem 2.25rem; font-size: 1rem; width: 100%;">
             Acknowledge & Dismiss
