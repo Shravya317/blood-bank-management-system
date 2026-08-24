@@ -6,7 +6,7 @@
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
         <div>
             <div class="hero-badge">
-                <span>🏥</span> Hospital Partner Portal
+                 Hospital Partner Portal
             </div>
             <h2 style="color: white; font-size: 2.2rem; margin-top: 0.2rem;">{{ session.get('user_name') }}</h2>
             <p style="color: #94a3b8; font-size: 0.92rem; margin-top: 0.25rem;">Submit blood inventory requisitions & track fulfillment status in real-time.</p>
@@ -32,7 +32,7 @@
 {% if new_fulfilled_alerts %}
 <div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out;">
     <div style="background: white; border-radius: var(--radius-lg); padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: var(--shadow-lg); border-top: 8px solid var(--success-color);">
-        <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎉</div>
+        <div style="font-size: 3.5rem; margin-bottom: 0.5rem;"></div>
         <h2 style="color: var(--success-color); font-size: 1.8rem; margin-bottom: 0.75rem;">Blood Requisition Approved!</h2>
         <p style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 1.85rem; line-height: 1.5;">
             Your recent blood request has been <strong>Fulfilled</strong> by the staff and dispatched for immediate delivery to <strong>{{ session.get('user_name') }}</strong>.
@@ -172,7 +172,7 @@
         
         previewDiv.style.display = 'block';
         textSpan.innerHTML = 'Querying live inventory database...';
-        iconSpan.innerHTML = '🔄';
+        iconSpan.innerHTML = '';
         previewDiv.style.background = '#f0f9ff';
         previewDiv.style.borderColor = '#bae6fd';
 
@@ -181,12 +181,12 @@
                 .then(response => response.json())
                 .then(data => {
                     if(data.count > 0) {
-                        iconSpan.innerHTML = '✅';
+                        iconSpan.innerHTML = '';
                         textSpan.innerHTML = `<strong style="color: var(--success-color);">${data.count} Match(es) Available!</strong> Units in stock for immediate dispatch.`;
                         previewDiv.style.background = 'var(--success-bg)';
                         previewDiv.style.borderColor = 'var(--success-border)';
                     } else {
-                        iconSpan.innerHTML = '⚠️';
+                        iconSpan.innerHTML = '️';
                         textSpan.innerHTML = `<strong style="color: var(--warning-color);">0 Available Units.</strong> Request will enter emergency donor call queue.`;
                         previewDiv.style.background = 'var(--warning-bg)';
                         previewDiv.style.borderColor = 'var(--warning-border)';
