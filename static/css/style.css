@@ -5,10 +5,10 @@
     --primary-color: #dc2626;
     --primary-hover: #b91c1c;
     --primary-dark: #881337;
-    --primary-light: #fff1f2;
+    --primary-light: rgba(225, 29, 72, 0.15);
     --primary-glow: rgba(220, 38, 38, 0.22);
     --primary-gradient: linear-gradient(135deg, #e11d48 0%, #be123c 50%, #9f1239 100%);
-    --dark-hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #4c0519 100%);
+    --dark-hero-gradient: var(--card-bg);
 
     /* Backgrounds & Ambient Surfaces */
     --body-bg: #09090b;
@@ -141,7 +141,7 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     gap: 0.65rem;
     padding: 0.45rem 1.1rem;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-full);
     font-size: 0.88rem;
@@ -281,28 +281,9 @@ h1, h2, h3, h4, h5, h6 {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.floating-hero::before {
-    content: '';
-    position: absolute;
-    top: -40%;
-    right: -10%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(225, 29, 72, 0.25) 0%, rgba(225, 29, 72, 0) 70%);
-    pointer-events: none;
-    animation: floatGlow 8s infinite alternate ease-in-out;
-}
 
-.floating-hero::after {
-    content: '';
-    position: absolute;
-    bottom: -30%;
-    left: 20%;
-    width: 350px;
-    height: 350px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0) 70%);
-    pointer-events: none;
-}
+
+
 
 .hero-badge {
     display: inline-flex;
@@ -378,7 +359,7 @@ h1, h2, h3, h4, h5, h6 {
 .tabs-header {
     display: flex;
     gap: 0.4rem;
-    background: rgba(226, 232, 240, 0.7);
+    background: rgba(0, 0, 0, 0.2);
     padding: 0.4rem;
     border-radius: var(--radius-full);
     margin-bottom: 1.75rem;
@@ -406,7 +387,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .tab-btn:hover {
     color: var(--text-main);
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .tab-btn.active {
