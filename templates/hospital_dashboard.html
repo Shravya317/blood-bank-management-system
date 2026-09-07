@@ -189,7 +189,7 @@
                 {% for bg in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
                 <div style="background: #f9f9f9; border: 1px solid #cccccc; padding: 1.5rem; border-radius: 3px; text-align: center; flex: 1; min-width: 80px;">
                     <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary-color); margin-bottom: 0.5rem;">{{ bg }}</div>
-                    <div style="font-size: 1.4rem; font-weight: 700; color: {% if inventory.get(bg, 0) == 0 %}var(--danger-color){% else %}white{% endif %};">{{ inventory.get(bg, 0) }}</div>
+                    <div style="font-size: 1.4rem; font-weight: 700; color: {% if inventory.get(bg, 0) == 0 %}var(--danger-color){% else %}#000000; font-weight: bold{% endif %};">{{ inventory.get(bg, 0) }}</div>
                     <div style="font-size: 0.75rem; color: #000000; font-weight: bold; text-transform: uppercase;">Units</div>
                 </div>
                 {% endfor %}
