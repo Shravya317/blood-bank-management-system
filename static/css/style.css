@@ -106,18 +106,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #111111;
 }
 
-.avatar-circle {
-    width: 26px;
-    height: 26px;
-    background: var(--primary-color);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.8rem;
-}
+
 
 /* BUTTONS */
 .btn {

@@ -19,9 +19,6 @@
         <div class="nav-links">
             {% if session.get('user_id') %}
                 <div class="user-pill">
-                    <div class="avatar-circle">
-                        {{ session.get('user_name', 'U')[0]|upper }}
-                    </div>
                     <span>{{ session.get('user_name') }}</span>
                     <span style="color: #999999;">|</span>
                     <span style="color: var(--primary-color); font-weight: 700;">{{ session.get('role')|title }}</span>
