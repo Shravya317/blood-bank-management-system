@@ -2,42 +2,27 @@
 
 {% block content %}
 <div class="auth-wrapper">
-    
-    <div>
-        <div class="hero-badge">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            <span>Smart Blood Distribution & Management System</span>
-        </div>
 
+    <div style="max-width: 520px;">
+        <p style="font-size: 0.85rem; color: #666666; margin-bottom: 0.5rem;">Blood Distribution & Management System</p>
         <h1 class="auth-hero-title">Connecting Lifesavers with Urgent Emergency Needs.</h1>
-        
-        <p style="color: var(--text-muted); font-size: 1.05rem; margin-bottom: 2rem; max-width: 520px; line-height: 1.6;">
-            Seamlessly monitor real-time blood bank inventory, dispatch hospital requisitions, track lab screening results, and coordinate life-saving donations.
+        <p style="color: #555555; font-size: 1rem; margin-bottom: 2rem; line-height: 1.6;">
+            Monitor real-time blood bank inventory, dispatch hospital requisitions, track lab screening results, and coordinate life-saving donations.
         </p>
-
     </div>
 
-    
     <div class="auth-card">
-        <h2 style="font-size: 1.8rem; margin-bottom: 0.35rem; text-align: center;">Welcome Back</h2>
-        <p style="text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.75rem;">Select your role and enter credentials to access your portal</p>
+        <h2 style="font-size: 1.6rem; margin-bottom: 0.35rem; text-align: center;">Welcome Back</h2>
+        <p style="text-align: center; color: #555555; font-size: 0.85rem; margin-bottom: 1.5rem;">Select your role and enter credentials to access your portal</p>
 
         <form method="POST" action="{{ url_for('auth.login') }}" id="loginForm">
             <div class="form-group">
-                <label style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted);">Logging in as:</label>
+                <label style="font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; color: #555555;">Logging in as:</label>
                 <div class="role-pills-selector">
-                    <div class="role-pill-btn selected" onclick="selectRole('patient', this)">
-                         Receiver
-                    </div>
-                    <div class="role-pill-btn" onclick="selectRole('donor', this)">
-                         Donor
-                    </div>
-                    <div class="role-pill-btn" onclick="selectRole('hospital', this)">
-                         Hospital
-                    </div>
-                    <div class="role-pill-btn" onclick="selectRole('staff', this)">
-                         Staff
-                    </div>
+                    <div class="role-pill-btn selected" onclick="selectRole('patient', this)">Receiver</div>
+                    <div class="role-pill-btn" onclick="selectRole('donor', this)">Donor</div>
+                    <div class="role-pill-btn" onclick="selectRole('hospital', this)">Hospital</div>
+                    <div class="role-pill-btn" onclick="selectRole('staff', this)">Staff</div>
                 </div>
                 <select name="role_type" id="role_type" style="display: none;" required>
                     <option value="patient" selected>Receiver</option>
@@ -54,32 +39,30 @@
 
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" name="password" id="password" class="form-control" required placeholder="••••••••">
+                <input type="password" name="password" id="password" class="form-control" required placeholder="Enter password">
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.75rem; padding: 0.85rem;">
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem; padding: 0.7rem;">
                 <span>Access Portal</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
         </form>
 
-        
         <div class="demo-logins-box">
-            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
-                 1-Click Quick Demo Credentials
+            <div style="font-size: 0.75rem; font-weight: 700; color: #333333; text-transform: uppercase; letter-spacing: 0.04em;">
+                Quick Demo Credentials
             </div>
             <div class="demo-btn-grid">
                 <div class="demo-chip" onclick="fillDemo('patient', '555-0301', 'pat123')">
-                    <strong>Receiver</strong><br><span style="color: var(--text-muted); font-size: 0.75rem;">555-0301</span>
+                    <strong>Receiver</strong><br><span style="color: #777777; font-size: 0.72rem;">555-0301</span>
                 </div>
                 <div class="demo-chip" onclick="fillDemo('donor', '555-0201', 'donor123')">
-                    <strong>Donor</strong><br><span style="color: var(--text-muted); font-size: 0.75rem;">555-0201</span>
+                    <strong>Donor</strong><br><span style="color: #777777; font-size: 0.72rem;">555-0201</span>
                 </div>
                 <div class="demo-chip" onclick="fillDemo('hospital', 'LIC-10001', 'hosp123')">
-                    <strong>Hospital</strong><br><span style="color: var(--text-muted); font-size: 0.75rem;">LIC-10001</span>
+                    <strong>Hospital</strong><br><span style="color: #777777; font-size: 0.72rem;">LIC-10001</span>
                 </div>
                 <div class="demo-chip" onclick="fillDemo('staff', 'alice.smith@bloodbank.com', 'admin123')">
-                    <strong>Staff Admin</strong><br><span style="color: var(--text-muted); font-size: 0.75rem;">alice.smith...</span>
+                    <strong>Staff Admin</strong><br><span style="color: #777777; font-size: 0.72rem;">alice.smith...</span>
                 </div>
             </div>
         </div>
@@ -91,7 +74,7 @@
         document.getElementById('role_type').value = role;
         document.querySelectorAll('.role-pill-btn').forEach(btn => btn.classList.remove('selected'));
         if(element) element.classList.add('selected');
-        
+
         const label = document.getElementById('usernameLabel');
         if(role === 'hospital') label.innerText = "License Number:";
         else if(role === 'staff') label.innerText = "Work Email:";

@@ -8,15 +8,15 @@
             <div class="hero-badge">
                  Hero Donor Portal
             </div>
-            <h2 style="color: white; font-size: 2.2rem; margin-top: 0.2rem;">Welcome Back, {{ profile.Name }}!</h2>
-            <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.25rem;">
+            <h2 style="color: #111111; font-size: 2.2rem; margin-top: 0.2rem;">Welcome Back, {{ profile.Name }}!</h2>
+            <p style="color: #666666; font-size: 0.95rem; margin-top: 0.25rem;">
                 Your generous blood donations save lives every single day.
             </p>
         </div>
 
-        <div style="background: rgba(225, 29, 72, 0.2); border: 1.5px solid rgba(251, 113, 133, 0.4); padding: 0.85rem 1.75rem; border-radius: var(--radius-md); text-align: center; backdrop-filter: blur(12px);">
-            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: #fca5a5; font-weight: 700;">Blood Group</div>
-            <div style="font-family: 'Outfit', sans-serif; font-size: 2.6rem; font-weight: 800; color: white; line-height: 1; margin-top: 0.2rem;">{{ profile.Blood_Group }}</div>
+        <div style="background: #fef2f2; border: 1.5px solid #fecaca; padding: 0.85rem 1.75rem; border-radius: 3px; text-align: center; ;">
+            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: #b91c1c; font-weight: 700;">Blood Group</div>
+            <div style="font-family: 'Times New Roman', Times, serif; font-size: 2.6rem; font-weight: 800; color: #111111; line-height: 1; margin-top: 0.2rem;">{{ profile.Blood_Group }}</div>
         </div>
     </div>
 
@@ -68,7 +68,7 @@
 <div id="tab-donate" class="tab-content active">
     <div class="glass-panel" style="max-width: 720px; margin: 0 auto;">
         <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Record a New Blood Donation</h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.6rem;">
+        <p style="color: #555555; font-size: 0.9rem; margin-bottom: 1.6rem;">
             Please ensure you meet the minimum gap days required since your last donation.
         </p>
 
@@ -121,7 +121,7 @@
         <h3 style="font-size: 1.4rem; color: var(--danger-color); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
              Urgent Hospital Requisitions for {{ profile.Blood_Group }}
         </h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        <p style="color: #555555; font-size: 0.9rem; margin-bottom: 1.5rem;">
             Hospitals actively seeking blood units matching your specific blood group.
         </p>
 
@@ -159,10 +159,10 @@
                 </table>
             </div>
         {% else %}
-            <div style="padding: 3.5rem; text-align: center; background: #f8fafc; border-radius: var(--radius-md); border: 1px dashed #cbd5e1;">
+            <div style="padding: 3.5rem; text-align: center; background: #f8fafc; border-radius: 3px; border: 1px dashed #cbd5e1;">
                 <div style="font-size: 2.8rem; margin-bottom: 0.5rem;"></div>
                 <h4 style="font-size: 1.25rem; margin-bottom: 0.25rem;">No Current Pending Demands!</h4>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                <p style="color: #555555; font-size: 0.9rem;">
                     There are currently no hospitals in urgent need for {{ profile.Blood_Group }}. Thank you for standing by!
                 </p>
             </div>
@@ -174,7 +174,7 @@
 <div id="tab-profile" class="tab-content">
     <div class="glass-panel" style="max-width: 760px; margin: 0 auto;">
         <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Update Medical Profile</h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Keep your contact details and donor profile up to date.</p>
+        <p style="color: #555555; font-size: 0.9rem; margin-bottom: 1.5rem;">Keep your contact details and donor profile up to date.</p>
 
         <form method="POST" action="{{ url_for('donor.update_profile') }}">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -222,7 +222,7 @@
 <div id="tab-history" class="tab-content">
     <div class="glass-panel">
         <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Your Donation History</h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Detailed log of all your previous blood donations.</p>
+        <p style="color: #555555; font-size: 0.9rem; margin-bottom: 1.5rem;">Detailed log of all your previous blood donations.</p>
 
         <div class="table-responsive">
             <table>
@@ -243,7 +243,7 @@
                         <td><span class="badge badge-issued">{{ donation.Donation_Type }}</span></td>
                     </tr>
                     {% else %}
-                    <tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 2rem;">No previous donation records found.</td></tr>
+                    <tr><td colspan="4" style="text-align: center; color: #555555; padding: 2rem;">No previous donation records found.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>

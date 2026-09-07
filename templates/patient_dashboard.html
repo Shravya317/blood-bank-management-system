@@ -8,27 +8,27 @@
             <div class="hero-badge">
                  Emergency Receiver Portal
             </div>
-            <h2 style="color: white; font-size: 2.2rem; margin-top: 0.2rem;">Welcome, {{ profile.Name }}</h2>
-            <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.25rem;">Request emergency blood units dispatched directly to your attending hospital.</p>
+            <h2 style="color: #111111; font-size: 2.2rem; margin-top: 0.2rem;">Welcome, {{ profile.Name }}</h2>
+            <p style="color: #666666; font-size: 0.95rem; margin-top: 0.25rem;">Request emergency blood units dispatched directly to your attending hospital.</p>
         </div>
-        <div style="background: rgba(225, 29, 72, 0.2); border: 1.5px solid rgba(251, 113, 133, 0.4); padding: 0.85rem 1.75rem; border-radius: var(--radius-md); text-align: center; backdrop-filter: blur(12px);">
-            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: #fca5a5; font-weight: 700;">Blood Group Required</div>
-            <div style="font-family: 'Outfit', sans-serif; font-size: 2.6rem; font-weight: 800; color: white; line-height: 1; margin-top: 0.2rem;">{{ profile.Blood_Group }}</div>
+        <div style="background: #fef2f2; border: 1.5px solid #fecaca; padding: 0.85rem 1.75rem; border-radius: 3px; text-align: center; ;">
+            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: #b91c1c; font-weight: 700;">Blood Group Required</div>
+            <div style="font-family: 'Times New Roman', Times, serif; font-size: 2.6rem; font-weight: 800; color: #111111; line-height: 1; margin-top: 0.2rem;">{{ profile.Blood_Group }}</div>
         </div>
     </div>
 </div>
 
 
 {% if fulfilled_alerts %}
-<div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out;">
-    <div style="background: var(--card-bg); border-radius: var(--radius-lg); padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: var(--shadow-lg); border-top: 8px solid var(--success-color);">
+<div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); ; display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out;">
+    <div style="background: #ffffff; border-radius: 4px; padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: none; border-top: 4px solid var(--primary-color);">
         <div style="font-size: 3.5rem; margin-bottom: 0.5rem;"></div>
         <h2 style="color: var(--success-color); font-size: 1.8rem; margin-bottom: 0.75rem;">Blood Request Fulfilled!</h2>
-        <p style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 1.85rem; line-height: 1.5;">
+        <p style="font-size: 1.05rem; color: #111111; margin-bottom: 1.85rem; line-height: 1.5;">
             Your emergency request has been <strong>Fulfilled</strong> by your hospital.<br><br>
-            <span style="font-size: 0.95rem; color: var(--text-muted);">Please proceed to the transfusion ward immediately or await further instructions from your attending physician.</span>
+            <span style="font-size: 0.95rem; color: #555555;">Please proceed to the transfusion ward immediately or await further instructions from your attending physician.</span>
         </p>
-        <button onclick="document.getElementById('fulfilledModal').style.display='none'" class="btn btn-primary" style="background: var(--success-color); border: none; padding: 0.85rem 2.25rem; font-size: 1rem; width: 100%;">
+        <button onclick="document.getElementById('fulfilledModal').style.display='none'" class="btn btn-primary" style="background: var(--primary-color); border: none; padding: 0.85rem 2.25rem; font-size: 1rem; width: 100%;">
             Acknowledge & Dismiss
         </button>
     </div>
@@ -41,7 +41,7 @@
         <h3 style="font-size: 1.4rem; color: var(--danger-color); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
              Send Emergency Request
         </h3>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+        <p style="color: #555555; font-size: 0.88rem; margin-bottom: 1.4rem;">
             Submit an urgent request to the nearest hospital partner for immediate fulfillment.
         </p>
 
@@ -76,7 +76,7 @@
     
     <div class="glass-panel">
         <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Patient Medical Profile</h3>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+        <p style="color: #555555; font-size: 0.88rem; margin-bottom: 1.4rem;">
             Update your contact details and medical condition notes.
         </p>
 
@@ -134,7 +134,7 @@
 
 <div class="glass-panel">
     <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Your Emergency Requisition History</h3>
-    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+    <p style="color: #555555; font-size: 0.88rem; margin-bottom: 1.4rem;">
         Track real-time status of all submitted emergency blood requests.
     </p>
 
@@ -170,7 +170,7 @@
                     </td>
                 </tr>
                 {% else %}
-                <tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">No previous emergency requests submitted.</td></tr>
+                <tr><td colspan="5" style="text-align: center; color: #555555; padding: 2rem;">No previous emergency requests submitted.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

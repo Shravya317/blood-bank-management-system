@@ -8,13 +8,13 @@
             <div class="hero-badge">
                  Hospital Partner Portal
             </div>
-            <h2 style="color: white; font-size: 2.2rem; margin-top: 0.2rem;">{{ session.get('user_name') }}</h2>
-            <p style="color: #94a3b8; font-size: 0.92rem; margin-top: 0.25rem;">Submit blood inventory requisitions & track fulfillment status in real-time.</p>
+            <h2 style="color: #111111; font-size: 2.2rem; margin-top: 0.2rem;">{{ session.get('user_name') }}</h2>
+            <p style="color: #666666; font-size: 0.92rem; margin-top: 0.25rem;">Submit blood inventory requisitions & track fulfillment status in real-time.</p>
         </div>
 
         
-        <form method="POST" action="{{ url_for('hospital.switch_hospital') }}" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 0.85rem 1.35rem; border-radius: var(--radius-md); backdrop-filter: blur(12px);">
-            <label for="hospital_id" style="font-size: 0.78rem; color: #cbd5e1; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">
+        <form method="POST" action="{{ url_for('hospital.switch_hospital') }}" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 0.85rem 1.35rem; border-radius: 3px; ;">
+            <label for="hospital_id" style="font-size: 0.78rem; color: #999999; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">
                 Switch Hospital View:
             </label>
             <select name="hospital_id" id="hospital_id" class="form-control" style="font-weight: 700; padding: 0.5rem 0.85rem; font-size: 0.88rem;" onchange="this.form.submit()">
@@ -30,15 +30,15 @@
 
 
 {% if new_fulfilled_alerts %}
-<div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out;">
-    <div style="background: var(--card-bg); border-radius: var(--radius-lg); padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: var(--shadow-lg); border-top: 8px solid var(--success-color);">
+<div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); ; display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out;">
+    <div style="background: #ffffff; border-radius: 4px; padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: none; border-top: 4px solid var(--primary-color);">
         <div style="font-size: 3.5rem; margin-bottom: 0.5rem;"></div>
         <h2 style="color: var(--success-color); font-size: 1.8rem; margin-bottom: 0.75rem;">Blood Requisition Approved!</h2>
-        <p style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 1.85rem; line-height: 1.5;">
+        <p style="font-size: 1.05rem; color: #111111; margin-bottom: 1.85rem; line-height: 1.5;">
             Your recent blood request has been <strong>Fulfilled</strong> by the staff and dispatched for immediate delivery to <strong>{{ session.get('user_name') }}</strong>.<br><br>
-            <span style="font-size: 0.95rem; color: var(--text-muted);">Please prepare the receiving ward for the incoming shipment and ensure all necessary documentation is ready upon arrival.</span>
+            <span style="font-size: 0.95rem; color: #555555;">Please prepare the receiving ward for the incoming shipment and ensure all necessary documentation is ready upon arrival.</span>
         </p>
-        <button onclick="document.getElementById('fulfilledModal').style.display='none'" class="btn btn-primary" style="background: var(--success-color); border: none; padding: 0.85rem 2.25rem; font-size: 1rem; width: 100%;">
+        <button onclick="document.getElementById('fulfilledModal').style.display='none'" class="btn btn-primary" style="background: var(--primary-color); border: none; padding: 0.85rem 2.25rem; font-size: 1rem; width: 100%;">
             Acknowledge & Dismiss
         </button>
     </div>
@@ -64,7 +64,7 @@
     
     <div class="glass-panel">
         <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Submit Blood Requisition</h3>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+        <p style="color: #555555; font-size: 0.88rem; margin-bottom: 1.4rem;">
             Request blood units directly from central inventory stock.
         </p>
 
@@ -85,7 +85,7 @@
             </div>
 
             
-            <div id="match-preview" style="display: none; padding: 1.1rem; border-radius: var(--radius-md); margin-bottom: 1.35rem; font-size: 0.9rem; border: 1px solid #e2e8f0; transition: all 0.3s ease;">
+            <div id="match-preview" style="display: none; padding: 1.1rem; border-radius: 3px; margin-bottom: 1.35rem; font-size: 0.9rem; border: 1px solid #e2e8f0; transition: all 0.3s ease;">
                 <div style="display: flex; align-items: center; gap: 0.65rem;">
                     <span id="match-icon" style="font-size: 1.3rem;">⏳</span>
                     <span id="match-text">Querying live inventory database...</span>
@@ -128,7 +128,7 @@
     
     <div class="glass-panel">
         <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Requisition History</h3>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+        <p style="color: #555555; font-size: 0.88rem; margin-bottom: 1.4rem;">
             All previous blood requests and their real-time fulfillment status.
         </p>
 
@@ -168,7 +168,7 @@
                         </td>
                     </tr>
                     {% else %}
-                    <tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">No blood requests on record.</td></tr>
+                    <tr><td colspan="5" style="text-align: center; color: #555555; padding: 2rem;">No blood requests on record.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -184,15 +184,15 @@
         
         <div class="glass-panel">
             <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">On-Site Blood Inventory</h3>
-            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+            <p style="color: #555555; font-size: 0.88rem; margin-bottom: 1.4rem;">
                 Current blood units available locally at your hospital.
             </p>
             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                 {% for bg in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
-                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: var(--radius-md); text-align: center; flex: 1; min-width: 80px;">
+                <div style="background: #f9f9f9; border: 1px solid #cccccc; padding: 1.5rem; border-radius: 3px; text-align: center; flex: 1; min-width: 80px;">
                     <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary-color); margin-bottom: 0.5rem;">{{ bg }}</div>
                     <div style="font-size: 1.4rem; font-weight: 700; color: {% if inventory.get(bg, 0) == 0 %}var(--danger-color){% else %}white{% endif %};">{{ inventory.get(bg, 0) }}</div>
-                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Units</div>
+                    <div style="font-size: 0.75rem; color: #555555; text-transform: uppercase;">Units</div>
                 </div>
                 {% endfor %}
             </div>
@@ -201,7 +201,7 @@
         
         <div class="glass-panel">
             <h3 style="font-size: 1.4rem; margin-bottom: 0.35rem;">Direct Patient Requests</h3>
-            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+            <p style="color: #555555; font-size: 0.88rem; margin-bottom: 1.4rem;">
                 Fulfill incoming requests from patients using your on-site inventory.
             </p>
 
@@ -246,7 +246,7 @@
                             </td>
                         </tr>
                         {% else %}
-                        <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">No pending patient requests.</td></tr>
+                        <tr><td colspan="6" style="text-align: center; color: #555555; padding: 2rem;">No pending patient requests.</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
