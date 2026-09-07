@@ -47,24 +47,18 @@
             </button>
         </form>
 
-        <div class="demo-logins-box">
-            <div style="font-size: 0.75rem; font-weight: 700; color: #000000; font-weight: bold; text-transform: uppercase; letter-spacing: 0.04em;">
+        
+        <div class="demo-logins-box" style="margin-top: 1.5rem; padding: 1rem; background: #f9f9f9; border: 1px solid #cccccc; border-radius: 3px;">
+            <div style="font-size: 0.75rem; font-weight: 700; color: #000000; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.8rem;">
                 Quick Demo Credentials
             </div>
-            <div class="demo-btn-grid">
-                <div class="demo-chip" onclick="fillDemo('patient', '555-0301', 'pat123')">
-                    <strong>Receiver</strong><br><span style="color: #000000; font-weight: bold; font-size: 0.72rem;">555-0301</span>
-                </div>
-                <div class="demo-chip" onclick="fillDemo('donor', '555-0201', 'donor123')">
-                    <strong>Donor</strong><br><span style="color: #000000; font-weight: bold; font-size: 0.72rem;">555-0201</span>
-                </div>
-                <div class="demo-chip" onclick="fillDemo('hospital', 'LIC-10001', 'hosp123')">
-                    <strong>Hospital</strong><br><span style="color: #000000; font-weight: bold; font-size: 0.72rem;">LIC-10001</span>
-                </div>
-                <div class="demo-chip" onclick="fillDemo('staff', 'alice.smith@bloodbank.com', 'admin123')">
-                    <strong>Staff Admin</strong><br><span style="color: #000000; font-weight: bold; font-size: 0.72rem;">alice.smith...</span>
-                </div>
-            </div>
+            <select class="form-control" onchange="handleDemoSelect(this.value)" style="width: 100%;">
+                <option value="" disabled selected>Choose your role</option>
+                <option value="patient">Receiver (555-0301)</option>
+                <option value="donor">Donor (555-0201)</option>
+                <option value="hospital">Hospital (LIC-10001)</option>
+                <option value="staff">Staff Admin (alice.smith...)</option>
+            </select>
         </div>
     </div>
 </div>
@@ -87,5 +81,13 @@
         document.getElementById('username').value = username;
         document.getElementById('password').value = password;
     }
+
+    function handleDemoSelect(val) {
+        if (val === 'patient') fillDemo('patient', '555-0301', 'pat123');
+        if (val === 'donor') fillDemo('donor', '555-0201', 'donor123');
+        if (val === 'hospital') fillDemo('hospital', 'LIC-10001', 'hosp123');
+        if (val === 'staff') fillDemo('staff', 'alice.smith@bloodbank.com', 'admin123');
+    }
 </script>
+
 {% endblock %}
