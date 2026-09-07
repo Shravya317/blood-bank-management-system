@@ -4,20 +4,20 @@
 <div class="auth-wrapper">
 
     <div style="max-width: 520px;">
-        <p style="font-size: 0.85rem; color: #666666; margin-bottom: 0.5rem;">Blood Distribution & Management System</p>
+        <p style="font-size: 0.85rem; color: #000000; font-weight: bold; margin-bottom: 0.5rem;">Blood Distribution & Management System</p>
         <h1 class="auth-hero-title">Connecting Lifesavers with Urgent Emergency Needs.</h1>
-        <p style="color: #555555; font-size: 1rem; margin-bottom: 2rem; line-height: 1.6;">
+        <p style="color: #000000; font-weight: bold; font-size: 1rem; margin-bottom: 2rem; line-height: 1.6;">
             Monitor real-time blood bank inventory, dispatch hospital requisitions, track lab screening results, and coordinate life-saving donations.
         </p>
     </div>
 
     <div class="auth-card">
         <h2 style="font-size: 1.6rem; margin-bottom: 0.35rem; text-align: center;">Welcome Back</h2>
-        <p style="text-align: center; color: #555555; font-size: 0.85rem; margin-bottom: 1.5rem;">Select your role and enter credentials to access your portal</p>
+        <p style="text-align: center; color: #000000; font-weight: bold; font-size: 0.85rem; margin-bottom: 1.5rem;">Select your role and enter credentials to access your portal</p>
 
         <form method="POST" action="{{ url_for('auth.login') }}" id="loginForm">
             <div class="form-group">
-                <label style="font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; color: #555555;">Logging in as:</label>
+                <label style="font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; color: #000000; font-weight: bold;">Logging in as:</label>
                 <div class="role-pills-selector">
                     <div class="role-pill-btn selected" onclick="selectRole('patient', this)">Receiver</div>
                     <div class="role-pill-btn" onclick="selectRole('donor', this)">Donor</div>
@@ -48,21 +48,21 @@
         </form>
 
         <div class="demo-logins-box">
-            <div style="font-size: 0.75rem; font-weight: 700; color: #333333; text-transform: uppercase; letter-spacing: 0.04em;">
+            <div style="font-size: 0.75rem; font-weight: 700; color: #000000; font-weight: bold; text-transform: uppercase; letter-spacing: 0.04em;">
                 Quick Demo Credentials
             </div>
             <div class="demo-btn-grid">
                 <div class="demo-chip" onclick="fillDemo('patient', '555-0301', 'pat123')">
-                    <strong>Receiver</strong><br><span style="color: #777777; font-size: 0.72rem;">555-0301</span>
+                    <strong>Receiver</strong><br><span style="color: #000000; font-weight: bold; font-size: 0.72rem;">555-0301</span>
                 </div>
                 <div class="demo-chip" onclick="fillDemo('donor', '555-0201', 'donor123')">
-                    <strong>Donor</strong><br><span style="color: #777777; font-size: 0.72rem;">555-0201</span>
+                    <strong>Donor</strong><br><span style="color: #000000; font-weight: bold; font-size: 0.72rem;">555-0201</span>
                 </div>
                 <div class="demo-chip" onclick="fillDemo('hospital', 'LIC-10001', 'hosp123')">
-                    <strong>Hospital</strong><br><span style="color: #777777; font-size: 0.72rem;">LIC-10001</span>
+                    <strong>Hospital</strong><br><span style="color: #000000; font-weight: bold; font-size: 0.72rem;">LIC-10001</span>
                 </div>
                 <div class="demo-chip" onclick="fillDemo('staff', 'alice.smith@bloodbank.com', 'admin123')">
-                    <strong>Staff Admin</strong><br><span style="color: #777777; font-size: 0.72rem;">alice.smith...</span>
+                    <strong>Staff Admin</strong><br><span style="color: #000000; font-weight: bold; font-size: 0.72rem;">alice.smith...</span>
                 </div>
             </div>
         </div>

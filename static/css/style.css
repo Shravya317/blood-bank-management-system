@@ -5,9 +5,9 @@
     --card-bg: #ffffff;
     --card-border: #e0e0e0;
     --text-main: #111111;
-    --text-muted: #555555;
-    --text-light: #777777;
-    --success-color: #15803d;
+    --text-muted: #000000;
+    --text-light: #000000;
+    --success-color: #000000;
     --success-bg: #f0fdf4;
     --success-border: #bbf7d0;
     --warning-color: #a16207;
@@ -239,7 +239,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.8rem;
     font-weight: 600;
     margin-bottom: 0.65rem;
-    color: #333333;
+    color: #000000; font-weight: bold;
     backdrop-filter: none;
 }
 
@@ -279,7 +279,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: #666666;
+    color: #000000; font-weight: bold;
     font-weight: 600;
     margin-top: 0.1rem;
 }
@@ -323,7 +323,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Times New Roman', Times, serif;
     font-weight: 600;
     font-size: 0.9rem;
-    color: #666666;
+    color: #000000; font-weight: bold;
     cursor: pointer;
     transition: color 0.2s ease, border-color 0.2s ease;
     white-space: nowrap;
@@ -396,7 +396,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     cursor: pointer;
     background: #ffffff;
-    color: #555555;
+    color: #000000; font-weight: bold;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
@@ -588,7 +588,7 @@ th {
     padding: 0.75rem 1rem;
     text-align: left;
     font-weight: 700;
-    color: #333333;
+    color: #000000; font-weight: bold;
     border-bottom: 1px solid #cccccc;
     font-size: 0.78rem;
     text-transform: uppercase;
@@ -638,7 +638,7 @@ footer {
     padding: 1.2rem;
     text-align: center;
     font-size: 0.82rem;
-    color: #666666;
+    color: #000000; font-weight: bold;
     border-top: 1px solid #cccccc;
     background: #ffffff;
     backdrop-filter: none;

@@ -10,7 +10,7 @@
                 <span>Central Administrative Command Center</span>
             </div>
             <h2 style="color: #111111; font-size: 2.2rem; margin-top: 0.2rem;">Staff Portal &mdash; {{ profile.Name }}</h2>
-            <p style="color: #666666; font-size: 0.95rem; margin-top: 0.25rem;">
+            <p style="color: #000000; font-weight: bold; font-size: 0.95rem; margin-top: 0.25rem;">
                 Role: <strong>{{ profile.Role }}</strong> &bull; Work Email: {{ profile.Email }} | Phone: {{ profile.Phone }}
             </p>
         </div>
@@ -37,7 +37,7 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
         <div>
             <h3 style="font-size: 1.4rem;">Real-Time Blood Stock Matrix</h3>
-            <p style="color: #555555; font-size: 0.88rem;">Live inventory fill levels and threshold status across all blood groups.</p>
+            <p style="color: #000000; font-weight: bold; font-size: 0.88rem;">Live inventory fill levels and threshold status across all blood groups.</p>
         </div>
         <span class="badge badge-available">
             <span style="width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%; display: inline-block;"></span>
@@ -63,7 +63,7 @@
                     <div class="vial-liquid" style="height: {{ [count * 16, 100]|min }}%; {% if count == 0 %}background: #cbd5e1;{% endif %}"></div>
                 </div>
                 <div style="font-weight: 800; font-size: 1.25rem; color: {% if count == 0 %}var(--danger-color){% else %}var(--text-main){% endif %};">
-                    {{ count }} <span style="font-size: 0.76rem; font-weight: 600; color: #555555;">units</span>
+                    {{ count }} <span style="font-size: 0.76rem; font-weight: 600; color: #000000; font-weight: bold;">units</span>
                 </div>
             </div>
         {% endfor %}
@@ -78,7 +78,7 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 Pending Hospital Requisitions Queue
             </h3>
-            <p style="color: #555555; font-size: 0.88rem;">Review and fulfill emergency hospital blood unit requests in real-time.</p>
+            <p style="color: #000000; font-weight: bold; font-size: 0.88rem;">Review and fulfill emergency hospital blood unit requests in real-time.</p>
         </div>
         <span class="badge badge-pending">Action Required ({{ requests|length }})</span>
     </div>
@@ -123,7 +123,7 @@
                     </td>
                 </tr>
                 {% else %}
-                <tr><td colspan="6" style="text-align: center; color: #555555; padding: 2.5rem;">No pending hospital requests at this time. All requisitions fulfilled!</td></tr>
+                <tr><td colspan="6" style="text-align: center; color: #000000; font-weight: bold; padding: 2.5rem;">No pending hospital requests at this time. All requisitions fulfilled!</td></tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -147,7 +147,7 @@
 <div id="tab-inv-detail" class="tab-content active">
     <div class="glass-panel">
         <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Available Blood Unit Inventory</h3>
-        <p style="color: #555555; font-size: 0.88rem; margin-bottom: 1.25rem;">Detailed list of stored units, component breakdown, expiration dates, and condition.</p>
+        <p style="color: #000000; font-weight: bold; font-size: 0.88rem; margin-bottom: 1.25rem;">Detailed list of stored units, component breakdown, expiration dates, and condition.</p>
 
         <div class="table-responsive">
             <table>
@@ -189,7 +189,7 @@
                         </td>
                     </tr>
                     {% else %}
-                    <tr><td colspan="6" style="text-align: center; color: #555555; padding: 2rem;">Inventory is currently empty.</td></tr>
+                    <tr><td colspan="6" style="text-align: center; color: #000000; font-weight: bold; padding: 2rem;">Inventory is currently empty.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -201,7 +201,7 @@
 <div id="tab-issued-logs" class="tab-content">
     <div class="glass-panel">
         <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Issued Traceability Logs</h3>
-        <p style="color: #555555; font-size: 0.88rem; margin-bottom: 1.25rem;">Chain of custody record of all dispatched blood units.</p>
+        <p style="color: #000000; font-weight: bold; font-size: 0.88rem; margin-bottom: 1.25rem;">Chain of custody record of all dispatched blood units.</p>
 
         <div class="table-responsive">
             <table>
@@ -220,7 +220,7 @@
                         <td>#{{ log.Blood_Unit_ID }} ({{ log.Blood_Group }} &bull; {{ log.Component_Type }})</td>
                     </tr>
                     {% else %}
-                    <tr><td colspan="3" style="text-align: center; color: #555555; padding: 2rem;">No blood units have been issued yet.</td></tr>
+                    <tr><td colspan="3" style="text-align: center; color: #000000; font-weight: bold; padding: 2rem;">No blood units have been issued yet.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -232,7 +232,7 @@
 <div id="tab-lab-tests" class="tab-content">
     <div class="glass-panel">
         <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem;">Lab Screening Tests</h3>
-        <p style="color: #555555; font-size: 0.88rem; margin-bottom: 1.25rem;">Safety screening results for infectious disease markers.</p>
+        <p style="color: #000000; font-weight: bold; font-size: 0.88rem; margin-bottom: 1.25rem;">Safety screening results for infectious disease markers.</p>
 
         <div class="table-responsive">
             <table>
@@ -255,7 +255,7 @@
                         </td>
                     </tr>
                     {% else %}
-                    <tr><td colspan="3" style="text-align: center; color: #555555; padding: 2rem;">No screening test records found.</td></tr>
+                    <tr><td colspan="3" style="text-align: center; color: #000000; font-weight: bold; padding: 2rem;">No screening test records found.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
