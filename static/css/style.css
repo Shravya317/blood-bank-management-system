@@ -10,13 +10,13 @@
     --success-color: #000000;
     --success-bg: #f0fdf4;
     --success-border: #bbf7d0;
-    --warning-color: #a16207;
+    --warning-color: #000000;
     --warning-bg: #fefce8;
     --warning-border: #fef08a;
-    --danger-color: #b91c1c;
+    --danger-color: #000000;
     --danger-bg: #fef2f2;
     --danger-border: #fecaca;
-    --info-color: #1d4ed8;
+    --info-color: #000000;
     --info-bg: #eff6ff;
     --info-border: #bfdbfe;
     --radius-sm: 2px;
@@ -499,9 +499,9 @@ h1, h2, h3, h4, h5, h6 {
     text-transform: uppercase;
 }
 
-.vial-badge-critical { background: #fecaca; color: #b91c1c; }
-.vial-badge-low { background: #fef08a; color: #a16207; }
-.vial-badge-optimal { background: #bbf7d0; color: #15803d; }
+.vial-badge-critical { background: #fecaca; color: #000000; }
+.vial-badge-low { background: #fef08a; color: #000000; }
+.vial-badge-optimal { background: #bbf7d0; color: #000000; }
 
 .vial-graphic {
     width: 44px;
