@@ -1,9 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<style>
+    body {
+        background: #ffffff url("{{ url_for('static', filename='img/hero-bg.png') }}") no-repeat left center;
+        background-size: 55%;
+        background-attachment: fixed;
+    }
+    .auth-wrapper {
+        justify-content: flex-end !important;
+        padding-right: 10%;
+    }
+    .auth-left-text {
+        display: none !important;
+    }
+</style>
+
 <div class="auth-wrapper">
 
-    <div style="max-width: 520px;">
+    <div class="auth-left-text" style="max-width: 520px;">
         <p style="font-size: 0.85rem; color: #000000; font-weight: bold; margin-bottom: 0.5rem;">Blood Distribution & Management System</p>
         <h1 class="auth-hero-title">Connecting Lifesavers with Urgent Emergency Needs.</h1>
         <p style="color: #000000; font-weight: bold; font-size: 1rem; margin-bottom: 2rem; line-height: 1.6;">

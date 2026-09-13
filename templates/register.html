@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<style>
+    body {
+        background: #ffffff url("{{ url_for('static', filename='img/hero-bg.png') }}") no-repeat left center;
+        background-size: 50%;
+        background-attachment: fixed;
+    }
+    .auth-wrapper {
+        align-items: flex-end !important;
+        padding-right: 15%;
+    }
+</style>
+
 <div class="auth-wrapper" style="flex-direction: column; align-items: center; justify-content: flex-start; margin-top: 2rem;">
 
     <div style="max-width: 420px; width: 100%;">
