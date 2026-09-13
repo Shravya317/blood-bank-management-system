@@ -10,10 +10,16 @@
     }
     .auth-wrapper {
         justify-content: flex-end !important;
-        padding-right: 10%;
+        padding-right: 2%; /* shift more to the right */
     }
     .auth-left-text {
-        display: none !important;
+        position: absolute;
+        bottom: 8%;
+        left: 5%;
+        max-width: 480px !important;
+        background: rgba(255, 255, 255, 0.7); /* slight white background just in case it overlaps the arm slightly */
+        padding: 1rem;
+        border-radius: 8px;
     }
 </style>
 
