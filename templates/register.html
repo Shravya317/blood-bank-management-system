@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-wrapper" style="flex-direction: column; align-items: center; justify-content: flex-start; margin-top: 2rem;">
+
+    <div style="max-width: 420px; width: 100%;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; text-align: center;">Register Account</h2>
+        <p style="text-align: center; color: #000000; font-weight: bold; font-size: 0.9rem; margin-bottom: 2rem;">Create a new Receiver or Donor account.</p>
+
+        <form method="POST" action="{{ url_for('auth.register') }}">
+            <div class="form-group">
+                <label style="font-size: 0.85rem; color: #000000; font-weight: bold;">Account Type:</label>
+                <div class="role-pills-selector" style="display: flex; gap: 1rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
+                    <div class="role-pill-btn selected" onclick="selectRegisterRole('patient', this)">Receiver</div>
+                    <div class="role-pill-btn" onclick="selectRegisterRole('donor', this)">Donor</div>
+                </div>
+                <select name="role_type" id="reg_role_type" style="display: none;" required>
+                    <option value="patient" selected>Receiver</option>
+                    <option value="donor">Donor</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" name="name" id="name" class="form-control" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" name="phone" id="phone" class="form-control" required placeholder="Enter your phone number">
+            </div>
+
+            <div class="form-group">
+                <label for="blood_group">Blood Group:</label>
+                <select name="blood_group" id="blood_group" class="form-control" required>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" class="form-control" required placeholder="Create a password">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.7rem;">
+                <span>Register</span>
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+            <span style="color: #000000; font-weight: bold;">Already have an account?</span> 
+            <a href="{{ url_for('auth.login') }}" style="color: var(--primary-color); font-weight: bold; text-decoration: underline;">Login here</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function selectRegisterRole(role, element) {
+        document.getElementById('reg_role_type').value = role;
+        document.querySelectorAll('.role-pill-btn').forEach(btn => btn.classList.remove('selected'));
+        if(element) element.classList.add('selected');
+    }
+</script>
+{% endblock %}

@@ -347,37 +347,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .auth-card {
-    background: #ffffff;
-    padding: 2.5rem;
-    border-radius: 4px;
-    box-shadow: none;
-    border: 1px solid #cccccc;
+    padding: 1.5rem 0;
     max-width: 420px;
     width: 100%;
 }
 
 .role-pills-selector {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
     margin-bottom: 1.4rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 .role-pill-btn {
-    padding: 0.6rem 0.5rem;
+    padding: 0.2rem 0;
     text-align: center;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    font-size: 0.9rem;
+    font-weight: bold;
     cursor: pointer;
-    background: #ffffff;
-    color: #000000; font-weight: bold;
+    background: transparent;
+    color: #000000;
     transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.3rem;
 }
 
 .role-pill-btn:hover {
@@ -386,11 +379,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .role-pill-btn.selected {
-    border-color: var(--primary-color);
-    background: #fef2f2;
     color: var(--primary-color);
-    font-weight: 700;
-    box-shadow: none;
+    border-bottom: 2px solid var(--primary-color);
 }
 
 .demo-logins-box {

@@ -37,21 +37,7 @@ def login():
                 session['role'] = 'donor'
                 close_connection(conn, cursor)
                 return redirect(url_for('donor.dashboard'))
-            else:
-                cursor.execute("SELECT * FROM Donor WHERE Phone = %s", (email_or_phone,))
-                if cursor.fetchone():
-                    pass 
-                else:
-                    cursor.execute("INSERT INTO Donor (Name, Phone, Password, Blood_Group, Status) VALUES (%s, %s, %s, %s, %s)", 
-                                   ("New Donor", email_or_phone, password, "O+", "Active"))
-                    conn.commit()
-                    session['user_id'] = cursor.lastrowid
-                    session['user_name'] = "New Donor"
-                    session['role'] = 'donor'
-                    session['is_new_user'] = True
-                    close_connection(conn, cursor)
-                    flash("Welcome! Your account has been created. Please update your Medical Profile.", "success")
-                    return redirect(url_for('donor.dashboard'))
+
                 
         elif role_type == 'hospital':
             cursor.execute("SELECT * FROM Hospital WHERE License_No = %s AND Password = %s", (email_or_phone, password))
@@ -72,27 +58,62 @@ def login():
                 session['role'] = 'patient'
                 close_connection(conn, cursor)
                 return redirect(url_for('patient.dashboard'))
-            else:
-                cursor.execute("SELECT * FROM Patient WHERE Phone = %s", (email_or_phone,))
-                if cursor.fetchone():
-                    pass
-                else:
-                    cursor.execute("INSERT INTO Patient (Name, Phone, Password, Blood_Group) VALUES (%s, %s, %s, %s)", 
-                                   ("New Receiver", email_or_phone, password, "O+"))
-                    conn.commit()
-                    session['user_id'] = cursor.lastrowid
-                    session['user_name'] = "New Receiver"
-                    session['role'] = 'patient'
-                    session['is_new_user'] = True
-                    close_connection(conn, cursor)
-                    flash("Welcome! Your account has been created. Please update your Medical Profile.", "success")
-                    return redirect(url_for('patient.dashboard'))
+
 
         close_connection(conn, cursor)
         flash("Invalid credentials or incorrect role selected.", "danger")
         return redirect(url_for('auth.login'))
 
     return render_template('login.html', title="Login")
+
+
+
+@auth_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        role_type = request.form.get('role_type')
+        name = request.form.get('name')
+        phone = request.form.get('phone')
+        blood_group = request.form.get('blood_group')
+        password = request.form.get('password')
+
+        conn = get_db_connection()
+        if not conn:
+            flash("Database connection failed.", "danger")
+            return redirect(url_for('auth.register'))
+        
+        cursor = conn.cursor(dictionary=True)
+        
+        if role_type == 'donor':
+            cursor.execute("SELECT * FROM Donor WHERE Phone = %s", (phone,))
+            if cursor.fetchone():
+                flash("Phone number already registered as Donor.", "danger")
+            else:
+                cursor.execute("INSERT INTO Donor (Name, Phone, Password, Blood_Group, Status) VALUES (%s, %s, %s, %s, %s)", 
+                               (name, phone, password, blood_group, "Active"))
+                conn.commit()
+                flash("Registration successful! Please login.", "success")
+                close_connection(conn, cursor)
+                return redirect(url_for('auth.login'))
+                
+        elif role_type == 'patient':
+            cursor.execute("SELECT * FROM Patient WHERE Phone = %s", (phone,))
+            if cursor.fetchone():
+                flash("Phone number already registered as Receiver.", "danger")
+            else:
+                cursor.execute("INSERT INTO Patient (Name, Phone, Password, Blood_Group) VALUES (%s, %s, %s, %s)", 
+                               (name, phone, password, blood_group))
+                conn.commit()
+                flash("Registration successful! Please login.", "success")
+                close_connection(conn, cursor)
+                return redirect(url_for('auth.login'))
+        else:
+            flash("Invalid role selected.", "danger")
+            
+        close_connection(conn, cursor)
+        return redirect(url_for('auth.register'))
+        
+    return render_template('register.html', title="Register")
 
 @auth_bp.route('/logout')
 def logout():
