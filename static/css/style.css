@@ -1,6 +1,6 @@
 :root {
-    --primary-color: #b91c1c;
-    --primary-hover: #991b1b;
+    --primary-color: #000000;
+    --primary-hover: #333333;
     --body-bg: #ffffff;
     --card-bg: #ffffff;
     --card-border: #e0e0e0;
@@ -364,7 +364,6 @@ h1, h2, h3, h4, h5, h6 {
 .role-pill-btn {
     padding: 0.2rem 0;
     text-align: center;
-    border-bottom: 2px solid transparent;
     font-size: 0.9rem;
     font-weight: bold;
     cursor: pointer;
@@ -374,13 +373,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .role-pill-btn:hover {
-    border-color: #999999;
-    background: #f9f9f9;
+    text-decoration: underline;
 }
 
 .role-pill-btn.selected {
-    color: var(--primary-color);
-    border-bottom: 2px solid var(--primary-color);
+    color: #000000;
+    text-decoration: underline;
+    text-decoration-color: #b91c1c;
+    text-decoration-thickness: 2px;
 }
 
 .demo-logins-box {
