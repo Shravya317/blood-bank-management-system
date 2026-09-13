@@ -126,14 +126,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-    background: #000000;
-    color: #ffffff;
+    background: #ffffff;
+    color: #000000;
     border: 1px solid #000000;
 }
 
 .btn-primary:hover {
-    background: #333333;
-    color: #ffffff;
+    background: #f9f9f9;
+    color: #000000;
 }
 
 .btn-secondary {

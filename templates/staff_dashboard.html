@@ -37,7 +37,7 @@
             <p style="color: #000000; font-weight: bold; font-size: 0.88rem;">Live inventory fill levels and threshold status across all blood groups.</p>
         </div>
         <span class="badge badge-available">
-            <span style="width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; background: #000000; border-radius: 50%; display: inline-block;"></span>
             Live Storage Monitor
         </span>
     </div>
@@ -113,7 +113,7 @@
                             <input type="hidden" name="request_id" value="{{ req.Request_ID }}">
                             <input type="hidden" name="blood_group" value="{{ req.Blood_Group }}">
                             <input type="hidden" name="qty" value="{{ req.Qty_Required }}">
-                            <button type="submit" class="btn btn-primary btn-sm" style="background: var(--primary-color); border: none; font-size: 0.8rem;">
+                            <button type="submit" class="btn btn-primary btn-sm" style="  font-size: 0.8rem;">
                                 Fulfill Requisition &rarr;
                             </button>
                         </form>
@@ -176,7 +176,7 @@
                                     <input type="hidden" name="blood_group" value="{{ unit.Blood_Group }}">
                                     <input type="hidden" name="component_type" value="{{ unit.Component_Type }}">
                                     <input type="hidden" name="qty" value="1">
-                                    <button type="submit" class="btn btn-primary btn-sm" style="font-size: 0.78rem; background: var(--primary-color); border: none;">+ Add</button>
+                                    <button type="submit" class="btn btn-primary btn-sm" style="font-size: 0.78rem;  ">+ Add</button>
                                 </form>
                                 <form method="POST" action="{{ url_for('staff.discard_unit') }}" style="margin:0;">
                                     <input type="hidden" name="unit_id" value="{{ unit.Blood_Unit_ID }}">
@@ -298,7 +298,7 @@
             </div>
             <div style="display: flex; gap: 1rem; margin-top: 2rem;">
                 <button type="button" onclick="document.getElementById('addUnitModal').style.display='none'" class="btn btn-secondary" style="flex: 1;">Cancel</button>
-                <button type="submit" class="btn btn-primary" style="flex: 1; background: var(--primary-color); border: none;">Add to Live Inventory</button>
+                <button type="submit" class="btn btn-primary" style="flex: 1;  ">Add to Live Inventory</button>
             </div>
         </form>
     </div>
