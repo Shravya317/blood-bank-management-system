@@ -71,7 +71,7 @@ def login():
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-role_type = request.form.get('role_type')
+        role_type = request.form.get('role_type')
         name = request.form.get('name')
         phone = request.form.get('phone')
         blood_group = request.form.get('blood_group')
