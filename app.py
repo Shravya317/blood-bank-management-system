@@ -17,6 +17,25 @@ def create_app():
     app.register_blueprint(hospital_bp, url_prefix='/hospital')
     app.register_blueprint(patient_bp, url_prefix='/patient')
 
+
+    from database.db import get_db_connection, close_connection
+    @app.before_request
+    def auto_expire_blood_units():
+        # Automatically scan and mark expired blood units in the database before any request
+        try:
+            conn = get_db_connection()
+            if conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    UPDATE Blood_Unit 
+                    SET Status = 'Expired' 
+                    WHERE Expiry_Date < CURDATE() AND Status = 'Available'
+                """)
+                conn.commit()
+                close_connection(conn, cursor)
+        except Exception:
+            pass
+
     @app.route('/')
     def index():
         if 'role' in session:

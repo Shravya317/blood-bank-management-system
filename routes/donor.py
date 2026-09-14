@@ -107,7 +107,12 @@ def donate():
         storage = cursor.fetchone()
         storage_id = storage['Storage_ID'] if storage else None
         
-        expiry_days = 35 if component == 'Whole Blood' else (5 if component == 'Platelets' else 365)
+        if component == 'Platelets':
+            expiry_days = 5
+        elif component in ['Whole Blood', 'Double Red Cells']:
+            expiry_days = 42
+        else:
+            expiry_days = 365
         expiry_date = (today + datetime.timedelta(days=expiry_days)).strftime('%Y-%m-%d')
         
         qty_ml = int(qty)

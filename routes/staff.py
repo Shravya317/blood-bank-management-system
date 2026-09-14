@@ -181,7 +181,13 @@ def add_inventory():
         donor_id = donor['Donor_ID']
         
     today = datetime.date.today().strftime('%Y-%m-%d')
-    expiry = (datetime.date.today() + datetime.timedelta(days=42)).strftime('%Y-%m-%d')
+    if component == 'Platelets':
+        expiry_days = 5
+    elif component in ['Whole Blood', 'Packed Red Cells', 'Double Red Cells']:
+        expiry_days = 42
+    else:
+        expiry_days = 365
+    expiry = (datetime.date.today() + datetime.timedelta(days=expiry_days)).strftime('%Y-%m-%d')
     staff_id = session['user_id']
     
     for _ in range(qty):
