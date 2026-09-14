@@ -46,7 +46,7 @@
             
             <div class="form-group">
                 <label for="dob">Date of Birth:</label>
-                <input type="date" name="dob" id="dob" class="form-control" required min="1900-01-01" max="2026-12-31" title="Please enter a valid date of birth">
+                <input type="date" name="dob" id="dob" class="form-control" required min="1900-01-01"  title="Please enter a valid date of birth">
             </div>
 
             <div class="form-group">
@@ -81,10 +81,37 @@
 </div>
 
 <script>
+    function updateDateBounds(role) {
+        const dobInput = document.getElementById('dob');
+        const today = new Date();
+        
+        if (role === 'donor') {
+            // Subtract 18 years
+            const minAgeDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+            dobInput.max = minAgeDate.toISOString().split('T')[0];
+            dobInput.title = "Donors must be at least 18 years old.";
+        } else {
+            // Max is today
+            dobInput.max = today.toISOString().split('T')[0];
+            dobInput.title = "Please enter a valid date of birth.";
+        }
+        
+        // If current value is invalid due to role switch, clear it
+        if (dobInput.value && dobInput.value > dobInput.max) {
+            dobInput.value = '';
+        }
+    }
+
     function selectRegisterRole(role, element) {
         document.getElementById('reg_role_type').value = role;
         document.querySelectorAll('.role-pill-btn').forEach(btn => btn.classList.remove('selected'));
         if(element) element.classList.add('selected');
+        
+        updateDateBounds(role);
     }
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        updateDateBounds(document.getElementById('reg_role_type').value);
+    });
 </script>
 {% endblock %}
