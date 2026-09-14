@@ -112,8 +112,8 @@
         else {
             label.innerText = "Phone Number:";
             input.type = "tel";
-            input.pattern = "^[0-9\-\+ ]{7,15}$";
-            input.title = "Please enter a valid phone number";
+            input.pattern = "^(?:\+91)?[0-9]{10}$";
+            input.title = "Please enter a valid 10-digit phone number (with or without +91)";
         }
     }
 
@@ -125,8 +125,8 @@
     }
 
     function handleDemoSelect(val) {
-        if (val === 'patient') fillDemo('patient', '555-0301', 'pat123');
-        if (val === 'donor') fillDemo('donor', '555-0201', 'donor123');
+        if (val === 'patient') fillDemo('patient', \'9876540301\', 'pat123');
+        if (val === 'donor') fillDemo('donor', \'9876540201\', 'donor123');
         if (val === 'hospital') fillDemo('hospital', 'LIC-10001', 'hosp123');
         if (val === 'staff') fillDemo('staff', 'alice.smith@bloodbank.com', 'admin123');
     }

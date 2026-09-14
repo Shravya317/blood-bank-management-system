@@ -6,16 +6,16 @@ INSERT INTO `Hospital` (`Hospital_ID`, `Hospital_Name`, `Address`, `License_No`,
 INSERT INTO `Hospital` (`Hospital_ID`, `Hospital_Name`, `Address`, `License_No`, `Password`) VALUES (3, 'County Regional Hospital', '789 Pine Rd, Southside', 'LIC-10003', 'hosp123');
 
 -- Data for Staff
-INSERT INTO `Staff` (`Staff_ID`, `Name`, `Email`, `Phone`, `Role`, `Password`) VALUES (1, 'Alice Smith', 'alice.smith@bloodbank.com', '555-0101', 'Admin', 'admin123');
-INSERT INTO `Staff` (`Staff_ID`, `Name`, `Email`, `Phone`, `Role`, `Password`) VALUES (2, 'Dr. Bob Jones', 'bob.jones@bloodbank.com', '555-0102', 'Medical Officer', 'admin123');
-INSERT INTO `Staff` (`Staff_ID`, `Name`, `Email`, `Phone`, `Role`, `Password`) VALUES (3, 'Charlie Brown', 'charlie.brown@bloodbank.com', '555-0103', 'Technician', 'admin123');
+INSERT INTO `Staff` (`Staff_ID`, `Name`, `Email`, `Phone`, `Role`, `Password`) VALUES (1, 'Alice Smith', 'alice.smith@bloodbank.com', \'9876540101\', 'Admin', 'admin123');
+INSERT INTO `Staff` (`Staff_ID`, `Name`, `Email`, `Phone`, `Role`, `Password`) VALUES (2, 'Dr. Bob Jones', 'bob.jones@bloodbank.com', \'9876540102\', 'Medical Officer', 'admin123');
+INSERT INTO `Staff` (`Staff_ID`, `Name`, `Email`, `Phone`, `Role`, `Password`) VALUES (3, 'Charlie Brown', 'charlie.brown@bloodbank.com', \'9876540103\', 'Technician', 'admin123');
 
 -- Data for Donor
-INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (1, 'John Doe', 'Male', 'O+', '2026-09-07', '1990-05-15', 'Active', '555-0201', 'donor123');
-INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (2, 'Jane Smith', 'Female', 'A-', '2026-02-20', '1985-08-22', 'Active', '555-0202', 'donor123');
-INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (3, 'Mike Johnson', 'Male', 'B+', '2026-07-01', '1992-11-30', 'Active', '555-0203', 'donor123');
-INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (4, 'Emily Davis', 'Female', 'O-', '2025-12-15', '1995-04-10', 'Active', '555-0204', 'donor123');
-INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (5, 'Sarah Wilson', 'Female', 'AB+', '2026-08-01', '1988-09-05', 'Active', '555-0205', 'donor123');
+INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (1, 'John Doe', 'Male', 'O+', '2026-09-07', '1990-05-15', 'Active', \'9876540201\', 'donor123');
+INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (2, 'Jane Smith', 'Female', 'A-', '2026-02-20', '1985-08-22', 'Active', \'9876540202\', 'donor123');
+INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (3, 'Mike Johnson', 'Male', 'B+', '2026-07-01', '1992-11-30', 'Active', \'9876540203\', 'donor123');
+INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (4, 'Emily Davis', 'Female', 'O-', '2025-12-15', '1995-04-10', 'Active', \'9876540204\', 'donor123');
+INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (5, 'Sarah Wilson', 'Female', 'AB+', '2026-08-01', '1988-09-05', 'Active', \'9876540205\', 'donor123');
 INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (6, 'External Source', NULL, 'O+', NULL, NULL, 'Active', 'EXT-O+', 'ext123');
 INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (7, 'External Source', NULL, 'O-', NULL, NULL, 'Active', 'EXT-O-', 'ext123');
 INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (8, 'External Source', NULL, 'A+', NULL, NULL, 'Active', 'EXT-A+', 'ext123');
@@ -26,9 +26,9 @@ INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation
 INSERT INTO `Donor` (`Donor_ID`, `Name`, `Gender`, `Blood_Group`, `Last_Donation_Date`, `Date_of_Birth`, `Status`, `Phone`, `Password`) VALUES (13, 'External Source', NULL, 'AB-', NULL, NULL, 'Active', 'EXT-AB-', 'ext123');
 
 -- Data for Patient
-INSERT INTO `Patient` (`Patient_ID`, `Name`, `Age`, `Gender`, `Phone`, `Medical_Condn`, `Blood_Group`, `Staff_ID`, `Password`) VALUES (1, 'Shravya', 45, 'Male', '555-0301', 'Surgery', 'O+', 2, 'pat123');
-INSERT INTO `Patient` (`Patient_ID`, `Name`, `Age`, `Gender`, `Phone`, `Medical_Condn`, `Blood_Group`, `Staff_ID`, `Password`) VALUES (2, 'Lucy Liu', 32, 'Female', '555-0302', 'Anemia', 'A-', 2, 'pat123');
-INSERT INTO `Patient` (`Patient_ID`, `Name`, `Age`, `Gender`, `Phone`, `Medical_Condn`, `Blood_Group`, `Staff_ID`, `Password`) VALUES (3, 'Bruce Wayne', 35, 'Male', '555-0303', 'Trauma', 'O+', 2, 'pat123');
+INSERT INTO `Patient` (`Patient_ID`, `Name`, `Age`, `Gender`, `Phone`, `Medical_Condn`, `Blood_Group`, `Staff_ID`, `Password`) VALUES (1, 'Shravya', 45, 'Male', \'9876540301\', 'Surgery', 'O+', 2, 'pat123');
+INSERT INTO `Patient` (`Patient_ID`, `Name`, `Age`, `Gender`, `Phone`, `Medical_Condn`, `Blood_Group`, `Staff_ID`, `Password`) VALUES (2, 'Lucy Liu', 32, 'Female', \'9876540302\', 'Anemia', 'A-', 2, 'pat123');
+INSERT INTO `Patient` (`Patient_ID`, `Name`, `Age`, `Gender`, `Phone`, `Medical_Condn`, `Blood_Group`, `Staff_ID`, `Password`) VALUES (3, 'Bruce Wayne', 35, 'Male', \'9876540303\', 'Trauma', 'O+', 2, 'pat123');
 
 -- Data for Donation
 INSERT INTO `Donation` (`Donation_ID`, `Donation_Date`, `Quantity_ML`, `Hemoglobin_Level`, `Donation_Type`, `Donor_ID`) VALUES (1, '2026-05-10', 450, '14.50', 'Whole Blood', 1);
