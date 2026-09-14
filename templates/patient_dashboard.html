@@ -82,7 +82,7 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;">
                 <div class="form-group">
                     <label>Full Name:</label>
-                    <input type="text" name="name" value="{{ profile.Name }}" class="form-control" required>
+                    <input type="text" name="name" value="{{ profile.Name }}" class="form-control" required pattern="^[A-Za-z ]+$" title="Name must contain only letters and spaces, no numbers">
                 </div>
 
                 <div class="form-group">
@@ -115,7 +115,7 @@
 
                 <div class="form-group" style="grid-column: span 2;">
                     <label>Phone Number:</label>
-                    <input type="text" name="phone" value="{{ profile.Phone }}" class="form-control" required>
+                    <input type="text" name="phone" value="{{ profile.Phone }}" class="form-control" required pattern="^[0-9\-\+ ]{7,15}$" title="Please enter a valid phone number">
                 </div>
 
                 <div class="form-group" style="grid-column: span 2;">

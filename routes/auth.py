@@ -71,11 +71,23 @@ def login():
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        role_type = request.form.get('role_type')
+role_type = request.form.get('role_type')
         name = request.form.get('name')
         phone = request.form.get('phone')
         blood_group = request.form.get('blood_group')
         password = request.form.get('password')
+        dob = request.form.get('dob') # Add dob
+        
+        # Calculate age for patient
+        age = None
+        if dob:
+            from datetime import datetime
+            try:
+                birth_date = datetime.strptime(dob, '%Y-%m-%d')
+                today = datetime.today()
+                age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+            except ValueError:
+                pass
 
         conn = get_db_connection()
         if not conn:
@@ -89,8 +101,8 @@ def register():
             if cursor.fetchone():
                 flash("Phone number already registered as Donor.", "danger")
             else:
-                cursor.execute("INSERT INTO Donor (Name, Phone, Password, Blood_Group, Status) VALUES (%s, %s, %s, %s, %s)", 
-                               (name, phone, password, blood_group, "Active"))
+                cursor.execute("INSERT INTO Donor (Name, Phone, Password, Blood_Group, Date_of_Birth, Status) VALUES (%s, %s, %s, %s, %s, %s)", 
+                               (name, phone, password, blood_group, dob, "Active"))
                 conn.commit()
                 flash("Registration successful! Please login.", "success")
                 close_connection(conn, cursor)
@@ -101,8 +113,8 @@ def register():
             if cursor.fetchone():
                 flash("Phone number already registered as Receiver.", "danger")
             else:
-                cursor.execute("INSERT INTO Patient (Name, Phone, Password, Blood_Group) VALUES (%s, %s, %s, %s)", 
-                               (name, phone, password, blood_group))
+                cursor.execute("INSERT INTO Patient (Name, Phone, Password, Blood_Group, Age) VALUES (%s, %s, %s, %s, %s)", 
+                               (name, phone, password, blood_group, age))
                 conn.commit()
                 flash("Registration successful! Please login.", "success")
                 close_connection(conn, cursor)

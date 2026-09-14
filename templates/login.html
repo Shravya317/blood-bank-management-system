@@ -96,9 +96,25 @@
         if(element) element.classList.add('selected');
 
         const label = document.getElementById('usernameLabel');
-        if(role === 'hospital') label.innerText = "License Number:";
-        else if(role === 'staff') label.innerText = "Work Email:";
-        else label.innerText = "Phone Number:";
+        const input = document.getElementById('username');
+        if(role === 'hospital') {
+            label.innerText = "License Number:";
+            input.type = "text";
+            input.pattern = "^[A-Za-z0-9\-]+$";
+            input.title = "License number must be alphanumeric";
+        }
+        else if(role === 'staff') {
+            label.innerText = "Work Email:";
+            input.type = "email";
+            input.pattern = "^(?!\\d+@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+            input.title = "Email cannot be numbers only before the domain (e.g. 111@gmail.com is invalid)";
+        }
+        else {
+            label.innerText = "Phone Number:";
+            input.type = "tel";
+            input.pattern = "^[0-9\-\+ ]{7,15}$";
+            input.title = "Please enter a valid phone number";
+        }
     }
 
     function fillDemo(role, username, password) {
