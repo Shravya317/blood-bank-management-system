@@ -1,4 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, jsonify
+import smtplib
+from email.mime.text import MIMEText
+import random
+from config import Config
+from flask import render_template, request, redirect, url_for, session, flash
 from database.db import get_db_connection, close_connection
 
 auth_bp = Blueprint('auth', __name__)
@@ -132,3 +137,35 @@ def logout():
     session.clear()
     flash("You have been logged out.", "success")
     return redirect(url_for('index'))
+
+@auth_bp.route('/send_otp', methods=['POST'])
+def send_otp():
+    email = request.json.get('email')
+    if not email:
+        return jsonify({'success': False, 'message': 'Email required'})
+    
+    otp = str(random.randint(100000, 999999))
+    session['registration_otp'] = otp
+    
+    try:
+        msg = MIMEText(f"Your Blood Bank Registration OTP is: {otp}")
+        msg['Subject'] = 'Blood Bank Registration OTP'
+        msg['From'] = Config.MAIL_USERNAME
+        msg['To'] = email
+        
+        server = smtplib.SMTP(Config.MAIL_SERVER, Config.MAIL_PORT)
+        server.starttls()
+        server.login(Config.MAIL_USERNAME, Config.MAIL_PASSWORD)
+        server.send_message(msg)
+        server.quit()
+        return jsonify({'success': True, 'message': 'OTP sent'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+@auth_bp.route('/verify_otp', methods=['POST'])
+def verify_otp():
+    otp = request.json.get('otp')
+    if otp and session.get('registration_otp') == otp:
+        return jsonify({'success': True})
+    return jsonify({'success': False})
+
