@@ -31,6 +31,23 @@
 
 
 
+
+{% if new_fulfilled_alerts %}
+<div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); ; display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out;">
+    <div style="background: #ffffff; border-radius: 4px; padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: none; border-top: 4px solid var(--primary-color);">
+        <div style="font-size: 3.5rem; margin-bottom: 0.5rem;"></div>
+        <h2 style="color: var(--success-color); font-size: 1.8rem; margin-bottom: 0.75rem;">Blood Requisition Approved!</h2>
+        <p style="font-size: 1.05rem; color: #111111; margin-bottom: 1.85rem; line-height: 1.5;">
+            Your recent blood request has been <strong>Fulfilled</strong> and dispatched for immediate delivery to <strong>{{ session.get('user_name') }}</strong>.<br><br>
+            <span style="font-size: 0.95rem; color: #000000; font-weight: bold;">Please prepare the receiving ward for the incoming shipment and ensure all necessary documentation is ready upon arrival.</span>
+        </p>
+        <button onclick="document.getElementById('fulfilledModal').style.display='none'" class="btn btn-primary" style="  padding: 0.85rem 2.25rem; font-size: 1rem; width: 100%;">
+            Acknowledge & Dismiss
+        </button>
+    </div>
+</div>
+{% endif %}
+
 <div class="tabs-header">
     <button class="tab-btn active" onclick="openTab('tab-central', this)">
          Central Requisitions
@@ -259,7 +276,7 @@
                 <tr>
                     <th>Request ID</th>
                     <th>Hospital</th>
-                    <th>Recipient Type</th>
+                    <th>Recipient</th>
                     <th>Blood Group</th>
                     <th>Quantity (Units)</th>
                     <th>Status</th>
