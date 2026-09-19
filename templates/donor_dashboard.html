@@ -88,6 +88,17 @@
                 <input type="date" name="last_donated" id="last_donated" class="form-control" value="{{ profile.Last_Donation_Date if profile.Last_Donation_Date else '' }}" required>
             </div>
 
+
+            <div class="form-group">
+                <label for="destination">Donation Destination:</label>
+                <select name="destination" id="destination" class="form-control" required>
+                    <option value="blood_bank">Central Blood Bank</option>
+                    {% for h in all_hospitals %}
+                        <option value="{{ h.Hospital_ID }}">{{ h.Hospital_Name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="form-group">
                     <label for="component_type">Component Type:</label>

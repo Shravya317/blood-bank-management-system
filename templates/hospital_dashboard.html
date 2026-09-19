@@ -27,21 +27,7 @@
 </div>
 
 
-{% if new_fulfilled_alerts %}
-<div id="fulfilledModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); ; display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease-out;">
-    <div style="background: #ffffff; border-radius: 4px; padding: 2.8rem; max-width: 520px; text-align: center; box-shadow: none; border-top: 4px solid var(--primary-color);">
-        <div style="font-size: 3.5rem; margin-bottom: 0.5rem;"></div>
-        <h2 style="color: var(--success-color); font-size: 1.8rem; margin-bottom: 0.75rem;">Blood Requisition Approved!</h2>
-        <p style="font-size: 1.05rem; color: #111111; margin-bottom: 1.85rem; line-height: 1.5;">
-            Your recent blood request has been <strong>Fulfilled</strong> by the staff and dispatched for immediate delivery to <strong>{{ session.get('user_name') }}</strong>.<br><br>
-            <span style="font-size: 0.95rem; color: #000000; font-weight: bold;">Please prepare the receiving ward for the incoming shipment and ensure all necessary documentation is ready upon arrival.</span>
-        </p>
-        <button onclick="document.getElementById('fulfilledModal').style.display='none'" class="btn btn-primary" style="  padding: 0.85rem 2.25rem; font-size: 1rem; width: 100%;">
-            Acknowledge & Dismiss
-        </button>
-    </div>
-</div>
-{% endif %}
+
 
 
 
@@ -51,6 +37,9 @@
     </button>
     <button class="tab-btn" onclick="openTab('tab-internal', this)">
          Internal Inventory & Patient Fulfillment
+    </button>
+    <button class="tab-btn" onclick="openTab('tab-global', this)">
+         Global Activity Feed
     </button>
 </div>
 
@@ -261,6 +250,40 @@
         btnElement.classList.add('active');
     }
 </script>
+
+<div id="tab-global" class="tab-content">
+    <div class="glass-panel">
+        <h3 style="font-size: 1.4rem; margin-bottom: 1.5rem;">Recent Global Fulfillments</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Hospital</th>
+                    <th>Recipient Type</th>
+                    <th>Blood Group</th>
+                    <th>Quantity (Units)</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alert in global_alerts %}
+                <tr>
+                    <td><strong>#REQ-{{ alert.Request_ID }}</strong></td>
+                    <td>{{ alert.Hospital_Name }}</td>
+                    <td>{{ alert.Patient_Name if alert.Patient_Name else 'Hospital Stock' }}</td>
+                    <td><span class="badge badge-primary">{{ alert.Blood_Group }}</span></td>
+                    <td><strong>{{ alert.Qty_Required }}</strong> {{ alert.Component_Type }}</td>
+                    <td><span class="badge badge-success">Fulfilled</span></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" style="text-align: center; font-weight: bold; padding: 2rem;">No recent fulfillments found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 <script>
     function checkMatch() {
         const bg = document.getElementById('blood_group').value;

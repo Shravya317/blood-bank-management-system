@@ -35,10 +35,13 @@ def dashboard():
     """
     cursor.execute(query, (profile['Blood_Group'],))
     urgent_needs = cursor.fetchall()
+
+    cursor.execute('SELECT Hospital_ID, Hospital_Name FROM Hospital')
+    all_hospitals = cursor.fetchall()
     
     close_connection(conn, cursor)
     
-    return render_template('donor_dashboard.html', title="Donor Dashboard", profile=profile, donations=donations, urgent_needs=urgent_needs)
+    return render_template('donor_dashboard.html', title="Donor Dashboard", profile=profile, donations=donations, urgent_needs=urgent_needs, all_hospitals=all_hospitals)
 
 @donor_bp.route('/update_profile', methods=['POST'])
 def update_profile():
@@ -94,6 +97,9 @@ def donate():
     cursor = conn.cursor(dictionary=True)
     
     try:
+        
+        destination = request.form.get('destination')
+        
         cursor.execute("SELECT Blood_Group FROM Donor WHERE Donor_ID = %s", (session['user_id'],))
         donor = cursor.fetchone()
         
@@ -103,27 +109,37 @@ def donate():
         """, (today.strftime('%Y-%m-%d'), qty, component, session['user_id']))
         donation_id = cursor.lastrowid
         
-        cursor.execute("SELECT Storage_ID FROM Storage LIMIT 1")
-        storage = cursor.fetchone()
-        storage_id = storage['Storage_ID'] if storage else None
-        
-        if component == 'Platelets':
-            expiry_days = 5
-        elif component in ['Whole Blood', 'Double Red Cells']:
-            expiry_days = 42
-        else:
-            expiry_days = 365
-        expiry_date = (today + datetime.timedelta(days=expiry_days)).strftime('%Y-%m-%d')
-        
-        qty_ml = int(qty)
-        num_units = max(1, round(qty_ml / 450))
-        
-        for _ in range(num_units):
+        if destination == 'blood_bank':
+            cursor.execute("SELECT Storage_ID FROM Storage LIMIT 1")
+            storage = cursor.fetchone()
+            storage_id = storage['Storage_ID'] if storage else None
+            
+            if component == 'Platelets':
+                expiry_days = 5
+            elif component in ['Whole Blood', 'Double Red Cells']:
+                expiry_days = 42
+            else:
+                expiry_days = 365
+            expiry_date = (today + datetime.timedelta(days=expiry_days)).strftime('%Y-%m-%d')
+            
             cursor.execute("""
-                INSERT INTO Blood_Unit (Component_Type, Expiry_Date, Collection_Date, Rh_Factor, Storage_ID, Donation_ID, Status)
-                VALUES (%s, %s, %s, '+', %s, %s, 'Available')
-            """, (component, expiry_date, today.strftime('%Y-%m-%d'), storage_id, donation_id))
-        
+                INSERT INTO Blood_Unit (Donation_ID, Component_Type, Collection_Type, Expiry_Date, Storage_ID, Status, Rh_Factor)
+                VALUES (%s, %s, 'Voluntary', %s, %s, 'Available', '+')
+            """, (donation_id, component, expiry_date, storage_id))
+            flash("Donation recorded successfully and added to Central Blood Bank inventory!", "success")
+        else:
+            h_id = destination
+            bg = donor['Blood_Group']
+            # Add to Hospital Inventory directly
+            cursor.execute("SELECT * FROM Hospital_Inventory WHERE Hospital_ID = %s AND Blood_Group = %s", (h_id, bg))
+            if cursor.fetchone():
+                cursor.execute("UPDATE Hospital_Inventory SET Quantity = Quantity + %s WHERE Hospital_ID = %s AND Blood_Group = %s", (1, h_id, bg))
+            else:
+                cursor.execute("INSERT INTO Hospital_Inventory (Hospital_ID, Blood_Group, Quantity) VALUES (%s, %s, %s)", (h_id, bg, 1))
+                
+            cursor.execute("SELECT Hospital_Name FROM Hospital WHERE Hospital_ID = %s", (h_id,))
+            h_name = cursor.fetchone()['Hospital_Name']
+            flash(f"Donation recorded successfully and sent directly to {h_name}!", "success")
         cursor.execute("UPDATE Donor SET Last_Donation_Date = %s WHERE Donor_ID = %s", (today.strftime('%Y-%m-%d'), session['user_id']))
         
         conn.commit()

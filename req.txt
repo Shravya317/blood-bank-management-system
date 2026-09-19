@@ -1,0 +1,15 @@
+BLOOD CAMP REQUIREMENTS:
+DATE TIME DAY VENUE APPROX DONOR
+donors will have new feature register/donate for a blood camp (details and then amount of blood which has been donated)
+ngo tab
+HOSPITALS CAN ORGANISE BLOOD CAMP
+
+once blood camp has been organised calculate total amount of blood, add into the blood bank and notify the users and hospitals. 
+
+all hospitals should be notified once blood requirement has been fulfilled either from blood bank or from the hospital itself.
+and the users can directly donate to the blood bank itself+ the hospitals.
+
+
+3d effect and a little bit decoration in the front page(maybe colour)
+make bbms a little bit bigger and bold 
+

@@ -13,5 +13,5 @@ class Config:
     # SMTP Configuration
     MAIL_SERVER = os.environ.get('MAIL_SERVER') or 'smtp.gmail.com'
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 587)
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'your_email@gmail.com'
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'your_app_password'
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'shravyas.bloodbank.project@gmail.com'
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'otpkcrhnvpttynxg'

@@ -127,8 +127,7 @@
         updateDateBounds(document.getElementById('reg_role_type').value);
     });
 
-    let currentOTP = null;
-
+    
     function sendOTP() {
         const email = document.getElementById('email').value;
         if (!email || !email.includes('@')) {
@@ -136,14 +135,29 @@
             return;
         }
         
-        currentOTP = Math.floor(100000 + Math.random() * 900000).toString();
-        document.getElementById('otpGroup').style.display = 'block';
+        const btn = document.getElementById('sendOtpBtn');
+        btn.disabled = true;
+        btn.innerText = "Sending...";
         
-        alert(`[SIMULATED EMAIL]\nTo: ${email}\n\nYour Blood Bank Registration OTP is: ${currentOTP}`);
-        
-        const msg = document.getElementById('otpMessage');
-        msg.innerText = "OTP sent to your email!";
-        msg.style.color = "blue";
+        fetch('/auth/send_otp', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email: email})
+        })
+        .then(response => response.json())
+        .then(data => {
+            btn.innerText = "Send OTP";
+            btn.disabled = false;
+            
+            if(data.success) {
+                document.getElementById('otpGroup').style.display = 'block';
+                const msg = document.getElementById('otpMessage');
+                msg.innerText = "OTP sent to your email!";
+                msg.style.color = "blue";
+            } else {
+                alert("Failed to send OTP: " + data.message + "\n\nPlease make sure you have configured your MAIL_USERNAME and MAIL_PASSWORD in config.py!");
+            }
+        });
     }
 
     function verifyOTP() {
@@ -152,20 +166,27 @@
         const regBtn = document.getElementById('registerBtn');
         
         if (otpInput.length === 6) {
-            if (otpInput === currentOTP) {
-                msg.innerText = "correct otp you can register now";
-                msg.style.color = "green";
-                regBtn.disabled = false;
-            } else {
-                msg.innerText = "Invalid OTP. Please try again.";
-                msg.style.color = "red";
-                regBtn.disabled = true;
-            }
+            fetch('/auth/verify_otp', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({otp: otpInput})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    msg.innerText = "correct otp you can register now";
+                    msg.style.color = "green";
+                    regBtn.disabled = false;
+                } else {
+                    msg.innerText = "Invalid OTP. Please try again.";
+                    msg.style.color = "red";
+                    regBtn.disabled = true;
+                }
+            });
         } else {
             msg.innerText = "";
             regBtn.disabled = true;
         }
     }
-
 </script>
 {% endblock %}

@@ -29,12 +29,20 @@ def dashboard():
     cursor.execute(query, (session['user_id'],))
     requests = cursor.fetchall()
     
-    seen_alerts = session.get('seen_alerts', [])
-    new_fulfilled_alerts = [r for r in requests if r['Status'] == 'Fulfilled' and r['Request_ID'] not in seen_alerts]
-    
-    if new_fulfilled_alerts:
-        updated_seen = list(seen_alerts) + [r['Request_ID'] for r in new_fulfilled_alerts]
-        session['seen_alerts'] = updated_seen
+
+    # Global Activity Feed (Recent Fulfillments)
+    cursor.execute("""
+        SELECT R.Request_ID, R.Blood_Group, R.Qty_Required, R.Status, R.Component_Type,
+               H.Hospital_Name, P.Name as Patient_Name
+        FROM Request R
+        JOIN Hospital H ON R.Hospital_ID = H.Hospital_ID
+        LEFT JOIN Patient P ON R.Patient_ID = P.Patient_ID
+        WHERE R.Status = 'Fulfilled'
+        ORDER BY R.Request_ID DESC
+        LIMIT 5
+    """)
+    global_alerts = cursor.fetchall()
+
     
     cursor.execute("SELECT * FROM Hospital_Inventory WHERE Hospital_ID = %s", (session['user_id'],))
     inventory = cursor.fetchall()
@@ -55,7 +63,7 @@ def dashboard():
                            title="Hospital Dashboard", 
                            requests=requests, 
                            all_hospitals=all_hospitals,
-                           new_fulfilled_alerts=new_fulfilled_alerts,
+                           global_alerts=global_alerts,
                            inventory=inv_dict,
                            patient_requests=patient_requests)
 
