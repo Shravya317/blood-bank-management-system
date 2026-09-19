@@ -40,9 +40,15 @@
         {% for alert in new_fulfilled_alerts %}
             {% if alert.Patient_Name %}
                 <div style="background: #f8fafc; border-left: 4px solid var(--primary-color); padding: 1rem; margin-bottom: 1rem; text-align: left;">
+                    {% if alert.Has_Issue > 0 %}
                     <p style="font-size: 1.05rem; color: #111111; margin: 0; line-height: 1.5;">
-                        The blood request for receiver <strong>{{ alert.Patient_Name }}</strong> has just been <strong>Fulfilled</strong> by <strong>{{ alert.Hospital_Name }}</strong>.
+                        The Central Blood Bank has directly <strong>Fulfilled</strong> the blood request for receiver <strong>{{ alert.Patient_Name }}</strong> at {{ alert.Hospital_Name }}.
                     </p>
+                    {% else %}
+                    <p style="font-size: 1.05rem; color: #111111; margin: 0; line-height: 1.5;">
+                        <strong>{{ alert.Hospital_Name }}</strong> has internally <strong>Fulfilled</strong> the blood request for their receiver <strong>{{ alert.Patient_Name }}</strong>.
+                    </p>
+                    {% endif %}
                     <p style="font-size: 0.85rem; color: #000000; font-weight: bold; margin: 0.5rem 0 0 0;">
                         This receiver's requirement is now met. No further action is required from other hospitals.
                     </p>
@@ -50,7 +56,7 @@
             {% elif alert.Hospital_Name == session.get('user_name') %}
                 <div style="background: #f8fafc; border-left: 4px solid var(--success-color); padding: 1rem; margin-bottom: 1rem; text-align: left;">
                     <p style="font-size: 1.05rem; color: #111111; margin: 0; line-height: 1.5;">
-                        Your recent blood stock request has been <strong>Fulfilled</strong> and dispatched for immediate delivery to <strong>{{ session.get('user_name') }}</strong>.
+                        Your recent blood stock request has been <strong>Fulfilled</strong> by the Central Blood Bank and dispatched for immediate delivery.
                     </p>
                     <p style="font-size: 0.85rem; color: #000000; font-weight: bold; margin: 0.5rem 0 0 0;">
                         Please prepare the receiving ward for the incoming shipment.

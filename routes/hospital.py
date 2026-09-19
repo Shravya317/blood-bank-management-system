@@ -35,7 +35,8 @@ def dashboard():
     # Global Activity Feed (Recent Fulfillments)
     cursor.execute("""
         SELECT R.Request_ID, R.Blood_Group, R.Qty_Required, R.Status, R.Component_Type,
-               H.Hospital_Name, P.Name as Patient_Name
+               H.Hospital_Name, P.Name as Patient_Name,
+               (SELECT COUNT(*) FROM Issue I WHERE I.Request_ID = R.Request_ID) as Has_Issue
         FROM Request R
         JOIN Hospital H ON R.Hospital_ID = H.Hospital_ID
         LEFT JOIN Patient P ON R.Patient_ID = P.Patient_ID
