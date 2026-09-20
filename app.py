@@ -9,13 +9,14 @@ def create_app():
     from routes.staff import staff_bp
     from routes.donor import donor_bp
     from routes.hospital import hospital_bp
-from routes.ngo import ngo_bp
+    from routes.ngo import ngo_bp
     from routes.patient import patient_bp
     
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(staff_bp, url_prefix='/staff')
     app.register_blueprint(donor_bp, url_prefix='/donor')
     app.register_blueprint(hospital_bp, url_prefix='/hospital')
+    app.register_blueprint(ngo_bp, url_prefix='/ngo')
     app.register_blueprint(patient_bp, url_prefix='/patient')
 
 

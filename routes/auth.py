@@ -65,7 +65,6 @@ def login():
                 return redirect(url_for('patient.dashboard'))
 
 
-        close_connection(conn, cursor)
         elif role == 'ngo':
             cursor.execute('SELECT * FROM NGO WHERE Email = %s', (email,))
             user = cursor.fetchone()
@@ -75,6 +74,8 @@ def login():
                 session['role'] = 'ngo'
                 close_connection(conn, cursor)
                 return redirect(url_for('ngo.dashboard'))
+        
+        close_connection(conn, cursor)
         flash("Invalid credentials or incorrect role selected.", "danger")
         return redirect(url_for('auth.login'))
 
