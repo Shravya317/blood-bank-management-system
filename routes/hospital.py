@@ -231,7 +231,7 @@ def complete_camp(camp_id):
     
     blood_group_counts = {}
     for d in donors:
-        cursor.execute("INSERT INTO Donation (Donor_ID, Donation_Date, Status) VALUES (%s, %s, 'Completed')", (d['Donor_ID'], camp['Camp_Date']))
+        cursor.execute("INSERT INTO Donation (Donor_ID, Donation_Date, Camp_ID) VALUES (%s, %s, %s)", (d['Donor_ID'], camp['Camp_Date'], camp_id))
         donation_id = cursor.lastrowid
         cursor.execute("INSERT INTO Blood_Unit (Donation_ID, Component_Type, Expiry_Date, Status) VALUES (%s, 'Whole Blood', DATE_ADD(%s, INTERVAL 42 DAY), 'Available')", (donation_id, camp['Camp_Date']))
         bg = d['Blood_Group']

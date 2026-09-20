@@ -24,6 +24,27 @@ def dashboard():
     cursor.execute("SELECT * FROM Donation WHERE Donor_ID = %s ORDER BY Donation_Date DESC", (session['user_id'],))
     donations = cursor.fetchall()
     
+    # Blood Journey Query
+    journey_query = """
+        SELECT d.Donation_ID, d.Donation_Date, 
+               c.Camp_Name, c.Organizer_Type,
+               bu.Blood_Unit_ID, bu.Status as Unit_Status,
+               i.Issue_Date, i.Qty_Issued,
+               r.Request_ID, r.Status as Request_Status,
+               h.Hospital_Name, p.Name as Patient_Name
+        FROM Donation d
+        LEFT JOIN Blood_Camp c ON d.Camp_ID = c.Camp_ID
+        LEFT JOIN Blood_Unit bu ON bu.Donation_ID = d.Donation_ID
+        LEFT JOIN Issue i ON i.Blood_Unit_ID = bu.Blood_Unit_ID
+        LEFT JOIN Request r ON i.Request_ID = r.Request_ID
+        LEFT JOIN Hospital h ON r.Hospital_ID = h.Hospital_ID
+        LEFT JOIN Patient p ON r.Patient_ID = p.Patient_ID
+        WHERE d.Donor_ID = %s
+        ORDER BY d.Donation_Date DESC, bu.Blood_Unit_ID ASC
+    """
+    cursor.execute(journey_query, (session['user_id'],))
+    blood_journey = cursor.fetchall()
+    
     query = """
     SELECT H.Hospital_Name, H.Address, SUM(R.Qty_Required) as Total_Needed, 
            MAX(CASE WHEN R.Priority = 'Emergency' THEN 3 WHEN R.Priority = 'High' THEN 2 ELSE 1 END) as Urgency_Level
@@ -53,7 +74,7 @@ def dashboard():
     system_notifications = cursor.fetchall()
     
     close_connection(conn, cursor)
-    return render_template('donor_dashboard.html', title="Donor Dashboard", profile=profile, donations=donations, urgent_needs=urgent_needs, all_hospitals=all_hospitals, active_camps=active_camps, system_notifications=system_notifications)
+    return render_template('donor_dashboard.html', title="Donor Dashboard", profile=profile, blood_journey=blood_journey, donations=donations, urgent_needs=urgent_needs, all_hospitals=all_hospitals, active_camps=active_camps, system_notifications=system_notifications)
 
 @donor_bp.route('/update_profile', methods=['POST'])
 def update_profile():
