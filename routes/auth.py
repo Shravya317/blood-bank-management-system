@@ -66,6 +66,15 @@ def login():
 
 
         close_connection(conn, cursor)
+        elif role == 'ngo':
+            cursor.execute('SELECT * FROM NGO WHERE Email = %s', (email,))
+            user = cursor.fetchone()
+            if user and user['Password'] == password:
+                session['user_id'] = user['NGO_ID']
+                session['user_name'] = user['Name']
+                session['role'] = 'ngo'
+                close_connection(conn, cursor)
+                return redirect(url_for('ngo.dashboard'))
         flash("Invalid credentials or incorrect role selected.", "danger")
         return redirect(url_for('auth.login'))
 

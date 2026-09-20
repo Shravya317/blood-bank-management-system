@@ -184,3 +184,9 @@ INSERT INTO `Request` (`Request_ID`, `Request_Date`, `Required_Date`, `Status`, 
 INSERT INTO `Request` (`Request_ID`, `Request_Date`, `Required_Date`, `Status`, `Component_Type`, `Qty_Required`, `Priority`, `Blood_Group`, `Hospital_ID`, `Patient_ID`) VALUES (6, '2026-09-07', '2026-09-08', 'Fulfilled', 'Whole Blood', 1, 'Emergency', 'O+', 1, 1);
 INSERT INTO `Request` (`Request_ID`, `Request_Date`, `Required_Date`, `Status`, `Component_Type`, `Qty_Required`, `Priority`, `Blood_Group`, `Hospital_ID`, `Patient_ID`) VALUES (7, '2026-09-07', '2026-09-09', 'Pending', 'Whole Blood', 4, 'Emergency', 'B-', 1, NULL);
 
+
+
+-- Insert mock NGO
+INSERT INTO NGO (Name, Email, Password, Phone) VALUES 
+('Red Cross Society', 'redcross@ngo.com', 'password123', '9876543210'),
+('Hope Foundation', 'hope@ngo.com', 'password123', '8765432109');

@@ -132,3 +132,38 @@ CREATE TABLE Hospital_Inventory (
     Last_Updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (Hospital_ID) REFERENCES Hospital(Hospital_ID)
 );
+
+
+-- NGO Table
+CREATE TABLE IF NOT EXISTS NGO (
+    NGO_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    Phone VARCHAR(15)
+);
+
+-- Blood Camp Table
+CREATE TABLE IF NOT EXISTS Blood_Camp (
+    Camp_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Organizer_Type ENUM('NGO', 'Hospital') NOT NULL,
+    Organizer_ID INT NOT NULL,
+    Camp_Date DATE NOT NULL,
+    Start_Time TIME NOT NULL,
+    End_Time TIME NOT NULL,
+    Day_of_Week VARCHAR(15),
+    Venue VARCHAR(255) NOT NULL,
+    Target_Donors INT NOT NULL,
+    Current_Donors INT DEFAULT 0
+);
+
+-- Camp Registration Table
+CREATE TABLE IF NOT EXISTS Camp_Registration (
+    Registration_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Camp_ID INT NOT NULL,
+    Donor_ID INT NOT NULL,
+    Status ENUM('Registered', 'Donated') DEFAULT 'Registered',
+    FOREIGN KEY (Camp_ID) REFERENCES Blood_Camp(Camp_ID),
+    FOREIGN KEY (Donor_ID) REFERENCES Donor(Donor_ID),
+    UNIQUE (Camp_ID, Donor_ID) -- prevent double registration
+);

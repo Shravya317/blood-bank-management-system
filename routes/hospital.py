@@ -55,6 +55,15 @@ def dashboard():
 
 
     
+
+    # Fetch upcoming blood camps
+    cursor.execute("""
+        SELECT * FROM Blood_Camp 
+        WHERE Camp_Date >= CURRENT_DATE
+        ORDER BY Camp_Date ASC, Start_Time ASC
+    """)
+    upcoming_camps = cursor.fetchall()
+
     cursor.execute("SELECT * FROM Hospital_Inventory WHERE Hospital_ID = %s", (session['user_id'],))
     inventory = cursor.fetchall()
     inv_dict = {item['Blood_Group']: item['Quantity'] for item in inventory}
@@ -76,7 +85,7 @@ def dashboard():
                            all_hospitals=all_hospitals,
                            global_alerts=global_alerts, new_fulfilled_alerts=new_fulfilled_alerts,
                            inventory=inv_dict,
-                           patient_requests=patient_requests)
+                           patient_requests=patient_requests, upcoming_camps=upcoming_camps)
 
 @hospital_bp.route('/switch_hospital', methods=['POST'])
 def switch_hospital():
@@ -164,4 +173,30 @@ def fulfill_patient_request():
         flash(f"Insufficient internal stock! You need {qty} units of {bg}, please request more from the central blood bank first.", "danger")
         
     close_connection(conn, cursor)
+    return redirect(url_for('hospital.dashboard'))
+
+
+@hospital_bp.route('/organize_camp', methods=['POST'])
+def organize_camp():
+    camp_date = request.form.get('camp_date')
+    start_time = request.form.get('start_time')
+    end_time = request.form.get('end_time')
+    venue = request.form.get('venue')
+    target_donors = request.form.get('target_donors')
+    
+    date_obj = datetime.datetime.strptime(camp_date, '%Y-%m-%d')
+    day_of_week = date_obj.strftime('%A')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    query = """
+    INSERT INTO Blood_Camp (Organizer_Type, Organizer_ID, Camp_Date, Start_Time, End_Time, Day_of_Week, Venue, Target_Donors)
+    VALUES ('Hospital', %s, %s, %s, %s, %s, %s, %s)
+    """
+    cursor.execute(query, (session['user_id'], camp_date, start_time, end_time, day_of_week, venue, target_donors))
+    conn.commit()
+    close_connection(conn, cursor)
+    
+    flash("Hospital Blood Camp organized successfully! Donors have been notified.", "success")
     return redirect(url_for('hospital.dashboard'))

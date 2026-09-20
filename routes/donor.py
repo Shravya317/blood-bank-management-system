@@ -41,7 +41,7 @@ def dashboard():
     
     close_connection(conn, cursor)
     
-    return render_template('donor_dashboard.html', title="Donor Dashboard", profile=profile, donations=donations, urgent_needs=urgent_needs, all_hospitals=all_hospitals)
+    return render_template('donor_dashboard.html', title="Donor Dashboard", profile=profile, donations=donations, urgent_needs=urgent_needs, all_hospitals=all_hospitals, active_camps=active_camps)
 
 @donor_bp.route('/update_profile', methods=['POST'])
 def update_profile():
@@ -151,4 +151,37 @@ def donate():
     finally:
         close_connection(conn, cursor)
         
+    return redirect(url_for('donor.dashboard'))
+
+
+@donor_bp.route('/register_camp', methods=['POST'])
+def register_camp():
+    camp_id = request.form.get('camp_id')
+    donor_id = session['user_id']
+    
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    # Check capacity
+    cursor.execute("SELECT Current_Donors, Target_Donors FROM Blood_Camp WHERE Camp_ID = %s", (camp_id,))
+    camp = cursor.fetchone()
+    
+    if not camp:
+        flash("Camp not found.", "danger")
+        return redirect(url_for('donor.dashboard'))
+        
+    if camp['Current_Donors'] >= camp['Target_Donors']:
+        flash("This blood camp has reached its maximum donor capacity.", "danger")
+        return redirect(url_for('donor.dashboard'))
+        
+    # Register donor
+    try:
+        cursor.execute("INSERT INTO Camp_Registration (Camp_ID, Donor_ID) VALUES (%s, %s)", (camp_id, donor_id))
+        cursor.execute("UPDATE Blood_Camp SET Current_Donors = Current_Donors + 1 WHERE Camp_ID = %s", (camp_id,))
+        conn.commit()
+        flash("Successfully registered for the blood camp! You can only donate 1 unit.", "success")
+    except Exception as e:
+        flash("You are already registered for this camp.", "warning")
+        
+    close_connection(conn, cursor)
     return redirect(url_for('donor.dashboard'))
