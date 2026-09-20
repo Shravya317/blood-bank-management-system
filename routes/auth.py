@@ -65,8 +65,8 @@ def login():
                 return redirect(url_for('patient.dashboard'))
 
 
-        elif role == 'ngo':
-            cursor.execute('SELECT * FROM NGO WHERE Email = %s', (email,))
+        elif role_type == 'ngo':
+            cursor.execute('SELECT * FROM NGO WHERE Email = %s', (email_or_phone,))
             user = cursor.fetchone()
             if user and user['Password'] == password:
                 session['user_id'] = user['NGO_ID']

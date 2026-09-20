@@ -86,7 +86,7 @@
          Internal Inventory & Patient Fulfillment
     </button>
     <button class="tab-btn" onclick="openTab('tab-global', this)">
-         Global Activity Feed
+         Notifications {% if new_fulfilled_alerts %}<span style="background: #000; color: #fff; padding: 0.1rem 0.5rem; border-radius: 12px; font-size: 0.8rem; margin-left: 0.2rem;">{{ new_fulfilled_alerts|length }}</span>{% endif %}
     </button>
     <button class="tab-btn" onclick="openTab('tab-organize-camp', this)">
          Organize Blood Camp
@@ -305,36 +305,68 @@
 </script>
 
 <div id="tab-global" class="tab-content">
-    <div class="glass-panel">
-        <h3 style="font-size: 1.4rem; margin-bottom: 1.5rem;">Recent Global Fulfillments</h3>
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Request ID</th>
-                    <th>Hospital</th>
-                    <th>Recipient</th>
-                    <th>Blood Group</th>
-                    <th>Quantity (Units)</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for alert in global_alerts %}
-                <tr>
-                    <td><strong>#REQ-{{ alert.Request_ID }}</strong></td>
-                    <td>{{ alert.Hospital_Name }}</td>
-                    <td>{{ alert.Patient_Name if alert.Patient_Name else 'Hospital Stock' }}</td>
-                    <td><span class="badge badge-primary">{{ alert.Blood_Group }}</span></td>
-                    <td><strong>{{ alert.Qty_Required }}</strong> {{ alert.Component_Type }}</td>
-                    <td><span class="badge badge-success">Fulfilled</span></td>
-                </tr>
+    <style>
+        .notification-card.unread {
+            border-left: 4px solid #000 !important;
+            background: #ffffff !important;
+        }
+        .badge-new {
+            background: #000;
+            color: #fff;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+    </style>
+    
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; border-bottom: 1px solid #ddd; padding-bottom: 1.5rem;">
+        <div>
+            <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem; font-family: 'Times New Roman', serif;">Notifications</h3>
+            <p style="margin: 0; color: #333; font-size: 1rem;">Delivery updates and important blood-bank activity for your account.</p>
+        </div>
+        <button class="btn" style="background: #ffffff; color: #000; border: 1px solid #000; padding: 0.5rem 1rem; font-weight: bold; font-family: 'Times New Roman', serif; cursor: pointer;" onclick="document.querySelectorAll('.notification-card').forEach(c => { c.classList.remove('unread'); const btn = c.querySelector('.mark-read-btn'); if(btn) btn.style.display = 'none'; const bdg = c.querySelector('.badge-new'); if(bdg) bdg.style.display = 'none'; })">Mark all as read</button>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+        {% for alert in global_alerts %}
+        {% set is_new = alert in new_fulfilled_alerts %}
+        <div class="notification-card {% if is_new %}unread{% endif %}" style="border: 1px solid #ddd; padding: 1.5rem; position: relative; background: #fafafa; display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <h4 style="margin: 0; font-size: 1.25rem;">
+                    {% if alert.Patient_Name %}
+                        {% if alert.Has_Issue > 0 %}Blood Bank fulfillment completed{% else %}Internal fulfillment completed{% endif %}
+                    {% else %}
+                        Stock delivery completed
+                    {% endif %}
+                    {% if is_new %}
+                        <span class="badge-new">New</span>
+                    {% endif %}
+                </h4>
+                {% if is_new %}
+                <button class="mark-read-btn" onclick="const card = this.closest('.notification-card'); card.classList.remove('unread'); this.style.display='none'; const bdg = card.querySelector('.badge-new'); if(bdg) bdg.style.display = 'none';" style="background: #ffffff; border: 1px solid #000; padding: 0.25rem 0.75rem; font-family: 'Times New Roman', serif; font-weight: bold; cursor: pointer;">Mark read</button>
+                {% endif %}
+            </div>
+            
+            <p style="margin: 0; font-size: 1.05rem; color: #333;">
+                {% if alert.Patient_Name %}
+                    {% if alert.Has_Issue > 0 %}
+                    The Central Blood Bank has directly fulfilled the blood request ({{ alert.Qty_Required }} units of {{ alert.Blood_Group }}) for receiver {{ alert.Patient_Name }} at {{ alert.Hospital_Name }}.
+                    {% else %}
+                    {{ alert.Hospital_Name }} has internally fulfilled the blood request ({{ alert.Qty_Required }} units of {{ alert.Blood_Group }}) for receiver {{ alert.Patient_Name }}.
+                    {% endif %}
                 {% else %}
-                <tr>
-                    <td colspan="6" style="text-align: center; font-weight: bold; padding: 2rem;">No recent fulfillments found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    A routine stock request for {{ alert.Qty_Required }} units of {{ alert.Blood_Group }} has been fulfilled and dispatched to {{ alert.Hospital_Name }}.
+                {% endif %}
+            </p>
+            
+            <span style="font-size: 0.85rem; color: #666; font-weight: bold;">REQ-{{ alert.Request_ID }} • System Update</span>
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 3rem; border: 1px solid #ddd; font-weight: bold;">No notifications available.</div>
+        {% endfor %}
     </div>
 </div>
 
