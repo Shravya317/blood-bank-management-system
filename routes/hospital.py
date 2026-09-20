@@ -77,11 +77,10 @@ def dashboard():
     """, (session['user_id'],))
     patient_requests = cursor.fetchall()
     
-    close_connection(conn, cursor)
-    
-    
     cursor.execute("SELECT * FROM System_Notification ORDER BY Created_At DESC LIMIT 10")
     system_notifications = cursor.fetchall()
+    
+    close_connection(conn, cursor)
     return render_template('hospital_dashboard.html', system_notifications=system_notifications, 
                            title="Hospital Dashboard", 
                            requests=requests, 

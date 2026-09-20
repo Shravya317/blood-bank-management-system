@@ -49,11 +49,10 @@ def dashboard():
     cursor.execute('SELECT Hospital_ID, Hospital_Name FROM Hospital')
     all_hospitals = cursor.fetchall()
     
-    close_connection(conn, cursor)
-    
-    
     cursor.execute("SELECT * FROM System_Notification ORDER BY Created_At DESC LIMIT 10")
     system_notifications = cursor.fetchall()
+    
+    close_connection(conn, cursor)
     return render_template('donor_dashboard.html', title="Donor Dashboard", profile=profile, donations=donations, urgent_needs=urgent_needs, all_hospitals=all_hospitals, active_camps=active_camps, system_notifications=system_notifications)
 
 @donor_bp.route('/update_profile', methods=['POST'])

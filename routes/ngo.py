@@ -26,11 +26,10 @@ def dashboard():
     """, (session['user_id'],))
     camps = cursor.fetchall()
     
-    close_connection(conn, cursor)
-    
-    
     cursor.execute("SELECT * FROM System_Notification ORDER BY Created_At DESC LIMIT 10")
     system_notifications = cursor.fetchall()
+    
+    close_connection(conn, cursor)
     return render_template('ngo_dashboard.html', title="NGO Dashboard", camps=camps, system_notifications=system_notifications)
 
 @ngo_bp.route('/organize_camp', methods=['POST'])
