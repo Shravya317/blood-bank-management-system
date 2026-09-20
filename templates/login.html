@@ -43,12 +43,14 @@
                     <div class="role-pill-btn" onclick="selectRole('donor', this)">Donor</div>
                     <div class="role-pill-btn" onclick="selectRole('hospital', this)">Hospital</div>
                     <div class="role-pill-btn" onclick="selectRole('staff', this)">Staff</div>
+                    <div class="role-pill-btn" onclick="selectRole('ngo', this)">NGO</div>
                 </div>
                 <select name="role_type" id="role_type" style="display: none;" required>
                     <option value="patient" selected>Receiver</option>
                     <option value="donor">Donor</option>
                     <option value="hospital">Hospital</option>
                     <option value="staff">Staff</option>
+                    <option value="ngo">NGO</option>
                 </select>
             </div>
 
@@ -84,6 +86,7 @@
                 <option value="donor">Donor (9876540201)</option>
                 <option value="hospital">Hospital (LIC-10001)</option>
                 <option value="staff">Staff Admin (alice.smith...)</option>
+                <option value="ngo">NGO (redcross...)</option>
             </select>
         </div>
     </div>
@@ -103,7 +106,7 @@
             input.pattern = "^[A-Za-z0-9\-]+$";
             input.title = "License number must be alphanumeric";
         }
-        else if(role === 'staff') {
+        else if(role === 'staff' || role === 'ngo') {
             label.innerText = "Work Email:";
             input.type = "email";
             input.pattern = "^(?!\\d+@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
@@ -118,7 +121,7 @@
     }
 
     function fillDemo(role, username, password) {
-        const indexMap = { 'patient': 0, 'donor': 1, 'hospital': 2, 'staff': 3 };
+        const indexMap = { 'patient': 0, 'donor': 1, 'hospital': 2, 'staff': 3, 'ngo': 4 };
         selectRole(role, document.querySelectorAll('.role-pill-btn')[indexMap[role]]);
         document.getElementById('username').value = username;
         document.getElementById('password').value = password;
@@ -129,6 +132,7 @@
         if (val === 'donor') fillDemo('donor', '9876540201', 'donor123');
         if (val === 'hospital') fillDemo('hospital', 'LIC-10001', 'hosp123');
         if (val === 'staff') fillDemo('staff', 'alice.smith@bloodbank.com', 'admin123');
+        if (val === 'ngo') fillDemo('ngo', 'redcross@ngo.com', 'password123');
     }
 </script>
 

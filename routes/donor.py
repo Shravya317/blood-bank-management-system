@@ -36,6 +36,16 @@ def dashboard():
     cursor.execute(query, (profile['Blood_Group'],))
     urgent_needs = cursor.fetchall()
 
+    
+    # Fetch active blood camps and check if donor is registered
+    cursor.execute("""
+        SELECT C.*, 
+               (SELECT COUNT(*) FROM Camp_Registration CR WHERE CR.Camp_ID = C.Camp_ID AND CR.Donor_ID = %s) as Is_Registered
+        FROM Blood_Camp C
+        WHERE C.Camp_Date >= CURRENT_DATE
+        ORDER BY C.Camp_Date ASC, C.Start_Time ASC
+    """, (session['user_id'],))
+    active_camps = cursor.fetchall()
     cursor.execute('SELECT Hospital_ID, Hospital_Name FROM Hospital')
     all_hospitals = cursor.fetchall()
     
