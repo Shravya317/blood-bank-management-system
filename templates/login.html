@@ -10,8 +10,10 @@
     }
     .auth-wrapper {
         justify-content: flex-end !important;
-        padding-right: 2%; /* shift more to the right */
+        padding-right: 2%;
+        gap: 2rem !important;
     }
+    .container { max-width: 1400px !important; }
     .auth-left-text {
         position: absolute;
         bottom: 8%;
@@ -90,7 +92,37 @@
             </select>
         </div>
     </div>
+
+    <div class="services-sidebar" style="display: flex; flex-direction: column; gap: 1rem; width: 220px; margin-top: 3.5rem;">
+        <h3 style="color: #b30000; font-family: 'Times New Roman', serif; font-size: 1.4rem; margin-bottom: 0.5rem; text-align: center; font-weight: 900;">Our Services</h3>
+        
+        <div style="background: #fff; border: 2px solid #ddd; padding: 1.2rem 0.5rem; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='#000'; this.style.boxShadow='4px 4px 0px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='#ddd'; this.style.boxShadow='none'">
+            <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🔍</div>
+            <div style="font-size: 0.85rem; font-weight: bold; color: #333;">Blood Availability Search</div>
+        </div>
+
+        <div style="background: #fff; border: 2px solid #ddd; padding: 1.2rem 0.5rem; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='#000'; this.style.boxShadow='4px 4px 0px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='#ddd'; this.style.boxShadow='none'">
+            <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🏥</div>
+            <div style="font-size: 0.85rem; font-weight: bold; color: #333;">Blood Center Directory</div>
+        </div>
+
+        <div style="background: #fff; border: 2px solid #ddd; padding: 1.2rem 0.5rem; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='#000'; this.style.boxShadow='4px 4px 0px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='#ddd'; this.style.boxShadow='none'">
+            <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🏕️</div>
+            <div style="font-size: 0.85rem; font-weight: bold; color: #333;">Blood Donation Camps</div>
+        </div>
+
+        <div style="background: #b30000; border: 2px solid #5a0000; padding: 1.2rem 0.5rem; text-align: center; border-radius: 8px; cursor: pointer; box-shadow: 4px 4px 0px rgba(0,0,0,0.2);">
+            <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">👤</div>
+            <div style="font-size: 0.9rem; font-weight: 900; color: #fff;">Donor Login</div>
+        </div>
+
+        <div style="background: #fff; border: 2px solid #ddd; padding: 1.2rem 0.5rem; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='#000'; this.style.boxShadow='4px 4px 0px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='#ddd'; this.style.boxShadow='none'">
+            <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">📋</div>
+            <div style="font-size: 0.85rem; font-weight: bold; color: #333;">Register Voluntary Blood Camps</div>
+        </div>
+    </div>
 </div>
+
 
 <script>
     function selectRole(role, element) {
