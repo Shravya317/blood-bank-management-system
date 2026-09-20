@@ -76,8 +76,8 @@
             </div>
             
             {% if camp.Is_Registered %}
-                <button class="btn" style="width: 100%; background: #28a745; color: #ffffff; font-weight: bold; cursor: default; padding: 0.75rem;" disabled>
-                    ✓ Registered (1 Unit)
+                <button class="btn" style="width: 100%; background: #b30000; color: #ffffff; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; border: 2px solid #5a0000; padding: 0.85rem; cursor: default; box-shadow: inset 0 3px 5px rgba(0,0,0,0.3);" disabled>
+                    &check; REGISTERED (1 UNIT)
                 </button>
             {% elif camp.Current_Donors >= camp.Target_Donors %}
                 <button class="btn" style="width: 100%; background: #6c757d; color: #ffffff; font-weight: bold; cursor: not-allowed; padding: 0.75rem;" disabled>
