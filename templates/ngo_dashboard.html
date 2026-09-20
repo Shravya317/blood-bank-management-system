@@ -73,6 +73,7 @@
         <table class="data-table">
             <thead>
                 <tr>
+                    <th>Camp Name</th>
                     <th>Date & Day</th>
                     <th>Time</th>
                     <th>Venue</th>
@@ -83,6 +84,7 @@
             <tbody>
                 {% for camp in camps %}
                 <tr>
+                    <td>{{ camp.Camp_Name }}</td>
                     <td><strong>{{ camp.Camp_Date }}</strong><br><span style="font-size: 0.85em;">{{ camp.Day_of_Week }}</span></td>
                     <td>{{ camp.Start_Time }} - {{ camp.End_Time }}</td>
                     <td>{{ camp.Venue }}</td>
