@@ -155,7 +155,8 @@ CREATE TABLE IF NOT EXISTS Blood_Camp (
     Day_of_Week VARCHAR(15),
     Venue VARCHAR(255) NOT NULL,
     Target_Donors INT NOT NULL,
-    Current_Donors INT DEFAULT 0
+    Current_Donors INT DEFAULT 0,
+    Status ENUM('Upcoming', 'Completed') DEFAULT 'Upcoming'
 );
 
 -- Camp Registration Table
@@ -167,4 +168,13 @@ CREATE TABLE IF NOT EXISTS Camp_Registration (
     FOREIGN KEY (Camp_ID) REFERENCES Blood_Camp(Camp_ID),
     FOREIGN KEY (Donor_ID) REFERENCES Donor(Donor_ID),
     UNIQUE (Camp_ID, Donor_ID) -- prevent double registration
+);
+
+
+-- System Notification Table
+CREATE TABLE IF NOT EXISTS System_Notification (
+    Notification_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Message TEXT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

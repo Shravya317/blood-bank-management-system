@@ -42,7 +42,7 @@ def dashboard():
         SELECT C.*, 
                (SELECT COUNT(*) FROM Camp_Registration CR WHERE CR.Camp_ID = C.Camp_ID AND CR.Donor_ID = %s) as Is_Registered
         FROM Blood_Camp C
-        WHERE C.Camp_Date >= CURRENT_DATE
+        WHERE C.Camp_Date >= CURRENT_DATE AND C.Status = 'Upcoming'
         ORDER BY C.Camp_Date ASC, C.Start_Time ASC
     """, (session['user_id'],))
     active_camps = cursor.fetchall()
@@ -51,7 +51,10 @@ def dashboard():
     
     close_connection(conn, cursor)
     
-    return render_template('donor_dashboard.html', title="Donor Dashboard", profile=profile, donations=donations, urgent_needs=urgent_needs, all_hospitals=all_hospitals, active_camps=active_camps)
+    
+    cursor.execute("SELECT * FROM System_Notification ORDER BY Created_At DESC LIMIT 10")
+    system_notifications = cursor.fetchall()
+    return render_template('donor_dashboard.html', title="Donor Dashboard", profile=profile, donations=donations, urgent_needs=urgent_needs, all_hospitals=all_hospitals, active_camps=active_camps, system_notifications=system_notifications)
 
 @donor_bp.route('/update_profile', methods=['POST'])
 def update_profile():

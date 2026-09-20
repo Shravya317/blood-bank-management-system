@@ -79,6 +79,7 @@
                     <th>Venue</th>
                     <th>Donors Registered</th>
                     <th>Status</th>
+                      <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -100,9 +101,19 @@
                             <span class="badge badge-success">ACCEPTING</span>
                         {% endif %}
                     </td>
+                    <td>
+                        {% if camp.Status == 'Completed' %}
+                            <span class="badge badge-success" style="background: #28a745; color: white;">Completed</span>
+                        {% else %}
+                            <form method="POST" action="{{ url_for('ngo.complete_camp', camp_id=camp.Camp_ID) }}" style="margin: 0;">
+                                <button type="submit" class="btn btn-primary btn-sm" style="font-weight: bold;">Complete Camp</button>
+                            </form>
+                        {% endif %}
+                    </td>
+
                 </tr>
                 {% else %}
-                <tr><td colspan="5" style="text-align: center; font-weight: bold; padding: 2rem;">No camps organized yet.</td></tr>
+                <tr><td colspan="6" style="text-align: center; font-weight: bold; padding: 2rem;">No camps organized yet.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
