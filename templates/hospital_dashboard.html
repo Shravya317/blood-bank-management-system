@@ -378,6 +378,10 @@
         </p>
 
         <form method="POST" action="{{ url_for('hospital.organize_camp') }}">
+                <div class="form-group">
+                <label for="camp_name">Camp Name:</label>
+                <input type="text" name="camp_name" id="camp_name" class="form-control" required placeholder="Enter blood camp name">
+            </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="form-group">
                     <label for="camp_date">Camp Date:</label>

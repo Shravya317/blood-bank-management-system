@@ -146,6 +146,7 @@ CREATE TABLE IF NOT EXISTS NGO (
 -- Blood Camp Table
 CREATE TABLE IF NOT EXISTS Blood_Camp (
     Camp_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Camp_Name VARCHAR(255) NOT NULL,
     Organizer_Type ENUM('NGO', 'Hospital') NOT NULL,
     Organizer_ID INT NOT NULL,
     Camp_Date DATE NOT NULL,

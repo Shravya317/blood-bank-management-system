@@ -178,6 +178,7 @@ def fulfill_patient_request():
 
 @hospital_bp.route('/organize_camp', methods=['POST'])
 def organize_camp():
+    camp_name = request.form.get('camp_name')
     camp_date = request.form.get('camp_date')
     start_time = request.form.get('start_time')
     end_time = request.form.get('end_time')
@@ -191,10 +192,10 @@ def organize_camp():
     cursor = conn.cursor()
     
     query = """
-    INSERT INTO Blood_Camp (Organizer_Type, Organizer_ID, Camp_Date, Start_Time, End_Time, Day_of_Week, Venue, Target_Donors)
-    VALUES ('Hospital', %s, %s, %s, %s, %s, %s, %s)
+    INSERT INTO Blood_Camp (Camp_Name, Organizer_Type, Organizer_ID, Camp_Date, Start_Time, End_Time, Day_of_Week, Venue, Target_Donors)
+    VALUES (%s, 'Hospital', %s, %s, %s, %s, %s, %s, %s)
     """
-    cursor.execute(query, (session['user_id'], camp_date, start_time, end_time, day_of_week, venue, target_donors))
+    cursor.execute(query, (camp_name, session['user_id'], camp_date, start_time, end_time, day_of_week, venue, target_donors))
     conn.commit()
     close_connection(conn, cursor)
     
