@@ -3,19 +3,29 @@
 {% block content %}
 
 <style>
-    body { overflow: hidden; }
-
     body {
-        background: #ffffff url("{{ url_for('static', filename='img/hero-bg.png') }}") no-repeat left center;
-        background-size: 55%;
-        background-attachment: fixed;
+        overflow: hidden !important;
+        background-color: #ffffff !important;
+        background-image: url("{{ url_for('static', filename='img/hero-bg.png') }}") !important;
+        background-repeat: no-repeat !important;
+        background-position: left center !important;
+        background-size: 55% !important;
+        background-attachment: fixed !important;
     }
-    .auth-wrapper {
+    
+    .container {
+        max-width: 95% !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+.auth-wrapper {
         justify-content: flex-end !important;
         padding-right: 0%;
         gap: 4.5rem !important;
     }
-    .container { max-width: 95% !important; }
+    
     
     .service-card {
         background: #ffffff;

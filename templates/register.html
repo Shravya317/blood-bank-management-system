@@ -4,11 +4,21 @@
 
 <style>
     body {
-        background: #ffffff url("{{ url_for('static', filename='img/hero-bg.png') }}") no-repeat left center;
-        background-size: 50%;
-        background-attachment: fixed;
+        background-color: #ffffff !important;
+        background-image: url("{{ url_for('static', filename='img/hero-bg.png') }}") !important;
+        background-repeat: no-repeat !important;
+        background-position: left center !important;
+        background-size: 55% !important;
+        background-attachment: fixed !important;
     }
-    .auth-wrapper {
+    
+    .container {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+.auth-wrapper {
         justify-content: flex-end !important;
         padding-right: 2%;
     }
