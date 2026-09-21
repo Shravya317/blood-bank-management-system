@@ -188,7 +188,21 @@ def donate():
             cursor.execute("SELECT Hospital_Name FROM Hospital WHERE Hospital_ID = %s", (h_id,))
             h_name = cursor.fetchone()['Hospital_Name']
             flash(f"Donation recorded successfully and sent directly to {h_name}!", "success")
-        cursor.execute("UPDATE Donor SET Last_Donation_Date = %s WHERE Donor_ID = %s", (today.strftime('%Y-%m-%d'), session['user_id']))
+        # Fetch donor name
+          cursor.execute("SELECT Name FROM Donor WHERE Donor_ID = %s", (session['user_id'],))
+          donor_row = cursor.fetchone()
+          donor_name = donor_row['Name'] if donor_row else "A Donor"
+          
+          # Create global System Notification
+          if destination == 'blood_bank':
+              notif_msg = f"{donor_name} has just donated {qty}ml of {component} to the Central Blood Bank."
+          else:
+              notif_msg = f"{donor_name} has directly donated {qty}ml of {component} to {h_name}."
+              
+          cursor.execute("INSERT INTO System_Notification (Title, Message) VALUES (%s, %s)",
+              ("New Blood Donation", notif_msg))
+          
+          cursor.execute("UPDATE Donor SET Last_Donation_Date = %s WHERE Donor_ID = %s", (today.strftime('%Y-%m-%d'), session['user_id']))
         
         conn.commit()
         
