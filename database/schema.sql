@@ -56,7 +56,6 @@ CREATE TABLE Donation (
     Donation_Type VARCHAR(50),
     Donor_ID INT NOT NULL,
     Camp_ID INT,
-    FOREIGN KEY (Camp_ID) REFERENCES Blood_Camp(Camp_ID),
     FOREIGN KEY (Donor_ID) REFERENCES Donor(Donor_ID)
 );
 
@@ -168,8 +167,6 @@ CREATE TABLE IF NOT EXISTS Camp_Registration (
     Donor_ID INT NOT NULL,
     Status ENUM('Registered', 'Donated') DEFAULT 'Registered',
     FOREIGN KEY (Camp_ID) REFERENCES Blood_Camp(Camp_ID),
-    Camp_ID INT,
-    FOREIGN KEY (Camp_ID) REFERENCES Blood_Camp(Camp_ID),
     FOREIGN KEY (Donor_ID) REFERENCES Donor(Donor_ID),
     UNIQUE (Camp_ID, Donor_ID) -- prevent double registration
 );
@@ -182,3 +179,6 @@ CREATE TABLE IF NOT EXISTS System_Notification (
     Message TEXT NOT NULL,
     Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+ALTER TABLE Donation ADD CONSTRAINT fk_camp FOREIGN KEY (Camp_ID) REFERENCES Blood_Camp(Camp_ID);
