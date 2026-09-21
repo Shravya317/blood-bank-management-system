@@ -318,4 +318,73 @@
         btnElement.classList.add('active');
     }
 </script>
+
+<div id="tab-journey" class="tab-content">
+    <div class="glass-panel">
+        <h3 style="font-size: 1.4rem; margin-bottom: 1.5rem;">Blood Journey Tracker</h3>
+        {% if blood_journey %}
+            <div class="table-responsive">
+                <table class="table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #000000;">
+                            <th style="padding: 12px; text-align: left;">Donation Date</th>
+                            <th style="padding: 12px; text-align: left;">Organized By</th>
+                            <th style="padding: 12px; text-align: left;">Unit Status</th>
+                            <th style="padding: 12px; text-align: left;">Destination</th>
+                            <th style="padding: 12px; text-align: left;">Final Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for j in blood_journey %}
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 12px; font-weight: bold;">{{ j.Donation_Date }}</td>
+                            <td style="padding: 12px;">
+                                {% if j.Camp_Name %}
+                                    {{ j.Camp_Name }} ({{ j.Organizer_Type }})
+                                {% else %}
+                                    Direct Donation
+                                {% endif %}
+                            </td>
+                            <td style="padding: 12px;">
+                                {% if j.Unit_Status == 'Available' %}
+                                    <span class="badge" style="background: #eab308; color: white;">Stored in Inventory</span>
+                                {% elif j.Unit_Status == 'Issued' %}
+                                    <span class="badge" style="background: #3b82f6; color: white;">Dispatched</span>
+                                {% elif j.Unit_Status == 'Discarded' %}
+                                    <span class="badge" style="background: #ef4444; color: white;">Discarded</span>
+                                {% else %}
+                                    <span class="badge" style="background: #94a3b8; color: white;">Processing</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 12px;">
+                                {% if j.Hospital_Name %}
+                                    {{ j.Hospital_Name }}
+                                {% else %}
+                                    Central Blood Bank
+                                {% endif %}
+                            </td>
+                            <td style="padding: 12px; font-weight: bold; color: #b30000;">
+                                {% if j.Request_Status == 'Fulfilled' %}
+                                    {% if j.Patient_Name %}
+                                        Life Saved: {{ j.Patient_Name }}
+                                    {% else %}
+                                        Life Saved (Anonymous)
+                                    {% endif %}
+                                {% elif j.Unit_Status == 'Issued' %}
+                                    In Transit to Patient
+                                {% else %}
+                                    Awaiting Patient
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>You haven't made any donations yet. Donate today to start your Blood Journey!</p>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock %}

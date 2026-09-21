@@ -191,7 +191,7 @@ def donate():
         cursor.execute("UPDATE Donor SET Last_Donation_Date = %s WHERE Donor_ID = %s", (today.strftime('%Y-%m-%d'), session['user_id']))
         
         conn.commit()
-        flash(f"Donation successful! You donated {qty_ml}ml, which has been processed into {num_units} unit(s) of blood for our inventory.", "success")
+        
         
     except Exception as e:
         flash(f"Error processing donation: {str(e)}", "danger")
