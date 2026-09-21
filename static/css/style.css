@@ -33,11 +33,7 @@
 
 body {
     font-family: 'Times New Roman', Times, serif;
-    background-color: #ffffff;
-    background-image: url('../img/hands_bg.png');
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
+    background-color: var(--body-bg);
     color: var(--text-main);
     line-height: 1.6;
     min-height: 100vh;
@@ -170,12 +166,8 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 1200px;
     width: 100%;
     margin: 1.5rem auto;
-    padding: 2rem 2.5rem;
+    padding: 0 1.5rem;
     flex: 1;
-    background: rgba(255, 255, 255, 0.93);
-    border: 3px solid #000;
-    box-shadow: 10px 10px 0px rgba(0,0,0,1);
-    border-radius: 4px;
 }
 
 /* FLASH MESSAGES */
