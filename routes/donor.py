@@ -61,8 +61,12 @@ def dashboard():
     # Fetch active blood camps and check if donor is registered
     cursor.execute("""
         SELECT C.*, 
-               (SELECT COUNT(*) FROM Camp_Registration CR WHERE CR.Camp_ID = C.Camp_ID AND CR.Donor_ID = %s) as Is_Registered
-        FROM Blood_Camp C
+               (SELECT COUNT(*) FROM Camp_Registration CR WHERE CR.Camp_ID = C.Camp_ID AND CR.Donor_ID = %s) as Is_Registered,
+                 CASE 
+                     WHEN C.Organizer_Type = 'NGO' THEN (SELECT Name FROM NGO WHERE NGO_ID = C.Organizer_ID)
+                     WHEN C.Organizer_Type = 'Hospital' THEN (SELECT Hospital_Name FROM Hospital WHERE Hospital_ID = C.Organizer_ID)
+                 END as Organizer_Name
+          FROM Blood_Camp C
         WHERE C.Camp_Date >= CURRENT_DATE AND C.Status = 'Upcoming'
         ORDER BY C.Camp_Date ASC, C.Start_Time ASC
     """, (session['user_id'],))
