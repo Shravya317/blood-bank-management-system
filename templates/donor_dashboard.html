@@ -136,10 +136,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="last_donated">Donation Date:</label>
-                <input type="date" name="last_donated" id="last_donated" class="form-control" value="{{ profile.Last_Donation_Date if profile.Last_Donation_Date else '' }}" required>
-            </div>
+            
 
 
             <div class="form-group">
@@ -165,7 +162,7 @@
 
                 <div class="form-group">
                     <label for="qty">Quantity (ML):</label>
-                    <input type="number" name="qty" id="qty" class="form-control" value="450" required>
+                    <input type="number" name="qty" id="qty" class="form-control" value="450" max="900" required>
                 </div>
             </div>
 

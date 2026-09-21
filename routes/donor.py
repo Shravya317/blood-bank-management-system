@@ -105,34 +105,45 @@ def update_profile():
 @donor_bp.route('/donate', methods=['POST'])
 def donate():
     component = request.form.get('component_type')
-    last_donated_str = request.form.get('last_donated')
-    qty = request.form.get('qty')
+    qty = request.form.get('qty', type=int, default=450)
     
-    if not last_donated_str:
-        flash("Please provide your last donated date.", "danger")
-        return redirect(url_for('donor.dashboard'))
-        
-    last_donated = datetime.datetime.strptime(last_donated_str, '%Y-%m-%d').date()
-    today = datetime.date.today()
-    
-    gap_rules = {
-        'Whole Blood': 56,
-        'Platelets': 7,
-        'Plasma': 28,
-        'Double Red Cells': 112
-    }
-    
-    required_gap = gap_rules.get(component, 56)
-    days_since_last = (today - last_donated).days
-    
-    if days_since_last < required_gap:
-        next_eligible = (last_donated + datetime.timedelta(days=required_gap)).strftime('%Y-%m-%d')
-        flash(f"Woah you need to wait right now! The recommended wait time for {component} is {required_gap} days. You can donate again on {next_eligible}.", "danger")
+    if qty > 900:
+        flash("You can donate a maximum of 2 units (900ml) of blood at once.", "danger")
         return redirect(url_for('donor.dashboard'))
         
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     
+    today = datetime.date.today()
+    
+    # Calculate eligibility from database instead of asking user
+    cursor.execute("SELECT MAX(Donation_Date) as last_donated FROM Donation WHERE Donor_ID = %s", (session['user_id'],))
+    last_donation_record = cursor.fetchone()
+    
+    if last_donation_record and last_donation_record['last_donated']:
+        last_donated = last_donation_record['last_donated']
+        if isinstance(last_donated, datetime.datetime):
+            last_donated = last_donated.date()
+        elif isinstance(last_donated, str):
+            last_donated = datetime.datetime.strptime(last_donated, '%Y-%m-%d').date()
+            
+        gap_rules = {
+            'Whole Blood': 56,
+            'Platelets': 7,
+            'Plasma': 28,
+            'Double Red Cells': 112
+        }
+        
+        required_gap = gap_rules.get(component, 56)
+        days_since_last = (today - last_donated).days
+        
+        if days_since_last < required_gap:
+            next_eligible = (last_donated + datetime.timedelta(days=required_gap)).strftime('%Y-%m-%d')
+            flash(f"Woah you need to wait right now! The recommended wait time for {component} is {required_gap} days. You can donate again on {next_eligible}.", "danger")
+            cursor.close()
+            conn.close()
+            return redirect(url_for('donor.dashboard'))
+        
     try:
         
         destination = request.form.get('destination')
