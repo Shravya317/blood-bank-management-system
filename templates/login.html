@@ -268,8 +268,8 @@
 </style>
 
 <div class="login-footer">
-    <div class="heartbeat-line">
-        <img src="{{ url_for('static', filename='img/heartbeat_bg.png') }}" style="width: 100%; height: 60px; object-fit: cover; mix-blend-mode: screen; object-position: right;">
+    <div class="heartbeat-line" style="background: url('{{ url_for("static", filename="img/heartbeat_bg.png") }}') repeat-x center; background-size: contain; mix-blend-mode: screen;">
+        
     </div>
     <div class="footer-content">
         <div class="footer-item">
@@ -295,8 +295,8 @@
             </div>
         </div>
     </div>
-    <div class="heartbeat-line">
-        <img src="{{ url_for('static', filename='img/heartbeat_bg.png') }}" style="width: 100%; height: 60px; object-fit: cover; mix-blend-mode: screen; object-position: left;">
+    <div class="heartbeat-line" style="background: url('{{ url_for("static", filename="img/heartbeat_bg.png") }}') repeat-x center; background-size: contain; mix-blend-mode: screen;">
+        
     </div>
 </div>
 
