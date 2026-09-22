@@ -366,14 +366,14 @@
                             <td style="padding: 12px; font-weight: bold; color: #b30000;">
                                 {% if j.Request_Status == 'Fulfilled' %}
                                     {% if j.Patient_Name %}
-                                        Life Saved: {{ j.Patient_Name }}
+                                        Recipient: {{ j.Patient_Name }}
                                     {% else %}
-                                        Life Saved (Anonymous)
+                                        Recipient: Anonymous
                                     {% endif %}
                                 {% elif j.Unit_Status == 'Issued' %}
-                                    In Transit to Patient
+                                    In Transit
                                 {% else %}
-                                    Awaiting Patient
+                                    Awaiting Assignment
                                 {% endif %}
                             </td>
                         </tr>
